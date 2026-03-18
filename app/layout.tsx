@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   description: "Personal portfolio website",
 };
 
-type RootLayoutProps = {
+export default function RootLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
-};
-
-export default function RootLayout({ children }: RootLayoutProps) {
+}>) {
   return (
     <html lang="en">
       <body className={inter.variable}>{children}</body>

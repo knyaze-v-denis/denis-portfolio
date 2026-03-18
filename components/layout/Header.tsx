@@ -1,35 +1,55 @@
+import Image from "next/image";
 import Button from "@/components/ui/Button";
+import InternalLink from "@/components/ui/InternalLink";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Header() {
   return (
-    <header className="header-surface">
-      <div className="page-shell">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-5 w-5 rounded-[6px] bg-[var(--color-foreground-primary)]/10" />
-            <div className="flex items-center gap-2">
-              <span className="text-title-3 text-caps">First Name Last Name</span>
-              <span className="text-title-3 text-[var(--color-foreground-secondary)]">
+    <header className="site-header header-surface">
+      <div className="site-header-inner">
+        <div className="flex h-14 items-center">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="relative h-5 w-5 flex-shrink-0 overflow-hidden rounded-[var(--radius-xs)]">
+              <Image
+                src="/images/profile-photo.png"
+                alt="First Name Last Name"
+                fill
+                className="object-cover"
+                sizes="20px"
+              />
+            </div>
+
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="text-title-3 text-caps text-[var(--color-foreground-primary)]">
+                First Name Last Name
+              </span>
+
+              <span className="text-title-3 text-caps text-[var(--color-foreground-secondary)]">
                 Position
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button className="h-10 px-4 text-button-small">Get in touch</Button>
+          <div className="ml-auto flex items-center gap-8">
+            <Button variant="primary" size="s" buttonStyle="default">
+              Get in touch
+            </Button>
 
-            <div className="flex items-center gap-2 text-title-3 text-[var(--color-foreground-secondary)]">
-              <span className="text-[var(--color-foreground-primary)]">Py</span>
-              <span>/</span>
-              <span>En</span>
+            <div className="flex items-center gap-1">
+              <InternalLink state="inactive" href="#ru">
+                Py
+              </InternalLink>
+
+              <span className="text-link text-[var(--color-foreground-tertiary)]">
+                /
+              </span>
+
+              <InternalLink state="active" href="#en">
+                En
+              </InternalLink>
             </div>
 
-            <button
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full surface-button-secondary"
-              aria-label="Toggle theme"
-            >
-              <span className="text-title-3">◐</span>
-            </button>
+            <ThemeToggle />
           </div>
         </div>
       </div>

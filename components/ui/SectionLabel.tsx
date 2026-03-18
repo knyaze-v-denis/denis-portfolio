@@ -4,7 +4,7 @@ type SectionLabelProps = {
 
 export default function SectionLabel({ children }: SectionLabelProps) {
   return (
-    <p className="text-title-3 text-caps tracking-[0.08em] text-[var(--color-foreground-secondary)]">
+    <p className="text-title-3 text-caps text-[var(--color-foreground-secondary)] tracking-[0.08em]">
       [ {children} ]
     </p>
   );

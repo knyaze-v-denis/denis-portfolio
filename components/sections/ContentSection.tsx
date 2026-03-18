@@ -15,12 +15,9 @@ export default function ContentSection({
   contentClassName,
 }: ContentSectionProps) {
   return (
-    <section className={cn("section-shell", className)}>
+    <section className={cn("section-frame section-shell", className)}>
       <SectionLabel>{label}</SectionLabel>
-
-      <div className={cn("surface-card section-card", contentClassName)}>
-        <div className="section-content">{children}</div>
-      </div>
+      <div className={cn("section-content", contentClassName)}>{children}</div>
     </section>
   );
 }

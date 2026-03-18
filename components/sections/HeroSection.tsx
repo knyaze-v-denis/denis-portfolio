@@ -1,46 +1,58 @@
-type ContactLink = {
-  label: string;
-  href: string;
-};
+import Image from "next/image";
+import ExternalLink from "@/components/ui/ExternalLink";
 
-const contactLinks: ContactLink[] = [
-  { label: "example@mail.com ↗", href: "#" },
-  { label: "t.me/username ↗", href: "#" },
+const contactLinks = [
+  {
+    label: "example@mail.com",
+    href: "#",
+  },
+  {
+    label: "t.me/username",
+    href: "#",
+  },
 ];
 
 export default function HeroSection() {
   return (
-    <section className="flex flex-col gap-[var(--space-10)]">
-      <div className="grid gap-[var(--space-8)] md:grid-cols-[240px_1fr] md:items-start">
-        <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[var(--color-border)]">
-          <div className="aspect-[4/4] w-full bg-[linear-gradient(135deg,rgba(11,12,14,0.14),rgba(11,12,14,0.04))]" />
+    <section className="section-frame hero-shell">
+      <div className="flex items-start gap-[var(--space-4)]">
+        <div className="relative h-[10rem] w-[10rem] flex-shrink-0 overflow-hidden rounded-[var(--radius-sm)]">
+          <Image
+            src="/images/profile-photo.png"
+            alt="First Name Last Name"
+            fill
+            className="object-cover"
+            sizes="160px"
+            priority
+          />
         </div>
 
-        <div className="flex flex-col gap-[var(--space-8)]">
-          <div className="flex flex-col gap-[var(--space-3)]">
-            <h1 className="text-large-title text-caps tracking-[-0.02em]">
-              First Name Last Name
+        <div className="flex h-[10rem] flex-1 flex-col justify-between">
+          <div className="flex flex-col gap-[var(--space-1)]">
+            <h1 className="text-title-2 text-caps tracking-[-0.01em]">
+              FIRST NAME LAST NAME
             </h1>
-            <p className="text-large-title text-caps text-[var(--color-foreground-primary)]">
-              Position
+
+            <p className="text-title-2 text-caps text-[var(--color-foreground-primary)]">
+              POSITION
             </p>
           </div>
 
-          <div className="flex flex-col gap-[var(--space-2)]">
+          <div className="flex flex-col gap-[var(--space-1)]">
             {contactLinks.map((link) => (
-              <a
+              <ExternalLink
                 key={link.label}
                 href={link.href}
-                className="text-link text-[var(--color-foreground-primary)] transition-opacity hover:opacity-70"
+                variant="secondary"
               >
                 {link.label}
-              </a>
+              </ExternalLink>
             ))}
           </div>
         </div>
       </div>
 
-      <p className="text-[40px] leading-[1.2] font-medium tracking-[-0.03em] text-[var(--color-foreground-primary)]">
+      <p className="max-w-[40rem] text-large-title tracking-[-0.02em] text-[var(--color-foreground-primary)]">
         I&apos;m a passionate designer with five years of experience in the
         field. I specialize in creating user-centered designs that are both
         beautiful and functional. I&apos;m excited to continue growing as a

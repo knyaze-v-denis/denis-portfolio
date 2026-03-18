@@ -1,28 +1,35 @@
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "secondary" | "ghost";
+export type ButtonSize = "m" | "s";
+export type ButtonStyle = "default" | "only-icon";
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   variant?: ButtonVariant;
+  size?: ButtonSize;
+  buttonStyle?: ButtonStyle;
   className?: string;
+  ariaLabel?: string;
 };
 
 export default function Button({
   children,
   variant = "primary",
+  size = "m",
+  buttonStyle = "default",
   className,
+  ariaLabel,
 }: ButtonProps) {
-  const variantClassName =
-    variant === "primary"
-      ? "surface-button-primary"
-      : "surface-button-secondary";
-
   return (
     <button
+      type="button"
+      aria-label={ariaLabel}
       className={cn(
-        "text-button inline-flex h-11 items-center justify-center rounded-full px-5 transition-colors",
-        variantClassName,
+        "ui-button",
+        `ui-button--${variant}`,
+        `ui-button--${size}`,
+        `ui-button--${buttonStyle}`,
         className
       )}
     >
