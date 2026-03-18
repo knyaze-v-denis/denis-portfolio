@@ -320,6 +320,7 @@ p {
 .ui-internal-link {
   position: relative;
   display: inline-flex;
+  align-items: center;
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;
@@ -330,7 +331,7 @@ p {
   content: "";
   position: absolute;
   left: 0;
-  top: calc(100% + 0.25rem);
+  bottom: -0.125rem;
   width: 0;
   height: 1px;
   background: var(--color-border-solid);
@@ -555,4 +556,73 @@ p {
   line-height: 1.125rem;
   font-weight: 500;
   color: var(--color-foreground-secondary);
+}
+
+/* Theme transition */
+
+:root {
+  --theme-toggle-x: 50vw;
+  --theme-toggle-y: 50vh;
+  --theme-toggle-end-radius: 120vmax;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  will-change: clip-path;
+}
+
+html.dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 999;
+  animation: theme-reveal-in 600ms ease-out;
+}
+
+html:not(.dark)::view-transition-old(root) {
+  z-index: 1;
+}
+
+html:not(.dark)::view-transition-new(root) {
+  z-index: 999;
+  animation: theme-reveal-out 600ms ease-out;
+}
+
+@keyframes theme-reveal-in {
+  from {
+    clip-path: circle(0 at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(
+      var(--theme-toggle-end-radius)
+      at var(--theme-toggle-x)
+      var(--theme-toggle-y)
+    );
+  }
+}
+
+@keyframes theme-reveal-out {
+  from {
+    clip-path: circle(0 at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(
+      var(--theme-toggle-end-radius)
+      at var(--theme-toggle-x)
+      var(--theme-toggle-y)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }

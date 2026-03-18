@@ -13,14 +13,28 @@ export const metadata: Metadata = {
   description: "Personal portfolio website",
 };
 
+const themeInitScript = `
+(() => {
+  try {
+    const storedTheme = sessionStorage.getItem("theme");
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = storedTheme ? storedTheme === "dark" : systemDark;
+    document.documentElement.classList.toggle("dark", isDark);
+  } catch {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.variable}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.variable}>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {children}
+      </body>
     </html>
   );
 }
