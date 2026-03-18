@@ -1,20 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1f2f4;
-  --surface: #ffffff;
-  --foreground: #1a1a1a;
-  --muted-foreground: rgba(26, 26, 26, 0.56);
-  --border: rgba(26, 26, 26, 0.08);
-  --tag-background: #e8e8eb;
-  --tag-foreground: rgba(26, 26, 26, 0.72);
-  --button-primary-background: #111111;
-  --button-primary-foreground: #ffffff;
-  --button-secondary-background: #e8e8eb;
-  --button-secondary-foreground: #1a1a1a;
-  --radius-card: 24px;
-  --radius-pill: 999px;
-  --shadow-soft: 0 0 0 1px rgba(26, 26, 26, 0.04);
+  --color-background: #f3f6fa;
+  --color-surface-header: rgb(243 246 250 / 75%);
+  --color-surface-button-primary: #0b0c0e;
+  --color-surface-button-primary-hover: rgb(11 12 14 / 80%);
+  --color-surface-button-secondary: rgb(11 12 14 / 5%);
+  --color-surface-button-secondary-hover: rgb(11 12 14 / 10%);
+  --color-surface-tag-primary: #0b0c0e;
+  --color-surface-tag-secondary: rgb(11 12 14 / 5%);
+  --color-surface-card: #fcfdff;
+  --color-foreground-primary: rgb(11 12 14 / 90%);
+  --color-foreground-secondary: rgb(11 12 14 / 50%);
+  --color-foreground-tertiary: rgb(11 12 14 / 30%);
+  --color-foreground-inverse: #f3f6fa;
+  --color-border: rgb(11 12 14 / 5%);
+  --color-border-solid: #0b0c0e;
+  --color-shadow-first-level: rgb(51 65 85 / 14%);
+  --color-shadow-second-level: rgb(71 85 105 / 10%);
+
+  --radius-full: 999px;
+  --radius-2xl: 24px;
+  --radius-xl: 20px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+  --radius-xs: 4px;
+
+  --space-20: 80px;
+  --space-10: 40px;
+  --space-8: 32px;
+  --space-6: 24px;
+  --space-4: 16px;
+  --space-3: 12px;
+  --space-2: 8px;
+  --space-1-5: 6px;
+  --space-1: 4px;
+
+  --shadow-card:
+    0 8px 24px var(--color-shadow-second-level),
+    0 2px 8px var(--color-shadow-first-level);
+}
+
+html.dark {
+  --color-background: #0b0c0e;
+  --color-surface-header: rgb(11 12 14 / 75%);
+  --color-surface-button-primary: #f3f6fa;
+  --color-surface-button-primary-hover: rgb(243 246 250 / 80%);
+  --color-surface-button-secondary: rgb(243 246 250 / 10%);
+  --color-surface-button-secondary-hover: rgb(243 246 250 / 20%);
+  --color-surface-tag-primary: #f3f6fa;
+  --color-surface-tag-secondary: rgb(243 246 250 / 5%);
+  --color-surface-card: #17191d;
+  --color-foreground-primary: rgb(243 246 250 / 90%);
+  --color-foreground-secondary: rgb(243 246 250 / 50%);
+  --color-foreground-tertiary: rgb(243 246 250 / 30%);
+  --color-foreground-inverse: #0b0c0e;
+  --color-border: rgb(243 246 250 / 5%);
+  --color-border-solid: #f3f6fa;
+  --color-shadow-first-level: rgb(6 7 8 / 80%);
+  --color-shadow-second-level: rgb(10 11 13 / 60%);
 }
 
 html {
@@ -24,9 +68,10 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-background);
+  color: var(--color-foreground-primary);
   font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
 }
 
 * {
@@ -54,37 +99,121 @@ select {
   font: inherit;
 }
 
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+}
+
 @layer components {
-  .page-container {
+  .page-shell {
     width: 100%;
-    max-width: 1152px;
-    margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
   }
 
-  .section-spacing {
-    padding-top: 32px;
-    padding-bottom: 32px;
+  .content-container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
   }
 
   .surface-card {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    background: var(--surface);
-    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    background: var(--color-surface-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .surface-button-primary {
+    background: var(--color-surface-button-primary);
+    color: var(--color-foreground-inverse);
+  }
+
+  .surface-button-primary:hover {
+    background: var(--color-surface-button-primary-hover);
+  }
+
+  .surface-button-secondary {
+    background: var(--color-surface-button-secondary);
+    color: var(--color-foreground-primary);
+  }
+
+  .surface-button-secondary:hover {
+    background: var(--color-surface-button-secondary-hover);
+  }
+
+  .surface-tag-secondary {
+    background: var(--color-surface-tag-secondary);
+    color: var(--color-foreground-secondary);
   }
 
   .section-divider {
     height: 32px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     background-image: repeating-linear-gradient(
       -45deg,
-      rgba(26, 26, 26, 0.03) 0,
-      rgba(26, 26, 26, 0.03) 2px,
-      transparent 2px,
+      var(--color-border) 0,
+      var(--color-border) 1px,
+      transparent 1px,
       transparent 8px
     );
+  }
+
+  .text-large-title {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+  }
+
+  .text-title-1 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+
+  .text-title-2 {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+
+  .text-title-3 {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .text-body {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  .text-link {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .text-button {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+
+  .text-button-small {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+
+  .text-caps {
+    text-transform: uppercase;
   }
 }

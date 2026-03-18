@@ -6,7 +6,7 @@ type PageLayoutProps = {
 
 export default function PageLayout({ children }: PageLayoutProps) {
   return (
-    <main className="min-h-screen py-12">
+    <main className="page-shell py-[var(--space-10)]">
       <Container>{children}</Container>
     </main>
   );

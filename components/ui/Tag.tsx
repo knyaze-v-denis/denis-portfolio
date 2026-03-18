@@ -9,8 +9,8 @@ export default function Tag({ label, className }: TagProps) {
   return (
     <span
       className={cn(
-        "inline-flex h-8 items-center rounded-full px-3 text-sm leading-none",
-        "bg-[var(--tag-background)] text-[var(--tag-foreground)]",
+        "surface-tag-secondary inline-flex h-8 items-center rounded-full px-3",
+        "text-button-small",
         className
       )}
     >

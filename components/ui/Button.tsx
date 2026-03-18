@@ -15,13 +15,13 @@ export default function Button({
 }: ButtonProps) {
   const variantClassName =
     variant === "primary"
-      ? "bg-[var(--button-primary-background)] text-[var(--button-primary-foreground)]"
-      : "bg-[var(--button-secondary-background)] text-[var(--button-secondary-foreground)]";
+      ? "surface-button-primary"
+      : "surface-button-secondary";
 
   return (
     <button
       className={cn(
-        "inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-medium transition-colors",
+        "text-button inline-flex h-11 items-center justify-center rounded-full px-5 transition-colors",
         variantClassName,
         className
       )}
