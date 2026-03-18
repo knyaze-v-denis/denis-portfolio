@@ -70,7 +70,7 @@ body {
   min-width: 320px;
   background: var(--color-background);
   color: var(--color-foreground-primary);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
 }
 
@@ -215,5 +215,36 @@ select {
 
   .text-caps {
     text-transform: uppercase;
+  }
+
+  .section-shell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .section-card {
+    padding: var(--space-10);
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .full-width-bar {
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-surface {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+    backdrop-filter: blur(16px);
+    background: var(--color-surface-header);
+    border-bottom: 1px solid var(--color-border);
   }
 }
