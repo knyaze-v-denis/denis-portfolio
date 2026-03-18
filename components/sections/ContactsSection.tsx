@@ -3,30 +3,30 @@ import Button from "@/components/ui/Button";
 
 const contacts = [
   {
-    label: "Email me",
-    href: "mailto:mail@example.com",
+    label: "Telegram",
+    href: "https://t.me/knyaze_v_denis",
     variant: "primary" as const,
   },
   {
-    label: "Telegram",
-    href: "https://t.me/username",
+    label: "E-mail",
+    href: "mailto:knyaze.v.denis@yandex.ru",
     variant: "secondary" as const,
   },
   {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/username",
+    label: "Behance",
+    href: "#",
     variant: "secondary" as const,
   },
   {
-    label: "GitHub",
-    href: "https://github.com/username",
+    label: "Download CV",
+    href: "#",
     variant: "secondary" as const,
   },
 ];
 
 export default function ContactsSection() {
   return (
-    <ContentSection label="Contacts">
+    <ContentSection id="contacts" label="Contacts">
       <h2 className="text-large-title text-[var(--color-foreground-primary)]">
         Let’s work together or just say hello.
       </h2>

@@ -3,28 +3,45 @@ import TimelineItem from "@/components/timeline/TimelineItem";
 
 const educationItems = [
   {
-    title: "University Name",
+    title: "МБИ им. А. Собчака",
     lines: [
-      "Interaction Design",
-      "Bachelor Degree",
-      "2018 — 2022",
+      "Бизнес-информатика",
+      "Неоконченное высшее",
+      "2024 — 2029",
     ],
-    secondaryLines: [1, 2],
+    secondaryLines: [1,2],
   },
   {
-    title: "Course Platform",
+    title: "Университет ИТМО",
     lines: [
-      "Product Design Course",
-      "Certificate",
-      "2023",
+      "Бизнес-информатика",
+      "Неоконченное высшее",
+      "2020 — 2023",
     ],
-    secondaryLines: [1, 2],
+    secondaryLines: [1,2],
+  },
+  {
+    title: "Яндекс Практикум",
+    lines: [
+      "UX-исследования для дизайнеров",
+      "Повышение квалификации",
+      "2026",
+    ],
+    secondaryLines: [1,2],
+  },
+  {
+    title: "Женя Арутюнов",
+    lines: [
+      "Как дизайнить кодом",
+      "2025",
+    ],
+    secondaryLines: [1,2],
   },
 ];
 
 export default function EducationSection() {
   return (
-    <ContentSection label="Education">
+    <ContentSection label="Образование">
       <div className="ui-timeline-list">
         {educationItems.map((item) => (
           <TimelineItem

@@ -14,7 +14,10 @@ export default function Footer() {
               Designed by
             </span>
 
-            <ExternalLink variant="secondary" href="#">
+            <ExternalLink
+              variant="secondary"
+              href="https://t.me/knyaze_v_denis"
+            >
               Denis Knyazev
             </ExternalLink>
           </div>

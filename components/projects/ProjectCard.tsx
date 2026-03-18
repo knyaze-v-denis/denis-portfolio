@@ -1,6 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import ProjectTag, { type ProjectTagVariant } from "@/components/projects/ProjectTag";
+import ProjectTag, {
+  type ProjectTagVariant,
+} from "@/components/projects/ProjectTag";
 
 export type ProjectCardTag = {
   label: string;
@@ -10,7 +14,7 @@ export type ProjectCardTag = {
 export type ProjectCardProps = {
   title: string;
   description: string;
-  image: string;
+  cover: string;
   href: string;
   tags: ProjectCardTag[];
 };
@@ -18,20 +22,52 @@ export type ProjectCardProps = {
 export default function ProjectCard({
   title,
   description,
-  image,
+  cover,
   href,
   tags,
 }: ProjectCardProps) {
+  const cardRef = useRef<HTMLAnchorElement | null>(null);
+
+  function handlePointerDown(event: React.PointerEvent<HTMLAnchorElement>) {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 1.6;
+
+    const ripple = document.createElement("span");
+    ripple.className = "ui-button__ripple";
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${event.clientX - rect.left}px`;
+    ripple.style.top = `${event.clientY - rect.top}px`;
+
+    card.appendChild(ripple);
+
+    ripple.addEventListener(
+      "animationend",
+      () => {
+        ripple.remove();
+      },
+      { once: true }
+    );
+  }
+
   return (
-    <Link href={href} className="ui-project-card">
+    <a
+      ref={cardRef}
+      href={href}
+      onPointerDown={handlePointerDown}
+      className="ui-project-card"
+    >
       <div className="ui-project-card__inner">
         <div className="ui-project-card__cover">
           <Image
-            src={image}
+            src={cover}
             alt={title}
             fill
-            className="ui-project-card__image"
             sizes="240px"
+            className="ui-project-card__image"
           />
         </div>
 
@@ -51,6 +87,6 @@ export default function ProjectCard({
           <p className="ui-project-card__description">{description}</p>
         </div>
       </div>
-    </Link>
+    </a>
   );
 }

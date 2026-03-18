@@ -320,11 +320,10 @@ p {
 .ui-internal-link {
   position: relative;
   display: inline-flex;
-  align-items: center;
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;
-  transition: color 160ms ease;
+  transition: color 300ms ease-out;
 }
 
 .ui-internal-link::after {
@@ -335,7 +334,7 @@ p {
   width: 0;
   height: 1px;
   background: var(--color-border-solid);
-  transition: width 160ms ease;
+  transition: width 300ms ease-out;
 }
 
 .ui-internal-link:hover::after {
@@ -363,7 +362,16 @@ p {
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;
-  transition: color 160ms ease;
+  transition: color 300ms ease-out;
+}
+
+.ui-external-link__icon {
+  transition: transform 300ms ease-out;
+  transform: rotate(0deg);
+}
+
+.ui-external-link:hover .ui-external-link__icon {
+  transform: rotate(45deg);
 }
 
 .ui-external-link--primary {
@@ -445,17 +453,26 @@ p {
 /* Project card component */
 
 .ui-project-card {
+  position: relative;
   display: block;
+  overflow: hidden;
   background: var(--color-surface-card);
   padding: var(--space-4);
   border-radius: var(--radius-2xl);
+  transform: scale(1);
+  will-change: transform;
   transition:
-    box-shadow 200ms ease,
-    transform 200ms ease;
+    transform 300ms ease-out,
+    box-shadow 300ms ease-out;
 }
 
 .ui-project-card:hover {
   box-shadow: var(--shadow-card);
+}
+
+.ui-project-card:active {
+  transform: scale(0.97);
+  transition: transform 150ms ease-out;
 }
 
 .ui-project-card__inner {
@@ -474,7 +491,7 @@ p {
 
 .ui-project-card__image {
   object-fit: cover;
-  transition: transform 300ms ease;
+  transition: transform 300ms ease-out;
 }
 
 .ui-project-card:hover .ui-project-card__image {
@@ -624,5 +641,48 @@ html:not(.dark)::view-transition-new(root) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none !important;
+  }
+}
+
+/* Button interactions */
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transform: scale(1);
+  will-change: transform;
+  transition:
+    transform 300ms ease-out,
+    background-color 300ms ease-out,
+    color 300ms ease-out,
+    opacity 300ms ease-out;
+}
+
+.ui-button:hover {
+  transform: scale(1.03);
+}
+
+.ui-button:active {
+  transform: scale(0.97);
+  transition: transform 150ms ease-out;
+}
+
+.ui-button__ripple {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  background: color-mix(in srgb, currentColor 20%, transparent);
+  transform: translate(-50%, -50%) scale(0);
+  animation: button-ripple 500ms ease-out forwards;
+}
+
+@keyframes button-ripple {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
   }
 }

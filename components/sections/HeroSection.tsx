@@ -3,12 +3,12 @@ import ExternalLink from "@/components/ui/ExternalLink";
 
 const contactLinks = [
   {
-    label: "example@mail.com",
-    href: "#",
+    label: "knyaze.v.denis@yandex.ru",
+    href: "mailto:knyaze.v.denis@yandex.ru",
   },
   {
-    label: "t.me/username",
-    href: "#",
+    label: "t.me/knyaze_v_denis",
+    href: "https://t.me/knyaze_v_denis",
   },
 ];
 
@@ -19,22 +19,22 @@ export default function HeroSection() {
         <div className="relative h-[10rem] w-[10rem] flex-shrink-0 overflow-hidden rounded-[var(--radius-sm)]">
           <Image
             src="/images/profile-photo.png"
-            alt="First Name Last Name"
+            alt="Denis Knyazev"
             fill
-            className="object-cover"
             sizes="160px"
             priority
+            className="object-cover"
           />
         </div>
 
         <div className="flex h-[10rem] flex-1 flex-col justify-between">
           <div className="flex flex-col gap-[var(--space-1)]">
             <h1 className="text-title-2 text-caps tracking-[-0.01em]">
-              FIRST NAME LAST NAME
+              Denis Knyazev
             </h1>
 
             <p className="text-title-2 text-caps text-[var(--color-foreground-primary)]">
-              POSITION
+              Product Designer
             </p>
           </div>
 

@@ -3,18 +3,23 @@ import TimelineItem from "@/components/timeline/TimelineItem";
 
 const workItems = [
   {
-    title: "Company Name 1",
-    lines: ["Senior Product Designer", "2023 — Present"],
+    title: "SimpleOne • ITG Corporation",
+    lines: ["Продуктовый дизайнер", "Октябрь 2025 — сейчас"],
     secondaryLines: [1],
   },
   {
-    title: "Company Name 2",
-    lines: ["UX/UI Designer", "2021 — 2023"],
+    title: "Матрикс",
+    lines: ["Ведущий продуктовый дизайнер", "Июнь 2024 — Июнь 2025"],
     secondaryLines: [1],
   },
   {
-    title: "Company Name 3",
-    lines: ["Junior Designer", "2019 — 2021"],
+    title: "LockBox",
+    lines: ["UX/UI дизайнер", "Февраль 2023 — Май 2024"],
+    secondaryLines: [1],
+  },
+  {
+    title: "Университет ИТМО",
+    lines: ["Графический дизайнер", "Сентябрь 2021 — Сентябрь 2022"],
     secondaryLines: [1],
   },
 ];

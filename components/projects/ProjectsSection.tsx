@@ -8,7 +8,7 @@ const projects: ProjectCardProps[] = [
     title: "Portfolio Website",
     description:
       "Design and development of a personal portfolio showcasing projects, experiments and design process.",
-    image: "/images/project-cover.png",
+    cover: "/images/project-cover.png",
     href: "/projects/portfolio",
     tags: [
       { label: "Project", variant: "primary" },
@@ -20,7 +20,7 @@ const projects: ProjectCardProps[] = [
     title: "Fitness App Concept",
     description:
       "Concept exploration of a fitness ecosystem combining training tracking, nutrition and community features.",
-    image: "/images/project-cover.png",
+    cover: "/images/project-cover.png",
     href: "/projects/fitness-app",
     tags: [
       { label: "Project", variant: "primary" },

@@ -12,7 +12,7 @@ export default function Header() {
             <div className="relative h-5 w-5 flex-shrink-0 overflow-hidden rounded-[var(--radius-xs)]">
               <Image
                 src="/images/profile-photo.png"
-                alt="First Name Last Name"
+                alt="Denis Knyazev"
                 fill
                 className="object-cover"
                 sizes="20px"
@@ -21,19 +21,21 @@ export default function Header() {
 
             <div className="flex min-w-0 items-center gap-2">
               <span className="text-title-3 text-caps text-[var(--color-foreground-primary)]">
-                First Name Last Name
+                Denis Knyazev
               </span>
 
               <span className="text-title-3 text-caps text-[var(--color-foreground-secondary)]">
-                Position
+                Product Designer
               </span>
             </div>
           </div>
 
           <div className="ml-auto flex items-center gap-8">
-            <Button variant="primary" size="s" buttonStyle="default">
-              Get in touch
-            </Button>
+            <a href="#contacts">
+              <Button variant="primary" size="s" buttonStyle="default">
+                Get in touch
+              </Button>
+            </a>
 
             <div className="flex items-center gap-1">
               <InternalLink state="inactive" href="#ru">
