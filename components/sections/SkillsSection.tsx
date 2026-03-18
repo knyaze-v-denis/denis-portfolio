@@ -1,3 +1,5 @@
+import Reveal from "@/components/motion/Reveal";
+import StaggerReveal from "@/components/motion/StaggerReveal";
 import ContentSection from "@/components/sections/ContentSection";
 import SkillTag from "@/components/ui/SkillTag";
 
@@ -39,15 +41,23 @@ export default function SkillsSection() {
     <ContentSection label="Skills">
       {skillGroups.map((group) => (
         <div key={group.title} className="skills-group">
-          <h3 className="text-title-3 text-[var(--color-foreground-tertiary)]">
-            {group.title}
-          </h3>
+          <Reveal variant="body">
+            <h3 className="text-title-3 text-[var(--color-foreground-tertiary)]">
+              {group.title}
+            </h3>
+          </Reveal>
 
-          <div className="flex flex-wrap gap-[0.75rem]">
+          <StaggerReveal
+            variant="tag"
+            step={75}
+            threshold={0.2}
+            className="flex flex-wrap gap-[0.75rem]"
+            itemAs="span"
+          >
             {group.items.map((item) => (
               <SkillTag key={item} label={item} />
             ))}
-          </div>
+          </StaggerReveal>
         </div>
       ))}
     </ContentSection>

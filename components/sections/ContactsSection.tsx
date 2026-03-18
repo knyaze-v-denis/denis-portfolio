@@ -1,3 +1,5 @@
+import Reveal from "@/components/motion/Reveal";
+import StaggerReveal from "@/components/motion/StaggerReveal";
 import ContentSection from "@/components/sections/ContentSection";
 import Button from "@/components/ui/Button";
 
@@ -27,11 +29,19 @@ const contacts = [
 export default function ContactsSection() {
   return (
     <ContentSection id="contacts" label="Contacts">
-      <h2 className="text-large-title text-[var(--color-foreground-primary)]">
-        Let’s work together or just say hello.
-      </h2>
+      <Reveal variant="title">
+        <h2 className="text-large-title text-[var(--color-foreground-primary)]">
+          Let’s work together or just say hello.
+        </h2>
+      </Reveal>
 
-      <div className="flex flex-wrap gap-[var(--space-4)]">
+      <StaggerReveal
+        variant="tag"
+        step={75}
+        threshold={0.2}
+        className="flex flex-wrap gap-[var(--space-4)]"
+        itemAs="span"
+      >
         {contacts.map((contact) => (
           <a key={contact.label} href={contact.href}>
             <Button variant={contact.variant} size="m" buttonStyle="default">
@@ -39,7 +49,7 @@ export default function ContactsSection() {
             </Button>
           </a>
         ))}
-      </div>
+      </StaggerReveal>
     </ContentSection>
   );
 }

@@ -1,6 +1,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import PageLayout from "@/components/layout/PageLayout";
+import SectionDivider from "@/components/layout/SectionDivider";
 import ProjectsSection from "@/components/projects/ProjectsSection";
 import ContactsSection from "@/components/sections/ContactsSection";
 import HeroSection from "@/components/sections/HeroSection";
@@ -15,19 +16,19 @@ export default function Home() {
 
       <PageLayout>
         <HeroSection />
-        <div className="section-divider" />
+        <SectionDivider />
 
         <SkillsSection />
-        <div className="section-divider" />
+        <SectionDivider />
 
         <ProjectsSection />
-        <div className="section-divider" />
+        <SectionDivider />
 
         <WorkExperienceSection />
-        <div className="section-divider" />
+        <SectionDivider />
 
         <EducationSection />
-        <div className="section-divider" />
+        <SectionDivider />
 
         <ContactsSection />
       </PageLayout>

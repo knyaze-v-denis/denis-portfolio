@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,8 +31,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.variable}>
+    <html
+      lang="en"
+      className={inter.variable}
+      suppressHydrationWarning
+    >
+      <body>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {children}
       </body>

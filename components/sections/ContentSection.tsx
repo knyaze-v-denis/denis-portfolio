@@ -1,3 +1,5 @@
+import InViewClass from "@/components/motion/InViewClass";
+import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { cn } from "@/lib/utils";
 
@@ -17,9 +19,17 @@ export default function ContentSection({
   contentClassName,
 }: ContentSectionProps) {
   return (
-    <section id={id} className={cn("section-frame section-shell", className)}>
-      <SectionLabel>{label}</SectionLabel>
+    <InViewClass
+      as="section"
+      id={id}
+      className={cn("section-frame section-shell", className)}
+      threshold={0.2}
+    >
+      <Reveal variant="body">
+        <SectionLabel>{label}</SectionLabel>
+      </Reveal>
+
       <div className={cn("section-content", contentClassName)}>{children}</div>
-    </section>
+    </InViewClass>
   );
 }

@@ -77,6 +77,8 @@ body {
   color: var(--color-foreground-primary);
   font-family: var(--font-inter), system-ui, sans-serif;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -127,11 +129,39 @@ p {
 }
 
 .section-frame {
+  position: relative;
   width: 100%;
   max-width: 45rem;
   margin: 0 auto;
-  border-left: 1px solid var(--color-border);
-  border-right: 1px solid var(--color-border);
+}
+
+.section-frame::before,
+.section-frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border);
+  transition: transform 600ms ease-out;
+  will-change: transform;
+}
+
+.section-frame::before {
+  left: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.section-frame::after {
+  right: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.section-frame.is-in-view::before,
+.section-frame.is-in-view::after {
+  transform: scaleY(1);
 }
 
 .section-shell {
@@ -177,11 +207,39 @@ p {
 }
 
 .section-divider {
+  position: relative;
   width: 100%;
   max-width: 45rem;
   height: 2.5rem;
   margin: 0 auto;
-  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+/* левая, верхняя и нижняя границы + их раскрытие слева направо */
+
+.section-divider::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  height: 100%;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  box-sizing: border-box;
+  transition: width 600ms ease-out;
+  will-change: width;
+}
+
+/* сам паттерн, раскрывается слева направо */
+
+.section-divider::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 0;
+  height: calc(100% - 2px);
   background-image: repeating-linear-gradient(
     -45deg,
     var(--color-border) 0,
@@ -189,6 +247,34 @@ p {
     transparent 1px,
     transparent 0.5rem
   );
+  transition: width 600ms ease-out;
+  will-change: width;
+}
+
+/* правый бордер появляется только в конце */
+
+.section-divider-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--color-border);
+  opacity: 0;
+  transition: opacity 1ms linear 600ms;
+  pointer-events: none;
+}
+
+.section-divider.is-in-view::before {
+  width: 100%;
+}
+
+.section-divider.is-in-view::after {
+  width: calc(100% - 2px);
+}
+
+.section-divider.is-in-view .section-divider-right {
+  opacity: 1;
 }
 
 /* Typography tokens */
@@ -642,6 +728,23 @@ html:not(.dark)::view-transition-new(root) {
   ::view-transition-new(root) {
     animation: none !important;
   }
+
+  .section-frame::before,
+  .section-frame::after {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .section-divider::before,
+  .section-divider::after {
+    transition: none !important;
+    width: 100% !important;
+  }
+
+  .section-divider-right {
+    transition: none !important;
+    opacity: 1 !important;
+  }
 }
 
 /* Button interactions */
@@ -684,5 +787,89 @@ html:not(.dark)::view-transition-new(root) {
   to {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0;
+  }
+}
+
+/* Reveal animations */
+
+.ui-reveal {
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity, filter;
+}
+
+.ui-reveal--image,
+.ui-reveal--title,
+.ui-reveal--body {
+  filter: blur(8px);
+}
+
+.ui-reveal--image {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--title {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--body {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--card {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(8px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--tag {
+  display: inline-flex;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: none;
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+.ui-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+.ui-reveal--tag.is-revealed {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-reveal,
+  .ui-reveal--image,
+  .ui-reveal--title,
+  .ui-reveal--body,
+  .ui-reveal--card,
+  .ui-reveal--tag {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
   }
 }

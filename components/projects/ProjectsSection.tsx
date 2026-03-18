@@ -1,3 +1,4 @@
+import Reveal from "@/components/motion/Reveal";
 import ContentSection from "@/components/sections/ContentSection";
 import ProjectCard, {
   type ProjectCardProps,
@@ -34,7 +35,9 @@ export default function ProjectsSection() {
     <ContentSection label="Projects & experiments">
       <div className="flex flex-col gap-[var(--space-6)]">
         {projects.map((project) => (
-          <ProjectCard key={project.title} {...project} />
+          <Reveal key={project.title} variant="card">
+            <ProjectCard {...project} />
+          </Reveal>
         ))}
       </div>
     </ContentSection>

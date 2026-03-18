@@ -1,3 +1,4 @@
+import Reveal from "@/components/motion/Reveal";
 import ContentSection from "@/components/sections/ContentSection";
 import TimelineItem from "@/components/timeline/TimelineItem";
 
@@ -28,13 +29,14 @@ export default function WorkExperienceSection() {
   return (
     <ContentSection label="Work Experience">
       <div className="ui-timeline-list">
-        {workItems.map((item) => (
-          <TimelineItem
-            key={`${item.title}-${item.lines[0]}`}
-            title={item.title}
-            lines={item.lines}
-            secondaryLines={item.secondaryLines}
-          />
+        {workItems.map((item, index) => (
+          <Reveal key={`${item.title}-${item.lines[0]}`} variant="card" delay={index * 75}>
+            <TimelineItem
+              title={item.title}
+              lines={item.lines}
+              secondaryLines={item.secondaryLines}
+            />
+          </Reveal>
         ))}
       </div>
     </ContentSection>
