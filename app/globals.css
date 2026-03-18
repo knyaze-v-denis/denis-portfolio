@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f4f6;
-  --foreground: #171717;
+  --background: #f1f2f4;
+  --surface: #ffffff;
+  --foreground: #1a1a1a;
+  --muted-foreground: rgba(26, 26, 26, 0.56);
+  --border: rgba(26, 26, 26, 0.08);
+  --tag-background: #e8e8eb;
+  --tag-foreground: rgba(26, 26, 26, 0.72);
+  --button-primary-background: #111111;
+  --button-primary-foreground: #ffffff;
+  --button-secondary-background: #e8e8eb;
+  --button-secondary-foreground: #1a1a1a;
+  --radius-card: 24px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 0 0 1px rgba(26, 26, 26, 0.04);
 }
 
 html {
@@ -40,4 +52,37 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.section-spacing {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.surface-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.section-divider {
+  height: 32px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(26, 26, 26, 0.03) 0,
+    rgba(26, 26, 26, 0.03) 2px,
+    transparent 2px,
+    transparent 8px
+  );
 }
