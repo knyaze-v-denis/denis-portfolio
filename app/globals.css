@@ -543,14 +543,14 @@ p {
   gap: var(--space-1);
 }
 
-.ui-timeline-item__subtitle {
+.ui-timeline-item__primary {
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;
   color: var(--color-foreground-primary);
 }
 
-.ui-timeline-item__meta {
+.ui-timeline-item__secondary {
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;

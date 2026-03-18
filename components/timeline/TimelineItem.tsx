@@ -1,21 +1,31 @@
 type TimelineItemProps = {
   title: string;
-  subtitle: string;
-  meta: string;
+  lines: string[];
+  secondaryLines?: number[];
 };
 
 export default function TimelineItem({
   title,
-  subtitle,
-  meta,
+  lines,
+  secondaryLines = [],
 }: TimelineItemProps) {
   return (
     <article className="ui-timeline-item">
       <div className="ui-timeline-item__title">{title}</div>
 
       <div className="ui-timeline-item__content">
-        <p className="ui-timeline-item__subtitle">{subtitle}</p>
-        <p className="ui-timeline-item__meta">{meta}</p>
+        {lines.map((line, index) => (
+          <p
+            key={index}
+            className={
+              secondaryLines.includes(index)
+                ? "ui-timeline-item__secondary"
+                : "ui-timeline-item__primary"
+            }
+          >
+            {line}
+          </p>
+        ))}
       </div>
     </article>
   );

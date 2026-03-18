@@ -3,14 +3,22 @@ import TimelineItem from "@/components/timeline/TimelineItem";
 
 const educationItems = [
   {
-    title: "University / School Name",
-    subtitle: "Interaction Design",
-    meta: "Bachelor Degree • 2018 — 2022",
+    title: "University Name",
+    lines: [
+      "Interaction Design",
+      "Bachelor Degree",
+      "2018 — 2022",
+    ],
+    secondaryLines: [1, 2],
   },
   {
     title: "Course Platform",
-    subtitle: "Product Design Course",
-    meta: "Certificate • 2023",
+    lines: [
+      "Product Design Course",
+      "Certificate",
+      "2023",
+    ],
+    secondaryLines: [1, 2],
   },
 ];
 
@@ -20,10 +28,10 @@ export default function EducationSection() {
       <div className="ui-timeline-list">
         {educationItems.map((item) => (
           <TimelineItem
-            key={`${item.title}-${item.meta}`}
+            key={`${item.title}-${item.lines[0]}`}
             title={item.title}
-            subtitle={item.subtitle}
-            meta={item.meta}
+            lines={item.lines}
+            secondaryLines={item.secondaryLines}
           />
         ))}
       </div>
