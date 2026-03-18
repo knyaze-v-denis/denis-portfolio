@@ -54,35 +54,37 @@ select {
   font: inherit;
 }
 
-.page-container {
-  width: 100%;
-  max-width: 1152px;
-  margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
+@layer components {
+  .page-container {
+    width: 100%;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 
-.section-spacing {
-  padding-top: 32px;
-  padding-bottom: 32px;
-}
+  .section-spacing {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
 
-.surface-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-}
+  .surface-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+  }
 
-.section-divider {
-  height: 32px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(26, 26, 26, 0.03) 0,
-    rgba(26, 26, 26, 0.03) 2px,
-    transparent 2px,
-    transparent 8px
-  );
+  .section-divider {
+    height: 32px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(26, 26, 26, 0.03) 0,
+      rgba(26, 26, 26, 0.03) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+  }
 }

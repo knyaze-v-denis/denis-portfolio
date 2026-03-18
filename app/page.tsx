@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
+import PageLayout from "@/components/layout/PageLayout";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Tag from "@/components/ui/Tag";
 
@@ -21,8 +22,7 @@ const softSkills = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen py-10">
-      <Container>
+    <PageLayout>
         <div className="surface-card p-8 md:p-10">
           <div className="space-y-10">
             <section className="space-y-5">
@@ -66,7 +66,6 @@ export default function Home() {
             </section>
           </div>
         </div>
-      </Container>
-    </main>
+    </PageLayout>
   );
 }
