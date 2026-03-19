@@ -1,23 +1,23 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 
-const SITE_URL = "https://example.com";
+const baseUrl = "https://denis-portfolio-eight.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: SITE_URL,
+      url: baseUrl,
       lastModified: new Date(),
     },
     {
-      url: `${SITE_URL}/projects/portfolio`,
+      url: `${baseUrl}/projects/portfolio`,
       lastModified: new Date(),
     },
     {
-      url: `${SITE_URL}/projects/fitness-app`,
+      url: `${baseUrl}/projects/fitness-app`,
       lastModified: new Date(),
     },
     {
-      url: `${SITE_URL}/projects/analytics-dashboard`,
+      url: `${baseUrl}/projects/analytics-dashboard`,
       lastModified: new Date(),
     },
   ];

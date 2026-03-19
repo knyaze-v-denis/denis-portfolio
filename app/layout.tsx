@@ -13,7 +13,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://example.com";
+const SITE_URL = "https://denis-portfolio-eight.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -45,21 +45,21 @@ export const metadata: Metadata = {
   creator: "Denis Knyazev",
 
   openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: SITE_URL,
     title: "Denis Knyazev — Product Designer",
     description:
-      "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
-    siteName: "Denis Knyazev",
+      "Portfolio of UX/UI and product design work.",
+    url: SITE_URL,
+    siteName: "Denis Knyazev Portfolio",
     images: [
       {
-        url: "/og/site-og.jpg",
+        url: `${SITE_URL}/og/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Denis Knyazev portfolio",
+        alt: "Denis Knyazev — Product Designer",
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
 
   twitter: {
