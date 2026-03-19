@@ -35,15 +35,15 @@ This project combines product design thinking with front-end implementation and 
 
 Install dependencies
 
-npm install
+```npm install```
 
 Run development server
 
-npm run dev
+```npm run dev```
 
 Build project
 
-npm run build
+```npm run build```
 
 ## Author
 
