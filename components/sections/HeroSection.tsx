@@ -28,18 +28,22 @@ export default function HeroSection() {
       threshold={0.2}
     >
       <div className="flex flex-col gap-[var(--space-4)] md:flex-row md:items-start">
-        <Reveal variant="image" threshold={0.01}>
-          <div className="relative h-[10rem] w-[10rem] flex-shrink-0 overflow-hidden rounded-[var(--radius-sm)]">
-            <Image
-              src="/images/profile-photo.png"
-              alt={t.hero.name}
-              fill
-              sizes="160px"
-              priority
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
+        <Reveal
+            variant="image"
+            threshold={0.01}
+            className="inline-block w-fit self-start"
+            >
+            <div className="relative h-[10rem] w-[10rem] flex-shrink-0 overflow-hidden rounded-[var(--radius-sm)]">
+              <Image
+                src="/images/profile-photo.png"
+                alt={t.hero.name}
+                fill
+                sizes="160px"
+                priority
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
 
         <div className="flex flex-col gap-[var(--space-10)] md:min-h-[10rem] md:flex-1 md:justify-between md:gap-0">
           <div className="flex flex-col gap-[var(--space-1)]">
