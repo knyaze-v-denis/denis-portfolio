@@ -51,8 +51,6 @@ export default async function Image({
             width: "100%",
             height: "100%",
             padding: "32px 40px",
-            borderLeft: "1px solid rgba(11,12,14,0.08)",
-            borderRight: "1px solid rgba(11,12,14,0.08)",
           }}
         >
           <div
