@@ -67,6 +67,7 @@ public/ images and static assets
 
 Install dependencies:
 
+
 npm install
 
 Run development server:
@@ -96,8 +97,8 @@ Planned improvements:
 
 ## Author
 
-Denis Knyazev\
+Denis Knyazev
 Product Designer
 
-Telegram: https://t.me/knyaze_v\_denis\
+Telegram: https://t.me/knyaze_v_denis
 Email: knyaze.v.denis@yandex.ru
