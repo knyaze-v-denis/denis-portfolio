@@ -23,13 +23,13 @@ This project combines product design thinking with front-end implementation and 
 
 ## Project structure
 
-app/ — routes and layout
-components/ — UI and sections
-components/ui/ — buttons, links, cards, tags
-components/motion/ — animation utilities
-lib/ — helpers and i18n
-messages/ — RU / EN translations
-public/ — static assets
+- app/ — routes and layout
+- components/ — UI and sections
+- components/ui/ — buttons, links, cards, tags
+- components/motion/ — animation utilities
+- lib/ — helpers and i18n
+- messages/ — RU / EN translations
+- public/ — static assets
 
 ## Development
 
