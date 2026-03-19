@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "Denis Knyazev Portfolio",
     images: [
       {
-        url: `${SITE_URL}/og/og-image.jpg`,
+        url: `${SITE_URL}/og/site-og.jpg`,
         width: 1200,
         height: 630,
         alt: "Denis Knyazev — Product Designer",
