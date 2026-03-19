@@ -48,7 +48,7 @@ export default function Image() {
               background: "#0b0c0e",
               color: "#f3f6fa",
               fontSize: 22,
-              width: "fit-content",
+              alignSelf: "flex-start",
             }}
           >
             {data.eyebrow}
