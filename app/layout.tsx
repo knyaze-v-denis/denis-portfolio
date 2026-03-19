@@ -26,40 +26,14 @@ export const metadata: Metadata = {
   description:
     "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
 
-  keywords: [
-    "product designer",
-    "ux designer",
-    "ui designer",
-    "portfolio",
-    "design systems",
-    "ux case studies",
-  ],
-
-  authors: [
-    {
-      name: "Denis Knyazev",
-      url: SITE_URL,
-    },
-  ],
-
-  creator: "Denis Knyazev",
-
   openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
     title: "Denis Knyazev — Product Designer",
     description:
-      "Portfolio of UX/UI and product design work.",
-    url: SITE_URL,
-    siteName: "Denis Knyazev Portfolio",
-    images: [
-      {
-        url: `${SITE_URL}/og/site-og.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Denis Knyazev — Product Designer",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
+      "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
+    siteName: "Denis Knyazev",
   },
 
   twitter: {
@@ -67,7 +41,6 @@ export const metadata: Metadata = {
     title: "Denis Knyazev — Product Designer",
     description:
       "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
-    images: ["/og/site-og.jpg"],
   },
 
   icons: {
