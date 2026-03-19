@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { SendHorizontal } from "lucide-react";
 import Button from "@/components/ui/Button";
 import InternalLink from "@/components/ui/InternalLink";
@@ -14,7 +15,11 @@ export default function Header() {
     <header className="site-header header-surface">
       <div className="site-header-inner">
         <div className="flex h-14 items-center justify-between">
-          <div className="flex min-w-0 items-center gap-2">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-2"
+            aria-label="Go to homepage"
+          >
             <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-[var(--radius-xs)] md:h-5 md:w-5">
               <Image
                 src="/images/profile-photo.png"
@@ -34,7 +39,7 @@ export default function Header() {
                 {t.header.role}
               </span>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-4 md:gap-8">
             <a href="#contacts" aria-label={t.header.cta} className="md:hidden">

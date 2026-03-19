@@ -14,6 +14,66 @@ export const ru: Messages = {
     about:
       "Я продуктовый дизайнер, который проектирует понятные интерфейсы, системы и пользовательский опыт. Мне важно соединять эстетику, логику и реальные потребности пользователей.",
   },
+  projectHero: {
+    client: "Компания / Клиент",
+    domain: "Сфера",
+    timeline: "Сроки проекта",
+    role: "Роль",
+    links: "Ссылки",
+  },
+  projectNavigation: {
+    previousProject: "Предыдущий проект",
+    nextProject: "Следующий проект",
+    back: "Назад",
+    forward: "Дальше",
+  },
+  projectPage: {
+    portfolio: {
+      title: "Портфолио сайт",
+      description:
+        "Проект персонального портфолио-сайта, разработанный для демонстрации продуктового дизайна, процессов работы и экспериментов с интерфейсами.",
+      fields: {
+        client: "Личный проект",
+        domain: "UX/UI, продуктовый дизайн",
+        timeline: "Февраль 2026 — Март 2026",
+        role: "UX/UI дизайнер, разработчик",
+      },
+      links: {
+        github: "GitHub",
+        live: "Live версия",
+      },
+    },
+    fitnessApp: {
+      title: "Концепт фитнес-приложения",
+      description:
+        "Концепт фитнес-экосистемы, объединяющей трекинг тренировок, питание и социальные механики в одном продукте.",
+      fields: {
+        client: "Концепт-проект",
+        domain: "Fitness, Product Design",
+        timeline: "Февраль 2026 — Март 2026",
+        role: "UX/UI дизайнер, продуктовый дизайнер",
+      },
+      links: {
+        prototype: "Прототип",
+        behance: "Behance",
+      },
+    },
+    analyticsDashboard: {
+      title: "Аналитический дашборд",
+      description:
+        "Концепт модульного аналитического дашборда для продуктовых команд, который позволяет отслеживать ключевые метрики и собирать кастомные представления данных.",
+      fields: {
+        client: "Внутренний продукт",
+        domain: "Аналитика, B2B, Product Design",
+        timeline: "Январь 2026 — Март 2026",
+        role: "Продуктовый дизайнер",
+      },
+      links: {
+        prototype: "Прототип",
+        github: "GitHub",
+      },
+    },
+  },
   sections: {
     skills: "Навыки",
     projects: "Проекты и эксперименты",
@@ -74,6 +134,18 @@ export const ru: Messages = {
         tags: [
           { label: "Проект", variant: "primary" },
           { label: "Продуктовый дизайн", variant: "secondary" },
+        ],
+      },
+      {
+        title: "Аналитический дашборд",
+        description:
+          "Концепт аналитического дашборда для продуктовых команд с модульной системой виджетов, метрик и кастомных представлений данных.",
+        cover: "/images/project-cover.png",
+        href: "/projects/analytics-dashboard",
+        tags: [
+          { label: "Проект", variant: "primary" },
+          { label: "B2B", variant: "secondary" },
+          { label: "Analytics", variant: "secondary" },
         ],
       },
     ],

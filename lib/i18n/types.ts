@@ -13,6 +13,63 @@ export type Messages = {
     role: string;
     about: string;
   };
+  projectHero: {
+    client: string;
+    domain: string;
+    timeline: string;
+    role: string;
+    links: string;
+  };
+  projectNavigation: {
+    previousProject: string;
+    nextProject: string;
+    back: string;
+    forward: string;
+  };
+  projectPage: {
+    portfolio: {
+      title: string;
+      description: string;
+      fields: {
+        client: string;
+        domain: string;
+        timeline: string;
+        role: string;
+      };
+      links: {
+        github: string;
+        live: string;
+      };
+    };
+    fitnessApp?: {
+      title: string;
+      description: string;
+      fields: {
+        client: string;
+        domain: string;
+        timeline: string;
+        role: string;
+      };
+      links: {
+        prototype: string;
+        behance: string;
+      };
+    };
+    analyticsDashboard?: {
+      title: string;
+      description: string;
+      fields: {
+        client: string;
+        domain: string;
+        timeline: string;
+        role: string;
+      };
+      links: {
+        prototype: string;
+        github: string;
+      };
+    };
+  };
   sections: {
     skills: string;
     projects: string;

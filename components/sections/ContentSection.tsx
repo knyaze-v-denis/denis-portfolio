@@ -25,19 +25,14 @@ export default function ContentSection({
       className="section-frame"
       threshold={0.2}
     >
-      {/* ВОТ ЭТОТ КОНТЕЙНЕР ДОЛЖЕН БЫТЬ */}
       <div className="section-shell">
-
-        <Reveal key={`${locale}-title`} variant="title">
+        <Reveal key={`${locale}-title-${label}`} variant="title">
           <h2 className="text-title-3 text-caps text-[var(--color-foreground-secondary)]">
-            {label}
+            [ {label} ]
           </h2>
         </Reveal>
 
-        <div className="section-content">
-          {children}
-        </div>
-
+        <div className="section-content">{children}</div>
       </div>
     </InViewClass>
   );

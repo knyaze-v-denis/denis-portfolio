@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -18,36 +17,25 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-function getInitialLocale(): Locale {
-  if (typeof window === "undefined") return "en";
-
-  const stored = sessionStorage.getItem("locale");
-  if (stored === "ru" || stored === "en") return stored;
-
-  const browserLanguage = navigator.language.toLowerCase();
-  return browserLanguage.startsWith("ru") ? "ru" : "en";
-}
-
 type LanguageProviderProps = {
   children: React.ReactNode;
+  initialLocale: Locale;
 };
 
 export default function LanguageProvider({
   children,
+  initialLocale,
 }: LanguageProviderProps) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setLocaleState(getInitialLocale());
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   function setLocale(nextLocale: Locale) {
     setLocaleState(nextLocale);
-    sessionStorage.setItem("locale", nextLocale);
+
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("locale", nextLocale);
+      document.documentElement.setAttribute("lang", nextLocale);
+      document.cookie = `locale=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
+    }
   }
 
   const value = useMemo<LanguageContextValue>(

@@ -12,11 +12,71 @@ export const en: Messages = {
     name: "Denis Knyazev",
     role: "Product Designer",
     about:
-      "I’m a product designer focused on crafting clear interfaces, systems, and user experiences. I care about combining aesthetics, logic, and real user needs.",
+      "I am a product designer focused on building clear interfaces, systems and user experiences. I aim to combine aesthetics, logic and real user needs.",
+  },
+  projectHero: {
+    client: "Company / Client",
+    domain: "Domain",
+    timeline: "Timeline",
+    role: "Role",
+    links: "Links",
+  },
+  projectNavigation: {
+    previousProject: "Previous project",
+    nextProject: "Next project",
+    back: "Back",
+    forward: "Next",
+  },
+  projectPage: {
+    portfolio: {
+      title: "Portfolio Website",
+      description:
+        "A personal portfolio project created to showcase product design work, design processes and experiments with interfaces.",
+      fields: {
+        client: "Personal project",
+        domain: "UX/UI, Product Design",
+        timeline: "Feb 2026 — Mar 2026",
+        role: "UX/UI Designer, Developer",
+      },
+      links: {
+        github: "GitHub",
+        live: "Live version",
+      },
+    },
+    fitnessApp: {
+      title: "Fitness App Concept",
+      description:
+        "A concept of a fitness ecosystem that combines workout tracking, nutrition and social mechanics in one product.",
+      fields: {
+        client: "Concept project",
+        domain: "Fitness, Product Design",
+        timeline: "Feb 2026 — Mar 2026",
+        role: "UX/UI Designer, Product Designer",
+      },
+      links: {
+        prototype: "Prototype",
+        behance: "Behance",
+      },
+    },
+    analyticsDashboard: {
+      title: "Analytics Dashboard",
+      description:
+        "A concept of a modular analytics dashboard for product teams that helps track key metrics and build custom data views.",
+      fields: {
+        client: "Internal product",
+        domain: "Analytics, B2B, Product Design",
+        timeline: "Jan 2026 — Mar 2026",
+        role: "Product Designer",
+      },
+      links: {
+        prototype: "Prototype",
+        github: "GitHub",
+      },
+    },
   },
   sections: {
     skills: "Skills",
-    projects: "Projects & experiments",
+    projects: "Projects & Experiments",
     workExperience: "Work Experience",
     education: "Education",
     contacts: "Contacts",
@@ -56,7 +116,7 @@ export const en: Messages = {
       {
         title: "Portfolio Website",
         description:
-          "Design and development of a personal portfolio website featuring projects, experiments, and design process.",
+          "Design and development of a personal portfolio website showcasing projects, experiments and product design work.",
         cover: "/images/project-cover.png",
         href: "/projects/portfolio",
         tags: [
@@ -68,12 +128,24 @@ export const en: Messages = {
       {
         title: "Fitness App Concept",
         description:
-          "A concept for a fitness ecosystem combining workout tracking, nutrition, and social features.",
+          "Concept of a fitness ecosystem combining workout tracking, nutrition and social mechanics.",
         cover: "/images/project-cover.png",
         href: "/projects/fitness-app",
         tags: [
           { label: "Project", variant: "primary" },
           { label: "Product Design", variant: "secondary" },
+        ],
+      },
+      {
+        title: "Analytics Dashboard",
+        description:
+          "Concept of an analytics dashboard for product teams with a modular system of widgets, metrics and custom data views.",
+        cover: "/images/project-cover.png",
+        href: "/projects/analytics-dashboard",
+        tags: [
+          { label: "Project", variant: "primary" },
+          { label: "B2B", variant: "secondary" },
+          { label: "Analytics", variant: "secondary" },
         ],
       },
     ],
@@ -82,22 +154,22 @@ export const en: Messages = {
     items: [
       {
         title: "SimpleOne • ITG Corporation",
-        lines: ["Product Designer", "October 2025 — Present"],
+        lines: ["Product Designer", "Oct 2025 — Present"],
         secondaryLines: [1],
       },
       {
         title: "Matrix",
-        lines: ["Lead Product Designer", "June 2024 — June 2025"],
+        lines: ["Lead Product Designer", "Jun 2024 — Jun 2025"],
         secondaryLines: [1],
       },
       {
         title: "LockBox",
-        lines: ["UX/UI Designer", "February 2023 — May 2024"],
+        lines: ["UX/UI Designer", "Feb 2023 — May 2024"],
         secondaryLines: [1],
       },
       {
         title: "ITMO University",
-        lines: ["Graphic Designer", "September 2021 — September 2022"],
+        lines: ["Graphic Designer", "Sep 2021 — Sep 2022"],
         secondaryLines: [1],
       },
     ],
@@ -105,10 +177,10 @@ export const en: Messages = {
   education: {
     items: [
       {
-        title: "St. Petersburg International Banking Institute",
+        title: "International Banking Institute",
         lines: [
           "Business Informatics",
-          "Incomplete Higher Education",
+          "Incomplete higher education",
           "2024 — 2029",
         ],
         secondaryLines: [1, 2],
@@ -117,7 +189,7 @@ export const en: Messages = {
         title: "ITMO University",
         lines: [
           "Business Informatics",
-          "Incomplete Higher Education",
+          "Incomplete higher education",
           "2020 — 2023",
         ],
         secondaryLines: [1, 2],
@@ -126,7 +198,7 @@ export const en: Messages = {
         title: "Yandex Practicum",
         lines: [
           "UX Research for Designers",
-          "Professional Development",
+          "Professional development",
           "2026",
         ],
         secondaryLines: [1, 2],
@@ -139,7 +211,7 @@ export const en: Messages = {
     ],
   },
   contacts: {
-    title: "Let’s work together or just say hello.",
+    title: "Let's work together or simply say hello.",
     buttons: [
       {
         label: "Telegram",

@@ -1,0 +1,128 @@
+:root {
+  --theme-toggle-x: 50vw;
+  --theme-toggle-y: 50vh;
+  --theme-toggle-end-radius: 120vmax;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  will-change: clip-path;
+}
+
+html.dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 999;
+  animation: theme-reveal-in 600ms ease-out;
+}
+
+html:not(.dark)::view-transition-old(root) {
+  z-index: 1;
+}
+
+html:not(.dark)::view-transition-new(root) {
+  z-index: 999;
+  animation: theme-reveal-out 600ms ease-out;
+}
+
+@keyframes theme-reveal-in {
+  from {
+    clip-path: circle(0 at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(
+      var(--theme-toggle-end-radius)
+      at var(--theme-toggle-x)
+      var(--theme-toggle-y)
+    );
+  }
+}
+
+@keyframes theme-reveal-out {
+  from {
+    clip-path: circle(0 at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(
+      var(--theme-toggle-end-radius)
+      at var(--theme-toggle-x)
+      var(--theme-toggle-y)
+    );
+  }
+}
+
+.ui-reveal {
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity, filter;
+}
+
+.ui-reveal--image,
+.ui-reveal--title,
+.ui-reveal--body {
+  filter: blur(8px);
+}
+
+.ui-reveal--image {
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center center;
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--title {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--body {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--card {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(8px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out,
+    filter 600ms ease-out;
+}
+
+.ui-reveal--tag {
+  display: inline-flex;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: none;
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+.ui-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+.ui-reveal--tag.is-revealed {
+  filter: none;
+}

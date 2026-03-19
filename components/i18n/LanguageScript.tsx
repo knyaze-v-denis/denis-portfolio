@@ -1,18 +1,25 @@
-export default function LanguageScript() {
+import type { Locale } from "@/lib/i18n/types";
+
+type LanguageScriptProps = {
+  initialLocale: Locale;
+};
+
+export default function LanguageScript({
+  initialLocale,
+}: LanguageScriptProps) {
   const script = `
     (() => {
       try {
         const storedLocale = sessionStorage.getItem("locale");
-        const browserLanguage = navigator.language.toLowerCase();
         const locale =
           storedLocale === "ru" || storedLocale === "en"
             ? storedLocale
-            : browserLanguage.startsWith("ru")
-              ? "ru"
-              : "en";
+            : "${initialLocale}";
 
         document.documentElement.setAttribute("lang", locale);
-      } catch {}
+      } catch {
+        document.documentElement.setAttribute("lang", "${initialLocale}");
+      }
     })();
   `;
 

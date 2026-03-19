@@ -62,7 +62,13 @@ export default function HeroSection() {
 
           <div className="flex flex-col gap-[var(--space-1)]">
             {contactLinks.map((link, index) => (
-              <Reveal key={link.label} variant="body" delay={150 + index * 75}>
+              <Reveal
+                key={link.label}
+                as="span"
+                variant="body"
+                delay={150 + index * 75}
+                className="inline-flex w-fit"
+              >
                 <ExternalLink href={link.href} variant="secondary">
                   {link.label}
                 </ExternalLink>

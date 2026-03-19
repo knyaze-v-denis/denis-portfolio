@@ -1,0 +1,68 @@
+:root {
+  --color-background: #f3f6fa;
+  --color-surface-header: rgb(243 246 250 / 75%);
+  --color-surface-button-primary: #0b0c0e;
+  --color-surface-button-primary-hover: rgb(11 12 14 / 80%);
+  --color-surface-button-secondary: rgb(11 12 14 / 5%);
+  --color-surface-button-secondary-hover: rgb(11 12 14 / 10%);
+  --color-surface-tag-primary: #0b0c0e;
+  --color-surface-tag-secondary: rgb(11 12 14 / 5%);
+  --color-surface-card: #fcfdff;
+  --color-foreground-primary: rgb(11 12 14 / 90%);
+  --color-foreground-secondary: rgb(11 12 14 / 50%);
+  --color-foreground-tertiary: rgb(11 12 14 / 30%);
+  --color-foreground-inverse: #f3f6fa;
+  --color-border: rgb(11 12 14 / 5%);
+  --color-border-solid: #0b0c0e;
+  --color-shadow-first-level: rgb(51 65 85 / 14%);
+  --color-shadow-second-level: rgb(71 85 105 / 10%);
+
+  --radius-full: 999px;
+  --radius-2xl: 1.5rem;
+  --radius-xl: 1.25rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-xs: 0.25rem;
+
+  --space-20: 5rem;
+  --space-10: 2.5rem;
+  --space-8: 2rem;
+  --space-6: 1.5rem;
+  --space-4: 1rem;
+  --space-3: 0.75rem;
+  --space-2: 0.5rem;
+  --space-1-5: 0.375rem;
+  --space-1: 0.25rem;
+
+  --shadow-card:
+    0 0.5rem 1.5rem -0.375rem var(--color-shadow-first-level),
+    0 1.5rem 4rem -0.75rem var(--color-shadow-second-level);
+
+  --theme-toggle-x: 50vw;
+  --theme-toggle-y: 50vh;
+  --theme-toggle-end-radius: 120vmax;
+}
+
+html.dark {
+  --color-background: #0b0c0e;
+  --color-surface-header: rgb(11 12 14 / 75%);
+  --color-surface-button-primary: #f3f6fa;
+  --color-surface-button-primary-hover: rgb(243 246 250 / 80%);
+  --color-surface-button-secondary: rgb(243 246 250 / 10%);
+  --color-surface-button-secondary-hover: rgb(243 246 250 / 20%);
+  --color-surface-tag-primary: #f3f6fa;
+  --color-surface-tag-secondary: rgb(243 246 250 / 5%);
+  --color-surface-card: #17191d;
+  --color-foreground-primary: rgb(243 246 250 / 90%);
+  --color-foreground-secondary: rgb(243 246 250 / 50%);
+  --color-foreground-tertiary: rgb(243 246 250 / 30%);
+  --color-foreground-inverse: #0b0c0e;
+  --color-border: rgb(243 246 250 / 5%);
+  --color-border-solid: #f3f6fa;
+  --color-shadow-first-level: rgb(6 7 8 / 80%);
+  --color-shadow-second-level: rgb(10 11 13 / 60%);
+
+  --shadow-card:
+    0 0.75rem 2rem -0.375rem var(--color-shadow-first-level),
+    0 2rem 4.5rem -0.875rem var(--color-shadow-second-level);
+}

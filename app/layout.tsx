@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
 import LanguageProvider from "@/components/i18n/LanguageProvider";
 import LanguageScript from "@/components/i18n/LanguageScript";
+import type { Locale } from "@/lib/i18n/types";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -27,17 +29,36 @@ const themeInitScript = `
 })();
 `;
 
-export default function RootLayout({
+function getInitialLocaleFromCookie(cookieStore: Awaited<ReturnType<typeof cookies>>): Locale {
+  const locale = cookieStore.get("locale")?.value;
+
+  if (locale === "ru" || locale === "en") {
+    return locale;
+  }
+
+  return "en";
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialLocale = getInitialLocaleFromCookie(cookieStore);
+
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html
+      lang={initialLocale}
+      className={inter.variable}
+      suppressHydrationWarning
+    >
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <LanguageScript />
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageScript initialLocale={initialLocale} />
+        <LanguageProvider initialLocale={initialLocale}>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
