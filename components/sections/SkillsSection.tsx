@@ -1,44 +1,31 @@
+"use client";
+
 import Reveal from "@/components/motion/Reveal";
 import StaggerReveal from "@/components/motion/StaggerReveal";
 import ContentSection from "@/components/sections/ContentSection";
 import SkillTag from "@/components/ui/SkillTag";
-
-const skillGroups = [
-  {
-    title: "Hard Skills",
-    items: [
-      "UX Design",
-      "UI Design",
-      "Wireframing",
-      "Prototyping",
-      "Design Systems",
-      "Research",
-      "Figma",
-      "User Flows",
-      "Information Architecture",
-      "Usability Testing",
-    ],
-  },
-  {
-    title: "Soft Skills",
-    items: [
-      "Communication",
-      "Presentation",
-      "Teamwork",
-      "Problem Solving",
-      "Critical Thinking",
-      "Collaboration",
-    ],
-  },
-  {
-    title: "Languages",
-    items: ["Russian", "English", "Finnish"],
-  },
-];
+import { useTranslations } from "@/lib/i18n/useTranslations";
 
 export default function SkillsSection() {
+  const { t } = useTranslations();
+
+  const skillGroups = [
+    {
+      title: t.skills.groups.hard,
+      items: t.skills.items.hard,
+    },
+    {
+      title: t.skills.groups.soft,
+      items: t.skills.items.soft,
+    },
+    {
+      title: t.skills.groups.languages,
+      items: t.skills.items.languages,
+    },
+  ];
+
   return (
-    <ContentSection label="Skills">
+    <ContentSection label={t.sections.skills}>
       {skillGroups.map((group) => (
         <div key={group.title} className="skills-group">
           <Reveal variant="body">

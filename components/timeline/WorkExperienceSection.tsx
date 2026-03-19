@@ -1,35 +1,17 @@
+"use client";
+
 import Reveal from "@/components/motion/Reveal";
 import ContentSection from "@/components/sections/ContentSection";
 import TimelineItem from "@/components/timeline/TimelineItem";
-
-const workItems = [
-  {
-    title: "SimpleOne • ITG Corporation",
-    lines: ["Продуктовый дизайнер", "Октябрь 2025 — сейчас"],
-    secondaryLines: [1],
-  },
-  {
-    title: "Матрикс",
-    lines: ["Ведущий продуктовый дизайнер", "Июнь 2024 — Июнь 2025"],
-    secondaryLines: [1],
-  },
-  {
-    title: "LockBox",
-    lines: ["UX/UI дизайнер", "Февраль 2023 — Май 2024"],
-    secondaryLines: [1],
-  },
-  {
-    title: "Университет ИТМО",
-    lines: ["Графический дизайнер", "Сентябрь 2021 — Сентябрь 2022"],
-    secondaryLines: [1],
-  },
-];
+import { useTranslations } from "@/lib/i18n/useTranslations";
 
 export default function WorkExperienceSection() {
+  const { t } = useTranslations();
+
   return (
-    <ContentSection label="Work Experience">
+    <ContentSection label={t.sections.workExperience}>
       <div className="ui-timeline-list">
-        {workItems.map((item, index) => (
+        {t.workExperience.items.map((item, index) => (
           <Reveal key={`${item.title}-${item.lines[0]}`} variant="card" delay={index * 75}>
             <TimelineItem
               title={item.title}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import LanguageProvider from "@/components/i18n/LanguageProvider";
+import LanguageScript from "@/components/i18n/LanguageScript";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -31,14 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={inter.variable}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        {children}
+        <LanguageScript />
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

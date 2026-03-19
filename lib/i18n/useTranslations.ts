@@ -1,0 +1,1 @@
+export { useLanguage as useTranslations } from "@/components/i18n/LanguageProvider";

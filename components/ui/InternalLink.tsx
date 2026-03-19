@@ -11,21 +11,23 @@ type InternalLinkProps = {
 
 export default function InternalLink({
   children,
-  href = "#",
+  href,
   state = "inactive",
   className,
 }: InternalLinkProps) {
-  return (
-    <a
-      href={href}
-      aria-current={state === "active" ? "page" : undefined}
-      className={cn(
-        "ui-internal-link",
-        `ui-internal-link--${state}`,
-        className
-      )}
-    >
-      {children}
-    </a>
+  const classes = cn(
+    "ui-internal-link",
+    `ui-internal-link--${state}`,
+    className
   );
+
+  if (href) {
+    return (
+      <a href={href} aria-current={state === "active" ? "page" : undefined} className={classes}>
+        {children}
+      </a>
+    );
+  }
+
+  return <span className={classes}>{children}</span>;
 }

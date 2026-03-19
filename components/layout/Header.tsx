@@ -1,57 +1,80 @@
+"use client";
+
 import Image from "next/image";
+import { SendHorizontal } from "lucide-react";
 import Button from "@/components/ui/Button";
 import InternalLink from "@/components/ui/InternalLink";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useTranslations } from "@/lib/i18n/useTranslations";
 
 export default function Header() {
+  const { locale, setLocale, t } = useTranslations();
+
   return (
     <header className="site-header header-surface">
       <div className="site-header-inner">
-        <div className="flex h-14 items-center">
+        <div className="flex h-14 items-center justify-between">
           <div className="flex min-w-0 items-center gap-2">
-            <div className="relative h-5 w-5 flex-shrink-0 overflow-hidden rounded-[var(--radius-xs)]">
+            <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-[var(--radius-xs)] md:h-5 md:w-5">
               <Image
                 src="/images/profile-photo.png"
-                alt="Denis Knyazev"
+                alt={t.header.name}
                 fill
                 className="object-cover"
-                sizes="20px"
+                sizes="(max-width: 767px) 32px, 20px"
               />
             </div>
 
-            <div className="flex min-w-0 items-center gap-2">
+            <div className="flex min-w-0 flex-col leading-none md:flex-row md:items-center md:gap-2">
               <span className="text-title-3 text-caps text-[var(--color-foreground-primary)]">
-                Denis Knyazev
+                {t.header.name}
               </span>
 
               <span className="text-title-3 text-caps text-[var(--color-foreground-secondary)]">
-                Product Designer
+                {t.header.role}
               </span>
             </div>
           </div>
 
-          <div className="ml-auto flex items-center gap-8">
-            <a href="#contacts">
-              <Button variant="primary" size="s" buttonStyle="default">
-                Get in touch
+          <div className="flex items-center gap-4 md:gap-8">
+            <a href="#contacts" aria-label={t.header.cta} className="md:hidden">
+              <Button
+                variant="primary"
+                size="s"
+                buttonStyle="only-icon"
+                ariaLabel={t.header.cta}
+              >
+                <SendHorizontal size={16} />
               </Button>
             </a>
 
-            <div className="flex items-center gap-1">
-              <InternalLink state="inactive" href="#ru">
-                Py
-              </InternalLink>
+            <a href="#contacts" className="hidden md:block">
+              <Button variant="primary" size="s" buttonStyle="default">
+                {t.header.cta}
+              </Button>
+            </a>
+
+            <div className="hidden md:flex md:items-center md:gap-1">
+              <button type="button" onClick={() => setLocale("ru")}>
+                <InternalLink state={locale === "ru" ? "active" : "inactive"}>
+                  {t.header.localeRu}
+                </InternalLink>
+              </button>
 
               <span className="text-link text-[var(--color-foreground-tertiary)]">
                 /
               </span>
 
-              <InternalLink state="active" href="#en">
-                En
-              </InternalLink>
+              <button type="button" onClick={() => setLocale("en")}>
+                <InternalLink state={locale === "en" ? "active" : "inactive"}>
+                  {t.header.localeEn}
+                </InternalLink>
+              </button>
             </div>
 
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
