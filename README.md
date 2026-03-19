@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Denis Knyazev --- Portfolio
 
-## Getting Started
+Personal portfolio website designed and built from scratch using modern
+web technologies.
 
-First, run the development server:
+The project combines product design thinking with front-end
+implementation and focuses on clarity, motion, and responsive layout.
 
-```bash
+------------------------------------------------------------------------
+
+## About the project
+
+This portfolio is built as a custom website rather than using a template
+or website builder.
+
+The goal of the project was to create a minimal, structured interface
+that clearly presents experience, skills, and case studies while
+maintaining a strong visual identity and smooth interaction design.
+
+Key principles:
+
+-   simplicity and readability\
+-   clear information hierarchy\
+-   subtle motion and interaction\
+-   responsive layout\
+-   scalable architecture
+
+------------------------------------------------------------------------
+
+## Features
+
+-   Responsive layout for desktop and mobile
+-   Light / dark theme with animated transition
+-   RU / EN localization
+-   Animated reveal of sections and components
+-   Project cards with adaptive layout
+-   Timeline layout for experience and education
+-   Component-based UI system
+-   Design tokens for spacing, colors and typography
+
+------------------------------------------------------------------------
+
+## Tech stack
+
+-   Next.js
+-   React
+-   TypeScript
+-   Tailwind CSS
+-   Custom design system
+-   CSS animations and transitions
+
+------------------------------------------------------------------------
+
+## Project structure
+
+app/ Next.js routes, layout, global styles\
+components/ UI components and sections\
+components/ui/ buttons, links, tags, cards\
+components/motion/ reveal and animation utilities\
+lib/ helpers and i18n utilities\
+messages/ RU / EN translation dictionaries\
+public/ images and static assets
+
+------------------------------------------------------------------------
+
+## Development
+
+Install dependencies:
+
+npm install
+
+Run development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run lint:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm run lint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build project:
 
-## Learn More
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+------------------------------------------------------------------------
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Planned improvements:
 
-## Deploy on Vercel
+-   project case study pages
+-   CMS integration for content management
+-   improved motion system
+-   additional projects and case studies
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+------------------------------------------------------------------------
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Author
+
+Denis Knyazev\
+Product Designer
+
+Telegram: https://t.me/knyaze_v\_denis\
+Email: knyaze.v.denis@yandex.ru
