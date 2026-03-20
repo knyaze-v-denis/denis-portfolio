@@ -5,13 +5,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import InViewClass from "@/components/motion/InViewClass";
 import Reveal from "@/components/motion/Reveal";
 import { useTranslations } from "@/lib/i18n/useTranslations";
-import {
-  getProjectNavigationData,
-} from "@/lib/projects/project-navigation";
-import type { DemoProjectSlug } from "@/lib/projects/demo-project";
+
+type NavigationItem = {
+  title: string;
+  href: string;
+};
 
 type ProjectNavigationProps = {
-  slug: DemoProjectSlug;
+  previous: NavigationItem | null;
+  next: NavigationItem | null;
 };
 
 type NavigationButtonProps = {
@@ -20,13 +22,11 @@ type NavigationButtonProps = {
   title: string;
 };
 
-function createRipple(
-  event: React.PointerEvent<HTMLAnchorElement>
-) {
+function createRipple(event: React.PointerEvent<HTMLAnchorElement>) {
   const button = event.currentTarget;
   const rect = button.getBoundingClientRect();
-
   const ripple = document.createElement("span");
+
   ripple.className = "project-nav-button__ripple";
 
   const size = Math.max(rect.width, rect.height);
@@ -48,86 +48,77 @@ function NavigationButton({
   title,
 }: NavigationButtonProps) {
   const { t } = useTranslations();
-
   const isPrevious = direction === "previous";
 
   return (
     <Link
       href={href}
-      className={`project-nav-button project-nav-button--${direction}`}
+      className="project-nav-button"
       onPointerDown={createRipple}
     >
-      {isPrevious && (
+      {isPrevious ? (
         <ChevronLeft className="project-nav-button__icon" size={24} />
-      )}
+      ) : null}
 
-      <span className="project-nav-button__content project-nav-button__content--desktop">
+      <div className="project-nav-button__content project-nav-button__content--desktop">
         <span className="project-nav-button__label">
           {isPrevious
             ? t.projectNavigation.previousProject
             : t.projectNavigation.nextProject}
         </span>
-
         <span className="project-nav-button__title">{title}</span>
-      </span>
+      </div>
 
-      <span className="project-nav-button__content project-nav-button__content--mobile">
+      <div className="project-nav-button__content project-nav-button__content--mobile">
         <span className="project-nav-button__mobile-text">
           {isPrevious ? t.projectNavigation.back : t.projectNavigation.forward}
         </span>
-      </span>
+      </div>
 
-      {!isPrevious && (
+      {!isPrevious ? (
         <ChevronRight className="project-nav-button__icon" size={24} />
-      )}
+      ) : null}
     </Link>
   );
 }
 
 export default function ProjectNavigation({
-  slug,
+  previous,
+  next,
 }: ProjectNavigationProps) {
-  const { t, locale } = useTranslations();
-
-  const navigation = getProjectNavigationData(slug, t);
+  const { locale } = useTranslations();
 
   return (
     <InViewClass
-      key={`${locale}-project-navigation`}
+      key={`project-navigation-${locale}`}
       as="section"
       className="section-frame project-navigation"
       threshold={0.2}
     >
       <div className="project-navigation__inner">
         <div className="project-navigation__grid">
-          {navigation.previous ? (
-            <Reveal key={`${locale}-previous`} variant="card">
+          {previous ? (
+            <Reveal variant="card">
               <NavigationButton
                 direction="previous"
-                href={`/projects/${navigation.previous.slug}`}
-                title={navigation.previous.title}
+                href={previous.href}
+                title={previous.title}
               />
             </Reveal>
           ) : (
-            <div
-              className="project-nav-button-placeholder"
-              aria-hidden="true"
-            />
+            <div className="project-nav-button-placeholder" />
           )}
 
-          {navigation.next ? (
-            <Reveal key={`${locale}-next`} variant="card" delay={75}>
+          {next ? (
+            <Reveal variant="card" delay={60}>
               <NavigationButton
                 direction="next"
-                href={`/projects/${navigation.next.slug}`}
-                title={navigation.next.title}
+                href={next.href}
+                title={next.title}
               />
             </Reveal>
           ) : (
-            <div
-              className="project-nav-button-placeholder"
-              aria-hidden="true"
-            />
+            <div className="project-nav-button-placeholder" />
           )}
         </div>
       </div>

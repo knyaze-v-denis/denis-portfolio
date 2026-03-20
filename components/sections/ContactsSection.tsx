@@ -1,37 +1,51 @@
 "use client";
 
+import Link from "next/link";
 import InViewClass from "@/components/motion/InViewClass";
 import Reveal from "@/components/motion/Reveal";
 import StaggerReveal from "@/components/motion/StaggerReveal";
 import ContentSection from "@/components/sections/ContentSection";
-import Button from "@/components/ui/Button";
 import { useTranslations } from "@/lib/i18n/useTranslations";
+import type { HomepageContactButton } from "@/sanity/lib/mappers";
 
 type ContactsSectionProps = {
   variant?: "home" | "internal";
+  title?: string;
+  buttons?: HomepageContactButton[];
 };
+
+function isExternalHref(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
 
 export default function ContactsSection({
   variant = "home",
+  title,
+  buttons,
 }: ContactsSectionProps) {
   const { t, locale } = useTranslations();
 
+  const resolvedTitle = title || t.contacts.title;
+  const resolvedButtons =
+    buttons && buttons.length > 0 ? buttons : t.contacts.buttons;
+
   const actions = (
-    <StaggerReveal
-      as="div"
-      className="contacts-section__actions"
-      step={60}
-      itemAs="div"
-    >
-      {t.contacts.buttons.map((contact) => (
-        <Button
+    <StaggerReveal className="contacts-section__actions" step={60} itemAs="div">
+      {resolvedButtons.map((contact) => (
+        <Link
           key={contact.label}
           href={contact.href}
-          variant={contact.variant}
-          size="m"
+          className={[
+            "ui-button",
+            `ui-button--${contact.variant}`,
+            "ui-button--m",
+            "ui-button--default",
+          ].join(" ")}
+          target={isExternalHref(contact.href) ? "_blank" : undefined}
+          rel={isExternalHref(contact.href) ? "noreferrer noopener" : undefined}
         >
           {contact.label}
-        </Button>
+        </Link>
       ))}
     </StaggerReveal>
   );
@@ -48,7 +62,7 @@ export default function ContactsSection({
           <div className="contacts-section__content">
             <Reveal variant="title">
               <h2 className="contacts-section__title text-large-title">
-                {t.contacts.title}
+                {resolvedTitle}
               </h2>
             </Reveal>
 
@@ -64,7 +78,7 @@ export default function ContactsSection({
       <div className="contacts-section__content">
         <Reveal variant="title">
           <h2 className="contacts-section__title text-large-title">
-            {t.contacts.title}
+            {resolvedTitle}
           </h2>
         </Reveal>
 

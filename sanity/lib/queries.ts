@@ -12,6 +12,7 @@ export const projectBySlugQuery = groq`
     domain,
     timeline,
     role,
+    tags,
     "links": coalesce(links, [])[]{
       label,
       href
@@ -36,6 +37,13 @@ export const projectMetadataBySlugQuery = groq`
   }
 `;
 
+export const projectNavigationItemsQuery = groq`
+  *[_type == "project"] | order(order asc, _createdAt desc){
+    title,
+    "slug": slug.current
+  }
+`;
+
 export const projectsQuery = groq`
   *[_type == "project"] | order(order asc, _createdAt desc){
     _id,
@@ -44,5 +52,52 @@ export const projectsQuery = groq`
     shortDescription,
     tags,
     coverImage
+  }
+`;
+
+export const homepageQuery = groq`
+  *[_type == "homepage"][0]{
+    title,
+    heroImage,
+    heroRole,
+    "heroContacts": coalesce(heroContacts, [])[]{
+      label,
+      href,
+      variant
+    },
+    heroAbout,
+    "skillGroups": coalesce(skillGroups, [])[]{
+      kind,
+      title,
+      showTitle,
+      "items": coalesce(items, [])
+    },
+    "workExperienceItems": coalesce(workExperienceItems, [])[]{
+      company,
+      position,
+      period
+    },
+    "educationItems": coalesce(educationItems, [])[]{
+      institution,
+      program,
+      educationType,
+      customEducationType,
+      period
+    },
+    contactsTitle,
+    "contactsButtons": coalesce(contactsButtons, [])[]{
+      label,
+      href,
+      variant
+    },
+    "middleSectionsOrder": coalesce(middleSectionsOrder, []),
+    "homepageProjects": coalesce(homepageProjects, [])[]->{
+      _id,
+      title,
+      "slug": slug.current,
+      shortDescription,
+      tags,
+      coverImage
+    }
   }
 `;

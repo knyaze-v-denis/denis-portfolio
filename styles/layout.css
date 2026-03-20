@@ -207,3 +207,42 @@
   flex: 1 0 auto;
   justify-content: flex-start;
 }
+
+/* ============================= */
+/* Hero section                  */
+/* ============================= */
+
+.hero-section__profile {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.hero-section__photo {
+  position: relative;
+  width: 7.5rem;
+  height: 7.5rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.hero-section__photo-image {
+  object-fit: cover;
+}
+
+.hero-section__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hero-section__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hero-section__about {
+  max-width: 38rem;
+}

@@ -9,34 +9,52 @@ import WorkExperienceSection from "@/components/timeline/WorkExperienceSection";
 import EducationSection from "@/components/timeline/EducationSection";
 import ContactsSection from "@/components/sections/ContactsSection";
 import { client } from "@/sanity/lib/client";
-import { projectsQuery } from "@/sanity/lib/queries";
-import { mapSanityProjectsToCards } from "@/sanity/lib/mappers";
+import { homepageQuery } from "@/sanity/lib/queries";
+import { mapSanityHomepageToHomepageData } from "@/sanity/lib/mappers";
 
 export default async function HomePage() {
-  const projects = await client.fetch(projectsQuery);
-  const projectCards = mapSanityProjectsToCards(projects ?? []);
+  const homepageDocument = await client.fetch(homepageQuery);
+  const homepage = homepageDocument
+    ? mapSanityHomepageToHomepageData(homepageDocument)
+    : null;
+
+  const sectionMap: Record<string, React.ReactNode> = {
+    skills: <SkillsSection skillGroups={homepage?.skills} />,
+    projects: <ProjectsSection projects={homepage?.homepageProjects} />,
+    workExperience: (
+      <WorkExperienceSection items={homepage?.workExperience} />
+    ),
+    education: <EducationSection items={homepage?.education} />,
+  };
+
+  const middleSections =
+    homepage?.middleSectionsOrder?.filter((sectionKey) => sectionMap[sectionKey]) ??
+    ["skills", "projects", "workExperience", "education"];
 
   return (
     <div className="site-root">
       <Header />
 
       <PageLayout>
-        <HeroSection />
+        <HeroSection
+          imageSrc={homepage?.hero.imageSrc}
+          role={homepage?.hero.role}
+          contacts={homepage?.hero.contacts}
+          about={homepage?.hero.about}
+        />
         <SectionDivider />
 
-        <SkillsSection />
-        <SectionDivider />
+        {middleSections.map((sectionKey) => (
+          <div key={sectionKey}>
+            {sectionMap[sectionKey]}
+            <SectionDivider />
+          </div>
+        ))}
 
-        <ProjectsSection projects={projectCards} />
-        <SectionDivider />
-
-        <WorkExperienceSection />
-        <SectionDivider />
-
-        <EducationSection />
-        <SectionDivider />
-
-        <ContactsSection />
+        <ContactsSection
+          title={homepage?.contacts.title}
+          buttons={homepage?.contacts.buttons}
+        />
       </PageLayout>
 
       <Footer />

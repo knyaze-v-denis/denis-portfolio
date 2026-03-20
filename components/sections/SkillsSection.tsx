@@ -5,48 +5,65 @@ import StaggerReveal from "@/components/motion/StaggerReveal";
 import ContentSection from "@/components/sections/ContentSection";
 import SkillTag from "@/components/ui/SkillTag";
 import { useTranslations } from "@/lib/i18n/useTranslations";
+import type { HomepageSkillGroup } from "@/sanity/lib/mappers";
 
-export default function SkillsSection() {
+type SkillsSectionProps = {
+  skillGroups?: HomepageSkillGroup[];
+};
+
+export default function SkillsSection({
+  skillGroups,
+}: SkillsSectionProps) {
   const { t } = useTranslations();
 
-  const skillGroups = [
+  const fallbackGroups: HomepageSkillGroup[] = [
     {
       title: t.skills.groups.hard,
+      showTitle: true,
       items: t.skills.items.hard,
     },
     {
       title: t.skills.groups.soft,
+      showTitle: true,
       items: t.skills.items.soft,
     },
     {
       title: t.skills.groups.languages,
+      showTitle: true,
       items: t.skills.items.languages,
     },
   ];
 
+  const groups =
+    skillGroups && skillGroups.length > 0 ? skillGroups : fallbackGroups;
+
+  const visibleGroups = groups.filter((group) => group.items.length > 0);
+
   return (
     <ContentSection label={t.sections.skills}>
-      {skillGroups.map((group) => (
-        <div key={group.title} className="skills-group">
-          <Reveal variant="body">
-            <h3 className="text-title-3 text-[var(--color-foreground-tertiary)]">
-              {group.title}
-            </h3>
-          </Reveal>
+      <div className="section-content">
+        {visibleGroups.map((group, groupIndex) => (
+          <div key={`${group.title}-${groupIndex}`} className="skills-group">
+            {group.showTitle ? (
+              <Reveal variant="body" delay={groupIndex * 40}>
+                <h3 className="skills-group__title text-body-secondary">
+                  {group.title}
+                </h3>
+              </Reveal>
+            ) : null}
 
-          <StaggerReveal
-            variant="tag"
-            step={75}
-            threshold={0.2}
-            className="flex flex-wrap gap-[0.75rem]"
-            itemAs="span"
-          >
-            {group.items.map((item) => (
-              <SkillTag key={item} label={item} />
-            ))}
-          </StaggerReveal>
-        </div>
-      ))}
+            <StaggerReveal
+              className="skills-group__items"
+              itemAs="div"
+              step={40}
+            >
+              {group.items.map((item) => (
+                <SkillTag key={item} label={item} />
+              ))}
+            </StaggerReveal>
+          </div>
+        ))}
+      </div>
     </ContentSection>
   );
 }

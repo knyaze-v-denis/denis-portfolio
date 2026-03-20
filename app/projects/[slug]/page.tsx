@@ -3,13 +3,14 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import PageLayout from "@/components/layout/PageLayout";
 import ProjectPageContent from "@/components/projects/ProjectPageContent";
-import type { DemoProjectSlug } from "@/lib/projects/demo-project";
 import { client } from "@/sanity/lib/client";
 import {
   projectBySlugQuery,
   projectMetadataBySlugQuery,
+  projectNavigationItemsQuery,
 } from "@/sanity/lib/queries";
 import {
+  mapSanityNavigationToProjectNavigation,
   mapSanityProjectToHero,
   mapSanityProjectToSections,
 } from "@/sanity/lib/mappers";
@@ -66,7 +67,10 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
 
-  const project = await client.fetch(projectBySlugQuery, { slug });
+  const [project, navigationItems] = await Promise.all([
+    client.fetch(projectBySlugQuery, { slug }),
+    client.fetch(projectNavigationItemsQuery),
+  ]);
 
   if (!project) {
     return (
@@ -88,13 +92,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const heroData = mapSanityProjectToHero(project);
   const sections = mapSanityProjectToSections(project);
-
-  const navigationSlug: DemoProjectSlug =
-    slug === "fitness-app"
-      ? "fitness-app"
-      : slug === "analytics-dashboard"
-        ? "analytics-dashboard"
-        : "portfolio";
+  const navigation = mapSanityNavigationToProjectNavigation(
+    navigationItems ?? [],
+    slug
+  );
 
   return (
     <div className="site-root">
@@ -105,7 +106,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           slug={slug}
           heroData={heroData}
           sections={sections}
-          navigationSlug={navigationSlug}
+          navigation={navigation}
           locale="en"
         />
       </PageLayout>

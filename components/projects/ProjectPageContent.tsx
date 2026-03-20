@@ -3,22 +3,22 @@ import ProjectHero from "@/components/projects/ProjectHero";
 import ProjectNavigation from "@/components/projects/ProjectNavigation";
 import ProjectSection from "@/components/projects/ProjectSection";
 import ContactsSection from "@/components/sections/ContactsSection";
-import type { DemoProjectSlug } from "@/lib/projects/demo-project";
 import type { ProjectContentSection } from "@/lib/projects/types";
 import type { ProjectHeroProps } from "@/components/projects/ProjectHero";
+import type { ProjectNavigationData } from "@/sanity/lib/mappers";
 
 type ProjectPageContentProps = {
   slug: string;
   heroData: ProjectHeroProps;
   sections: ProjectContentSection[];
-  navigationSlug: DemoProjectSlug;
+  navigation: ProjectNavigationData;
   locale: string;
 };
 
 export default function ProjectPageContent({
   heroData,
   sections = [],
-  navigationSlug,
+  navigation,
   locale,
 }: ProjectPageContentProps) {
   return (
@@ -34,7 +34,10 @@ export default function ProjectPageContent({
           </div>
         ))}
 
-      <ProjectNavigation slug={navigationSlug} />
+      <ProjectNavigation
+        previous={navigation.previous}
+        next={navigation.next}
+      />
       <SectionDivider />
       <ContactsSection variant="internal" />
     </>
