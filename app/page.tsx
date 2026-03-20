@@ -9,13 +9,30 @@ import WorkExperienceSection from "@/components/timeline/WorkExperienceSection";
 import EducationSection from "@/components/timeline/EducationSection";
 import ContactsSection from "@/components/sections/ContactsSection";
 import { client } from "@/sanity/lib/client";
-import { homepageQuery } from "@/sanity/lib/queries";
-import { mapSanityHomepageToHomepageData } from "@/sanity/lib/mappers";
+import { homepageQuery, siteSettingsQuery } from "@/sanity/lib/queries";
+import {
+  mapSanityHomepageToHomepageData,
+  mapSanitySiteSettingsToSiteSettingsData,
+} from "@/sanity/lib/mappers";
+import { cookies } from "next/headers";
+import type { Locale } from "@/lib/i18n/types";
 
 export default async function HomePage() {
-  const homepageDocument = await client.fetch(homepageQuery);
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
+  const locale: Locale = localeCookie === "ru" ? "ru" : "en";
+
+  const [homepageDocument, siteSettingsDocument] = await Promise.all([
+    client.fetch(homepageQuery),
+    client.fetch(siteSettingsQuery),
+  ]);
+
   const homepage = homepageDocument
-    ? mapSanityHomepageToHomepageData(homepageDocument)
+    ? mapSanityHomepageToHomepageData(homepageDocument, locale)
+    : null;
+
+  const siteSettings = siteSettingsDocument
+    ? mapSanitySiteSettingsToSiteSettingsData(siteSettingsDocument, locale)
     : null;
 
   const sectionMap: Record<string, React.ReactNode> = {
@@ -33,12 +50,16 @@ export default async function HomePage() {
 
   return (
     <div className="site-root">
-      <Header />
+      <Header
+        personName={siteSettings?.personName}
+        personRole={siteSettings?.personRole}
+        personPhotoSrc={siteSettings?.personPhotoSrc}
+      />
 
       <PageLayout>
         <HeroSection
-          imageSrc={homepage?.hero.imageSrc}
-          role={homepage?.hero.role}
+          imageSrc={siteSettings?.personPhotoSrc}
+          role={siteSettings?.personRole}
           contacts={homepage?.hero.contacts}
           about={homepage?.hero.about}
         />
@@ -57,7 +78,12 @@ export default async function HomePage() {
         />
       </PageLayout>
 
-      <Footer />
+      <Footer
+        showAside={siteSettings?.footer.showAside}
+        asideText={siteSettings?.footer.asideText}
+        asideLinkLabel={siteSettings?.footer.asideLinkLabel}
+        asideLinkHref={siteSettings?.footer.asideLinkHref}
+      />
     </div>
   );
 }

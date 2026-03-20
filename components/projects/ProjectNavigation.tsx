@@ -88,6 +88,12 @@ export default function ProjectNavigation({
 }: ProjectNavigationProps) {
   const { locale } = useTranslations();
 
+  const hasMultipleProjects = Boolean(previous || next) && !(previous === null && next === null);
+
+  if (!hasMultipleProjects || (!previous && !next)) {
+    return null;
+  }
+
   return (
     <InViewClass
       key={`project-navigation-${locale}`}

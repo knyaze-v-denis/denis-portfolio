@@ -5,6 +5,9 @@ import "./globals.css";
 import LanguageProvider from "@/components/i18n/LanguageProvider";
 import LanguageScript from "@/components/i18n/LanguageScript";
 import type { Locale } from "@/lib/i18n/types";
+import { client } from "@/sanity/lib/client";
+import { siteSettingsQuery } from "@/sanity/lib/queries";
+import { mapSanitySiteSettingsToSiteSettingsData } from "@/sanity/lib/mappers";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -15,39 +18,51 @@ const inter = Inter({
 
 const SITE_URL = "https://denis-portfolio-eight.vercel.app";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+export async function generateMetadata(): Promise<Metadata> {
+  const settingsDoc = await client.fetch(siteSettingsQuery);
+  const cookieStore = await cookies();
+  const locale = getInitialLocaleFromCookie(cookieStore);
 
-  title: {
-    default: "Denis Knyazev — Product Designer",
-    template: "%s — Denis Knyazev",
-  },
+  const settings = settingsDoc
+    ? mapSanitySiteSettingsToSiteSettingsData(settingsDoc, locale)
+    : null;
 
-  description:
-    "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
+  const title = settings?.seoTitle || "Denis Knyazev — Product Designer";
+  const description =
+    settings?.seoDescription ||
+    "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.";
 
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: SITE_URL,
-    title: "Denis Knyazev — Product Designer",
-    description:
-      "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
-    siteName: "Denis Knyazev",
-  },
+  return {
+    metadataBase: new URL(SITE_URL),
 
-  twitter: {
-    card: "summary_large_image",
-    title: "Denis Knyazev — Product Designer",
-    description:
-      "Portfolio of Denis Knyazev — product designer focused on UX, UI and product systems.",
-  },
+    title: {
+      default: title,
+      template: `%s — Denis Knyazev`,
+    },
 
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-};
+    description,
+
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: SITE_URL,
+      title,
+      description,
+      siteName: "Denis Knyazev",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+}
 
 const themeInitScript = `
 (() => {

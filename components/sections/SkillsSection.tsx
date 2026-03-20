@@ -41,12 +41,12 @@ export default function SkillsSection({
 
   return (
     <ContentSection label={t.sections.skills}>
-      <div className="section-content">
+      <div className="section-content skills-section__content">
         {visibleGroups.map((group, groupIndex) => (
           <div key={`${group.title}-${groupIndex}`} className="skills-group">
             {group.showTitle ? (
               <Reveal variant="body" delay={groupIndex * 40}>
-                <h3 className="skills-group__title text-body-secondary">
+                <h3 className="skills-group__title text-title-3">
                   {group.title}
                 </h3>
               </Reveal>

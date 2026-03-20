@@ -5,14 +5,14 @@ import type { ProjectCardProps } from "@/components/projects/ProjectCard";
 import { urlForImage } from "./image";
 
 type SanityProjectLink = {
-  label?: string;
+  label?: LocalizedValue<string> | string;
   href?: string;
 };
 
 type SanityImageBlock = {
   _type: "imageBlock";
-  alt?: string;
-  caption?: string;
+  alt?: LocalizedValue<string> | string;
+  caption?: LocalizedValue<string> | string;
   image?: Image & {
     asset?: {
       _ref?: string;
@@ -21,34 +21,41 @@ type SanityImageBlock = {
 };
 
 type SanityBlock =
-  | { _type: "blockTitle"; text?: string }
-  | { _type: "textBlock"; text?: string }
-  | { _type: "listBlock"; items?: string[] }
-  | { _type: "quoteBlock"; title?: string; text?: string }
+  | { _type: "blockTitle"; text?: LocalizedValue<string> | string }
+  | { _type: "textBlock"; text?: LocalizedValue<string> | string }
+  | {
+      _type: "listBlock";
+      items?: LocalizedValue<string[]> | string[];
+    }
+  | {
+      _type: "quoteBlock";
+      title?: LocalizedValue<string> | string;
+      text?: LocalizedValue<string> | string;
+    }
   | SanityImageBlock;
 
 type SanityProjectSection = {
-  title?: string;
+  title?: LocalizedValue<string> | string;
   blocks?: SanityBlock[];
 };
 
 type SanityProject = {
-  title?: string;
+  title?: LocalizedValue<string> | string;
   slug?: string;
   coverImage?: Image;
-  shortDescription?: string;
-  heroDescription?: string;
-  client?: string;
-  domain?: string;
-  timeline?: string;
-  role?: string;
+  shortDescription?: LocalizedValue<string> | string;
+  heroDescription?: LocalizedValue<string> | string;
+  client?: LocalizedValue<string> | string;
+  domain?: LocalizedValue<string> | string;
+  timeline?: LocalizedValue<string> | string;
+  role?: LocalizedValue<string> | string;
   tags?: string[];
   links?: SanityProjectLink[];
   sections?: SanityProjectSection[];
 };
 
 export type SanityNavigationItem = {
-  title?: string;
+  title?: LocalizedValue<string> | string;
   slug?: string;
 };
 
@@ -87,8 +94,6 @@ export type HomepageContactButton = {
 
 export type HomepageData = {
   hero: {
-    imageSrc: string;
-    role: string;
     contacts: HomepageHeroContact[];
     about: string;
   };
@@ -103,54 +108,94 @@ export type HomepageData = {
   homepageProjects: ProjectCardProps[];
 };
 
+export type SiteSettingsData = {
+  personName: string;
+  personRole: string;
+  personPhotoSrc: string;
+  seoTitle: string;
+  seoDescription: string;
+  footer: {
+    showAside: boolean;
+    asideText: string;
+    asideLinkLabel: string;
+    asideLinkHref: string;
+  };
+};
+
+
+type LocalizedValue<T = string> = {
+  ru?: T;
+  en?: T;
+};
+
 type SanityHomepageContactLink = {
-  label?: string;
+  label?: LocalizedValue<string> | string;
   href?: string;
   variant?: string;
 };
 
 type SanityHomepageSkillGroup = {
   kind?: string;
-  title?: string;
+  title?: LocalizedValue<string> | string;
   showTitle?: boolean;
   items?: string[];
 };
 
 type SanityWorkExperienceItem = {
-  company?: string;
-  position?: string;
-  period?: string;
+  company?: LocalizedValue<string> | string;
+  position?: LocalizedValue<string> | string;
+  period?: LocalizedValue<string> | string;
 };
 
 type SanityEducationItem = {
-  institution?: string;
-  program?: string;
-  educationType?: string;
-  customEducationType?: string;
-  period?: string;
+  institution?: LocalizedValue<string> | string;
+  program?: LocalizedValue<string> | string;
+  educationType?: LocalizedValue<string> | string;
+  customEducationType?: LocalizedValue<string> | string;
+  period?: LocalizedValue<string> | string;
 };
 
 type SanityHomepageProject = {
-  title?: string;
+  title?: LocalizedValue<string> | string;
   slug?: string;
-  shortDescription?: string;
+  shortDescription?: LocalizedValue<string> | string;
   tags?: string[];
   coverImage?: Image;
 };
 
 type SanityHomepage = {
-  heroImage?: Image;
-  heroRole?: string;
   heroContacts?: SanityHomepageContactLink[];
-  heroAbout?: string;
+  heroAbout?: LocalizedValue<string> | string;
   skillGroups?: SanityHomepageSkillGroup[];
   workExperienceItems?: SanityWorkExperienceItem[];
   educationItems?: SanityEducationItem[];
-  contactsTitle?: string;
+  contactsTitle?: LocalizedValue<string> | string;
   contactsButtons?: SanityHomepageContactLink[];
   middleSectionsOrder?: string[];
   homepageProjects?: SanityHomepageProject[];
 };
+
+type SanitySiteSettings = {
+  personName?: LocalizedValue<string> | string;
+  personRole?: LocalizedValue<string> | string;
+  personPhoto?: Image;
+  seoTitle?: LocalizedValue<string> | string;
+  seoDescription?: LocalizedValue<string> | string;
+  showFooterAside?: boolean;
+  footerAsideText?: LocalizedValue<string> | string;
+  footerAsideLinkLabel?: LocalizedValue<string> | string;
+  footerAsideLinkHref?: string;
+};
+
+function pickLocaleValue<T = string>(
+  field: LocalizedValue<T> | T | undefined,
+  locale: "ru" | "en"
+): T | undefined {
+  if (!field) return undefined;
+  if (typeof field !== "object") return field;
+  const localizedField = field as LocalizedValue<T>;
+  return localizedField[locale] ?? localizedField.en ?? localizedField.ru;
+}
 
 function getSkillGroupLabel(kind?: string, customTitle?: string) {
   if (kind === "custom") {
@@ -168,11 +213,18 @@ function getSkillGroupLabel(kind?: string, customTitle?: string) {
 }
 
 function getEducationTypeLabel(
-  educationType?: string,
-  customEducationType?: string
+  educationType: LocalizedValue<string> | string | undefined,
+  customEducationType: LocalizedValue<string> | string | undefined,
+  locale: "ru" | "en"
 ) {
-  if (educationType === "custom") {
-    return customEducationType || "";
+  const resolvedEducationType = pickLocaleValue(educationType, locale);
+  const resolvedCustomEducationType = pickLocaleValue(
+    customEducationType,
+    locale
+  );
+
+  if (resolvedEducationType === "custom") {
+    return resolvedCustomEducationType || "";
   }
 
   const dictionary: Record<string, string> = {
@@ -183,11 +235,12 @@ function getEducationTypeLabel(
     "secondary-vocational": "Secondary vocational education",
   };
 
-  return dictionary[educationType ?? ""] || "";
+  return dictionary[resolvedEducationType ?? ""] || "";
 }
 
 export function mapSanityProjectToHero(
-  project: SanityProject
+  project: SanityProject,
+  locale: "ru" | "en"
 ): ProjectHeroProps {
   const cover = project.coverImage
     ? urlForImage(project.coverImage).width(1600).url()
@@ -195,25 +248,29 @@ export function mapSanityProjectToHero(
 
   const fields: ProjectHeroProps["fields"] = [];
 
-  if (project.client) {
-    fields.push({ key: "client", value: project.client });
+  const client = pickLocaleValue(project.client, locale);
+  if (client) {
+    fields.push({ key: "client", value: client });
   }
 
-  if (project.domain) {
-    fields.push({ key: "domain", value: project.domain });
+  const domain = pickLocaleValue(project.domain, locale);
+  if (domain) {
+    fields.push({ key: "domain", value: domain });
   }
 
-  if (project.timeline) {
-    fields.push({ key: "timeline", value: project.timeline });
+  const timeline = pickLocaleValue(project.timeline, locale);
+  if (timeline) {
+    fields.push({ key: "timeline", value: timeline });
   }
 
-  if (project.role) {
-    fields.push({ key: "role", value: project.role });
+  const role = pickLocaleValue(project.role, locale);
+  if (role) {
+    fields.push({ key: "role", value: role });
   }
 
   const validLinks =
     project.links?.filter(
-      (link): link is { label: string; href: string } =>
+      (link): link is { label: LocalizedValue<string> | string; href: string } =>
         Boolean(link?.label && link?.href)
     ) ?? [];
 
@@ -221,22 +278,23 @@ export function mapSanityProjectToHero(
     fields.push({
       key: "links",
       links: validLinks.map((link) => ({
-        label: link.label,
+        label: pickLocaleValue(link.label, locale) ?? "",
         href: link.href,
       })),
     });
   }
 
   return {
-    title: project.title ?? "Untitled project",
+    title: pickLocaleValue(project.title, locale) ?? "Untitled project",
     cover,
-    description: project.heroDescription ?? "",
+    description: pickLocaleValue(project.heroDescription, locale) ?? "",
     fields,
   };
 }
 
 export function mapSanityProjectToSections(
-  project: SanityProject
+  project: SanityProject,
+  locale: "ru" | "en"
 ): ProjectContentSection[] {
   const sections = project.sections ?? [];
 
@@ -246,40 +304,47 @@ export function mapSanityProjectToSections(
 
     for (const block of blocks) {
       switch (block._type) {
-        case "blockTitle":
-          if (block.text) {
+        case "blockTitle": {
+          const text = pickLocaleValue(block.text, locale);
+          if (text) {
             mappedBlocks.push({
               type: "blockTitle",
-              text: block.text,
+              text,
             });
           }
           break;
+        }
 
-        case "textBlock":
-          if (block.text) {
+        case "textBlock": {
+          const text = pickLocaleValue(block.text, locale);
+          if (text) {
             mappedBlocks.push({
               type: "text",
-              text: block.text,
+              text,
             });
           }
           break;
+        }
 
         case "listBlock":
           mappedBlocks.push({
             type: "list",
-            items: block.items ?? [],
+            items: pickLocaleValue(block.items, locale) ?? [],
           });
           break;
 
-        case "quoteBlock":
-          if (block.title && block.text) {
+        case "quoteBlock": {
+          const title = pickLocaleValue(block.title, locale);
+          const text = pickLocaleValue(block.text, locale);
+          if (title && text) {
             mappedBlocks.push({
               type: "quote",
-              title: block.title,
-              text: block.text,
+              title,
+              text,
             });
           }
           break;
+        }
 
         case "imageBlock": {
           const image = block.image;
@@ -297,8 +362,8 @@ export function mapSanityProjectToSections(
           mappedBlocks.push({
             type: "image",
             src: imageUrl,
-            alt: block.alt ?? "",
-            caption: block.caption,
+            alt: pickLocaleValue(block.alt, locale) ?? "",
+            caption: pickLocaleValue(block.caption, locale),
             width,
             height,
           });
@@ -312,14 +377,17 @@ export function mapSanityProjectToSections(
 
     return {
       id: `section-${sectionIndex + 1}`,
-      title: section.title ?? `Section ${sectionIndex + 1}`,
+      title:
+        pickLocaleValue(section.title, locale) ??
+        `Section ${sectionIndex + 1}`,
       blocks: mappedBlocks,
     };
   });
 }
 
 export function mapSanityProjectsToCards(
-  projects: SanityProject[]
+  projects: SanityProject[],
+  locale: "ru" | "en" = "en"
 ): ProjectCardProps[] {
   return (projects ?? []).map((project) => {
     const cover = project.coverImage
@@ -334,8 +402,8 @@ export function mapSanityProjectsToCards(
     }));
 
     return {
-      title: project.title ?? "Untitled project",
-      description: project.shortDescription ?? "",
+      title: pickLocaleValue(project.title, locale) ?? "Untitled project",
+      description: pickLocaleValue(project.shortDescription, locale) ?? "",
       cover,
       href: `/projects/${project.slug ?? ""}`,
       tags,
@@ -345,15 +413,16 @@ export function mapSanityProjectsToCards(
 
 export function mapSanityNavigationToProjectNavigation(
   items: SanityNavigationItem[],
-  currentSlug: string
+  currentSlug: string,
+  locale: "ru" | "en" = "en"
 ): ProjectNavigationData {
   const normalizedItems = (items ?? [])
     .filter(
-      (item): item is { title: string; slug: string } =>
+      (item): item is { title: LocalizedValue<string> | string; slug: string } =>
         Boolean(item?.title && item?.slug)
     )
     .map((item) => ({
-      title: item.title,
+      title: pickLocaleValue(item.title, locale) ?? "Untitled project",
       slug: item.slug,
     }));
 
@@ -391,21 +460,24 @@ export function mapSanityNavigationToProjectNavigation(
 }
 
 export function mapSanityHomepageToHomepageData(
-  homepage: SanityHomepage
+  homepage: SanityHomepage,
+  locale: "ru" | "en"
 ): HomepageData {
-  const heroImageSrc = homepage.heroImage
-    ? urlForImage(homepage.heroImage).width(1200).url()
-    : "/images/profile-photo.png";
-
   const heroContacts =
     homepage.heroContacts?.filter(
-      (item): item is { label: string; href: string } =>
+      (item): item is { label: LocalizedValue<string> | string; href: string } =>
         Boolean(item?.label && item?.href)
-    ) ?? [];
+    ).map((item) => ({
+      label: pickLocaleValue(item.label, locale) ?? "",
+      href: item.href,
+    })) ?? [];
 
   const skills = (homepage.skillGroups ?? [])
     .map((group) => ({
-      title: getSkillGroupLabel(group.kind, group.title),
+      title: getSkillGroupLabel(
+        group.kind,
+        pickLocaleValue(group.title, locale)
+      ),
       showTitle: group.showTitle ?? true,
       items: group.items ?? [],
     }))
@@ -414,16 +486,19 @@ export function mapSanityHomepageToHomepageData(
   const workExperience = (homepage.workExperienceItems ?? [])
     .filter((item) => Boolean(item.company && item.position))
     .map((item) => {
-      const lines = [item.position ?? ""];
+      const company = pickLocaleValue(item.company, locale);
+      const position = pickLocaleValue(item.position, locale);
+      const period = pickLocaleValue(item.period, locale);
+      const lines = [position ?? ""];
       const secondaryLines: number[] = [];
 
-      if (item.period) {
-        lines.push(item.period);
+      if (period) {
+        lines.push(period);
         secondaryLines.push(lines.length - 1);
       }
 
       return {
-        title: item.company ?? "",
+        title: company ?? "",
         lines,
         secondaryLines,
       };
@@ -432,12 +507,16 @@ export function mapSanityHomepageToHomepageData(
   const education = (homepage.educationItems ?? [])
     .filter((item) => Boolean(item.institution && item.program))
     .map((item) => {
-      const lines = [item.program ?? ""];
+      const institution = pickLocaleValue(item.institution, locale);
+      const program = pickLocaleValue(item.program, locale);
+      const period = pickLocaleValue(item.period, locale);
+      const lines = [program ?? ""];
       const secondaryLines: number[] = [];
 
       const educationTypeLabel = getEducationTypeLabel(
         item.educationType,
-        item.customEducationType
+        item.customEducationType,
+        locale
       );
 
       if (educationTypeLabel) {
@@ -445,45 +524,48 @@ export function mapSanityHomepageToHomepageData(
         secondaryLines.push(lines.length - 1);
       }
 
-      if (item.period) {
-        lines.push(item.period);
+      if (period) {
+        lines.push(period);
         secondaryLines.push(lines.length - 1);
       }
 
       return {
-        title: item.institution ?? "",
+        title: institution ?? "",
         lines,
         secondaryLines,
       };
     });
 
   const contactsButtons: HomepageContactButton[] = (
-  homepage.contactsButtons?.filter(
-    (item): item is { label: string; href: string; variant?: string } =>
-      Boolean(item?.label && item?.href)
+    homepage.contactsButtons?.filter(
+      (item): item is {
+        label: LocalizedValue<string> | string;
+        href: string;
+        variant?: string;
+      } =>
+        Boolean(item?.label && item?.href)
     ) ?? []
   ).map((item) => ({
-    label: item.label,
+    label: pickLocaleValue(item.label, locale) ?? "",
     href: item.href,
     variant: item.variant === "primary" ? "primary" : "secondary",
   }));
 
   const homepageProjects = mapSanityProjectsToCards(
-    homepage.homepageProjects ?? []
+    homepage.homepageProjects ?? [],
+    locale
   );
 
   return {
     hero: {
-      imageSrc: heroImageSrc,
-      role: homepage.heroRole ?? "",
       contacts: heroContacts,
-      about: homepage.heroAbout ?? "",
+      about: pickLocaleValue(homepage.heroAbout, locale) ?? "",
     },
     skills,
     workExperience,
     education,
     contacts: {
-      title: homepage.contactsTitle ?? "",
+      title: pickLocaleValue(homepage.contactsTitle, locale) ?? "",
       buttons: contactsButtons,
     },
     middleSectionsOrder:
@@ -494,5 +576,35 @@ export function mapSanityHomepageToHomepageData(
         "education",
       ],
     homepageProjects,
+  };
+}
+
+export function mapSanitySiteSettingsToSiteSettingsData(
+  settings: SanitySiteSettings,
+  locale: "ru" | "en"
+): SiteSettingsData {
+  const personPhotoSrc = settings.personPhoto
+    ? urlForImage(settings.personPhoto).width(1200).url()
+    : "/images/profile-photo.png";
+
+  return {
+    personName:
+      pickLocaleValue(settings.personName, locale) ?? "Denis Knyazev",
+    personRole:
+      pickLocaleValue(settings.personRole, locale) ?? "Product Designer",
+    personPhotoSrc,
+    seoTitle:
+      pickLocaleValue(settings.seoTitle, locale) ??
+      "Denis Knyazev — Product Designer",
+    seoDescription:
+      pickLocaleValue(settings.seoDescription, locale) ??
+      "Product designer focused on UX, interfaces and scalable systems.",
+    footer: {
+      showAside: settings.showFooterAside ?? false,
+      asideText: pickLocaleValue(settings.footerAsideText, locale) ?? "",
+      asideLinkLabel:
+        pickLocaleValue(settings.footerAsideLinkLabel, locale) ?? "",
+      asideLinkHref: settings.footerAsideLinkHref ?? "",
+    },
   };
 }

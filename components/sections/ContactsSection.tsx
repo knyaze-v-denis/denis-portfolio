@@ -55,6 +55,7 @@ export default function ContactsSection({
       <InViewClass
         key={`contacts-internal-${locale}`}
         as="section"
+        id="contacts"
         className="section-frame contacts-section contacts-section--grow"
         threshold={0.2}
       >
@@ -74,16 +75,18 @@ export default function ContactsSection({
   }
 
   return (
-    <ContentSection label={t.sections.contacts}>
-      <div className="contacts-section__content">
-        <Reveal variant="title">
-          <h2 className="contacts-section__title text-large-title">
-            {resolvedTitle}
-          </h2>
-        </Reveal>
+    <div id="contacts">
+      <ContentSection label={t.sections.contacts}>
+        <div className="contacts-section__content">
+          <Reveal variant="title">
+            <h2 className="contacts-section__title text-large-title">
+              {resolvedTitle}
+            </h2>
+          </Reveal>
 
-        {actions}
-      </div>
-    </ContentSection>
+          {actions}
+        </div>
+      </ContentSection>
+    </div>
   );
 }

@@ -44,40 +44,46 @@ export default function HeroSection({
       threshold={0.2}
     >
       <div className="hero-shell">
-        <Reveal variant="card">
-          <div className="hero-section__profile">
+        <div className="hero-section__top">
+          <Reveal variant="image">
             <div className="hero-section__photo">
               <Image
                 src={imageSrc || "/images/profile-photo.png"}
                 alt={t.hero.name}
                 fill
-                sizes="(max-width: 767px) 96px, 120px"
+                sizes="160px"
                 className="hero-section__photo-image"
               />
             </div>
+          </Reveal>
 
-            <div className="hero-section__heading">
-              <h1 className="hero-section__name text-title-1">{t.hero.name}</h1>
-              <p className="hero-section__role text-title-3">
-                {role || t.hero.role}
-              </p>
-            </div>
-          </div>
-        </Reveal>
+          <div className="hero-section__side">
+            <Reveal variant="title" delay={40}>
+              <div className="hero-section__heading">
+                <h1 className="hero-section__name text-title-2-caps">
+                  {t.hero.name}
+                </h1>
+                <p className="hero-section__role text-title-2-caps">
+                  {role || t.hero.role}
+                </p>
+              </div>
+            </Reveal>
 
-        <Reveal variant="body" delay={60}>
-          <div className="hero-section__links">
-            {resolvedContacts.map((link, index) => (
-              <ExternalLink
-                key={`${link.label}-${index}`}
-                href={link.href}
-                variant="secondary"
-              >
-                {link.label}
-              </ExternalLink>
-            ))}
+            <Reveal variant="body" delay={80}>
+              <div className="hero-section__links">
+                {resolvedContacts.map((link, index) => (
+                  <ExternalLink
+                    key={`${link.label}-${index}`}
+                    href={link.href}
+                    variant="secondary"
+                  >
+                    {link.label}
+                  </ExternalLink>
+                ))}
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+        </div>
 
         <Reveal variant="title" delay={120}>
           <p className="hero-section__about text-large-title">

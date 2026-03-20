@@ -22,13 +22,6 @@ export const projectType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "order",
-      title: "Order",
-      description: "Controls project order on the homepage",
-      type: "number",
-      validation: (Rule) => Rule.required().integer().min(0),
-    }),
-    defineField({
       name: "coverImage",
       title: "Cover image",
       type: "image",

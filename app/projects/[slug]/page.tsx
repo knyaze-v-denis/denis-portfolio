@@ -8,12 +8,16 @@ import {
   projectBySlugQuery,
   projectMetadataBySlugQuery,
   projectNavigationItemsQuery,
+  siteSettingsQuery,
 } from "@/sanity/lib/queries";
 import {
   mapSanityNavigationToProjectNavigation,
   mapSanityProjectToHero,
   mapSanityProjectToSections,
+  mapSanitySiteSettingsToSiteSettingsData,
 } from "@/sanity/lib/mappers";
+import { cookies } from "next/headers";
+import type { Locale } from "@/lib/i18n/types";
 
 type ProjectPageProps = {
   params: Promise<{
@@ -67,15 +71,28 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
 
-  const [project, navigationItems] = await Promise.all([
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
+  const locale: Locale = localeCookie === "ru" ? "ru" : "en";
+
+  const [project, navigationItems, siteSettingsDocument] = await Promise.all([
     client.fetch(projectBySlugQuery, { slug }),
     client.fetch(projectNavigationItemsQuery),
+    client.fetch(siteSettingsQuery),
   ]);
+
+  const siteSettings = siteSettingsDocument
+    ? mapSanitySiteSettingsToSiteSettingsData(siteSettingsDocument, locale)
+    : null;
 
   if (!project) {
     return (
       <div className="site-root">
-        <Header />
+        <Header
+          personName={siteSettings?.personName}
+          personRole={siteSettings?.personRole}
+          personPhotoSrc={siteSettings?.personPhotoSrc}
+        />
 
         <PageLayout>
           <div className="section-frame">
@@ -85,13 +102,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </PageLayout>
 
-        <Footer />
+        <Footer
+          showAside={siteSettings?.footer.showAside}
+          asideText={siteSettings?.footer.asideText}
+          asideLinkLabel={siteSettings?.footer.asideLinkLabel}
+          asideLinkHref={siteSettings?.footer.asideLinkHref}
+        />
       </div>
     );
   }
 
-  const heroData = mapSanityProjectToHero(project);
-  const sections = mapSanityProjectToSections(project);
+  const heroData = mapSanityProjectToHero(project, locale);
+  const sections = mapSanityProjectToSections(project, locale);
   const navigation = mapSanityNavigationToProjectNavigation(
     navigationItems ?? [],
     slug
@@ -99,7 +121,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className="site-root">
-      <Header />
+      <Header
+        personName={siteSettings?.personName}
+        personRole={siteSettings?.personRole}
+        personPhotoSrc={siteSettings?.personPhotoSrc}
+      />
 
       <PageLayout>
         <ProjectPageContent
@@ -107,11 +133,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           heroData={heroData}
           sections={sections}
           navigation={navigation}
-          locale="en"
+          locale={locale}
         />
       </PageLayout>
 
-      <Footer />
+      <Footer
+        showAside={siteSettings?.footer.showAside}
+        asideText={siteSettings?.footer.asideText}
+        asideLinkLabel={siteSettings?.footer.asideLinkLabel}
+        asideLinkHref={siteSettings?.footer.asideLinkHref}
+      />
     </div>
   );
 }

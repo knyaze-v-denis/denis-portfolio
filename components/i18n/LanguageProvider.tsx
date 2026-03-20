@@ -2,10 +2,13 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
+  type ReactNode,
 } from "react";
+import { useRouter } from "next/navigation";
 import { messages } from "@/lib/i18n/messages";
 import type { Locale, Messages } from "@/lib/i18n/types";
 
@@ -18,7 +21,7 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 type LanguageProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   initialLocale: Locale;
 };
 
@@ -27,16 +30,28 @@ export default function LanguageProvider({
   initialLocale,
 }: LanguageProviderProps) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const router = useRouter();
 
-  function setLocale(nextLocale: Locale) {
-    setLocaleState(nextLocale);
+  const setLocale = useCallback(
+    (nextLocale: Locale) => {
+      if (nextLocale === locale) {
+        return;
+      }
 
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("locale", nextLocale);
-      document.documentElement.setAttribute("lang", nextLocale);
-      document.cookie = `locale=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
-    }
-  }
+      setLocaleState(nextLocale);
+
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("locale", nextLocale);
+        document.documentElement.setAttribute("lang", nextLocale);
+        document.cookie = `locale=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
+
+        window.setTimeout(() => {
+          router.refresh();
+        }, 0);
+      }
+    },
+    [locale, router]
+  );
 
   const value = useMemo<LanguageContextValue>(
     () => ({
@@ -44,7 +59,7 @@ export default function LanguageProvider({
       setLocale,
       t: messages[locale],
     }),
-    [locale]
+    [locale, setLocale]
   );
 
   return (

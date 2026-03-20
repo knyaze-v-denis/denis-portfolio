@@ -52,21 +52,6 @@ export const homepageType = defineType({
     }),
 
     defineField({
-      name: "heroImage",
-      title: "* Hero image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "heroRole",
-      title: "* Hero role",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "heroContacts",
       title: "Hero contacts",
       type: "array",
@@ -75,8 +60,7 @@ export const homepageType = defineType({
     defineField({
       name: "heroAbout",
       title: "* About text",
-      type: "text",
-      rows: 5,
+      type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
 
@@ -106,7 +90,7 @@ export const homepageType = defineType({
     defineField({
       name: "contactsTitle",
       title: "* Contacts CTA title",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -156,7 +140,6 @@ export const homepageType = defineType({
   preview: {
     select: {
       title: "title",
-      media: "heroImage",
     },
   },
 });

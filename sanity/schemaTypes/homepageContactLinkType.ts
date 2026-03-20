@@ -28,7 +28,7 @@ export const homepageContactLinkType = defineType({
     defineField({
       name: "label",
       title: "* Label",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -57,7 +57,7 @@ export const homepageContactLinkType = defineType({
   ],
   preview: {
     select: {
-      title: "label",
+      title: "label.en",
       subtitle: "href",
     },
   },

@@ -38,28 +38,30 @@ export const projectMetadataBySlugQuery = groq`
 `;
 
 export const projectNavigationItemsQuery = groq`
-  *[_type == "project"] | order(order asc, _createdAt desc){
-    title,
-    "slug": slug.current
-  }
+  *[_type == "homepage"][0]{
+    "items": coalesce(homepageProjects, [])[]->{
+      title,
+      "slug": slug.current
+    }
+  }.items
 `;
 
 export const projectsQuery = groq`
-  *[_type == "project"] | order(order asc, _createdAt desc){
-    _id,
-    title,
-    "slug": slug.current,
-    shortDescription,
-    tags,
-    coverImage
-  }
+  *[_type == "homepage"][0]{
+    "items": coalesce(homepageProjects, [])[]->{
+      _id,
+      title,
+      "slug": slug.current,
+      shortDescription,
+      tags,
+      coverImage
+    }
+  }.items
 `;
 
 export const homepageQuery = groq`
   *[_type == "homepage"][0]{
     title,
-    heroImage,
-    heroRole,
     "heroContacts": coalesce(heroContacts, [])[]{
       label,
       href,
@@ -99,5 +101,20 @@ export const homepageQuery = groq`
       tags,
       coverImage
     }
+  }
+`;
+
+export const siteSettingsQuery = groq`
+  *[_type == "siteSettings"][0]{
+    title,
+    personName,
+    personRole,
+    personPhoto,
+    seoTitle,
+    seoDescription,
+    showFooterAside,
+    footerAsideText,
+    footerAsideLinkLabel,
+    footerAsideLinkHref
   }
 `;

@@ -9,12 +9,18 @@ import { projectLinkType } from "./projectLinkType";
 import { projectSectionType } from "./projectSectionType";
 import { projectType } from "./projectType";
 import { quoteBlockType } from "./quoteBlockType";
+import { siteSettingsType } from "./siteSettingsType";
 import { skillGroupType } from "./skillGroupType";
 import { textBlockType } from "./textBlockType";
 import { workExperienceType } from "./workExperienceType";
+import { localizedStringType } from "./localizedStringType";
+import { localizedTextType } from "./localizedTextType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
+    localizedStringType,
+    localizedTextType,
+    siteSettingsType,
     homepageType,
     projectType,
     projectLinkType,
