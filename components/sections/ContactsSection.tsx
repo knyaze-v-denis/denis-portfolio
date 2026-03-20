@@ -16,70 +16,60 @@ export default function ContactsSection({
 }: ContactsSectionProps) {
   const { t, locale } = useTranslations();
 
+  const actions = (
+    <StaggerReveal
+      as="div"
+      className="contacts-section__actions"
+      step={60}
+      itemAs="div"
+    >
+      {t.contacts.buttons.map((contact) => (
+        <Button
+          key={contact.label}
+          href={contact.href}
+          variant={contact.variant}
+          size="m"
+        >
+          {contact.label}
+        </Button>
+      ))}
+    </StaggerReveal>
+  );
+
   if (variant === "internal") {
     return (
       <InViewClass
+        key={`contacts-internal-${locale}`}
         as="section"
-        id="contacts"
-        className="section-frame"
+        className="section-frame contacts-section contacts-section--grow"
         threshold={0.2}
       >
-        <div className="section-shell">
-          <Reveal key={`${locale}-contacts-title`} variant="title">
-            <h2 className="text-large-title text-[var(--color-foreground-primary)]">
-              {t.contacts.title}
-            </h2>
-          </Reveal>
+        <div className="section-shell contacts-section__shell">
+          <div className="contacts-section__content">
+            <Reveal variant="title">
+              <h2 className="contacts-section__title text-large-title">
+                {t.contacts.title}
+              </h2>
+            </Reveal>
 
-          <StaggerReveal
-            key={`${locale}-contacts-buttons`}
-            variant="tag"
-            step={75}
-            threshold={0.2}
-            className="flex flex-wrap gap-[var(--space-4)]"
-            itemAs="span"
-          >
-            {t.contacts.buttons.map((contact) => (
-              <a key={contact.label} href={contact.href}>
-                <Button
-                  variant={contact.variant}
-                  size="m"
-                  buttonStyle="default"
-                >
-                  {contact.label}
-                </Button>
-              </a>
-            ))}
-          </StaggerReveal>
+            {actions}
+          </div>
         </div>
       </InViewClass>
     );
   }
 
   return (
-    <ContentSection id="contacts" label={t.sections.contacts}>
-      <Reveal key={`${locale}-contacts-title`} variant="title">
-        <h2 className="text-large-title text-[var(--color-foreground-primary)]">
-          {t.contacts.title}
-        </h2>
-      </Reveal>
+    <ContentSection label={t.sections.contacts}>
+      <div className="contacts-section__content">
+        <Reveal variant="title">
+          <h2 className="contacts-section__title text-large-title">
+            {t.contacts.title}
+          </h2>
+        </Reveal>
 
-      <StaggerReveal
-        key={`${locale}-contacts-buttons`}
-        variant="tag"
-        step={75}
-        threshold={0.2}
-        className="flex flex-wrap gap-[var(--space-4)]"
-        itemAs="span"
-      >
-        {t.contacts.buttons.map((contact) => (
-          <a key={contact.label} href={contact.href}>
-            <Button variant={contact.variant} size="m" buttonStyle="default">
-              {contact.label}
-            </Button>
-          </a>
-        ))}
-      </StaggerReveal>
+        {actions}
+      </div>
     </ContentSection>
   );
 }

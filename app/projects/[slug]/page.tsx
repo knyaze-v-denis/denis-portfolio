@@ -72,6 +72,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     return (
       <div className="site-root">
         <Header />
+
         <PageLayout>
           <div className="section-frame">
             <div className="project-section__inner">
@@ -79,6 +80,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </div>
         </PageLayout>
+
         <Footer />
       </div>
     );
@@ -95,7 +97,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         : "portfolio";
 
   return (
-    <>
+    <div className="site-root">
       <Header />
 
       <PageLayout>
@@ -109,6 +111,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </PageLayout>
 
       <Footer />
-    </>
+    </div>
   );
 }
