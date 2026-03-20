@@ -71,23 +71,27 @@ export default function Header({
           </Link>
 
           <div className="flex items-center gap-4 md:gap-8">
-            <Link
-              href="/#contacts"
-              onClick={handleContactsClick}
-              aria-label={t.header.cta}
-              className="ui-button ui-button--primary ui-button--s ui-button--only-icon ui-button--default md:hidden"
-            >
-              <SendHorizontal size={16} />
-            </Link>
+            <div className="md:hidden">
+              <Link
+                href="/#contacts"
+                onClick={handleContactsClick}
+                aria-label={t.header.cta}
+                className="ui-button ui-button--primary ui-button--s ui-button--only-icon ui-button--default"
+              >
+                <SendHorizontal size={16} />
+              </Link>
+            </div>
 
-            <Link
-              href="/#contacts"
-              onClick={handleContactsClick}
-              aria-label={t.header.cta}
-              className="ui-button ui-button--primary ui-button--s ui-button--default hidden md:inline-flex"
-            >
-              {t.header.cta}
-            </Link>
+            <div className="hidden md:block">
+              <Link
+                href="/#contacts"
+                onClick={handleContactsClick}
+                aria-label={t.header.cta}
+                className="ui-button ui-button--primary ui-button--s ui-button--default"
+              >
+                {t.header.cta}
+              </Link>
+            </div>
 
             <div className="hidden md:flex md:items-center md:gap-1">
               <button type="button" onClick={() => setLocale("ru")}>

@@ -30,24 +30,6 @@ type SanityProjectMetadata = {
   shortDescription?: string;
 };
 
-const fallbackMetadata: Record<string, Metadata> = {
-  portfolio: {
-    title: "Portfolio Website",
-    description:
-      "Design and development of a personal portfolio website showcasing product design work and case studies.",
-  },
-  "fitness-app": {
-    title: "Fitness App Concept",
-    description:
-      "Concept of a fitness ecosystem combining workout tracking, nutrition and social features.",
-  },
-  "analytics-dashboard": {
-    title: "Analytics Dashboard",
-    description:
-      "Concept of a modular analytics dashboard for product teams with flexible metrics and widgets.",
-  },
-};
-
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
@@ -65,7 +47,7 @@ export async function generateMetadata({
     };
   }
 
-  return fallbackMetadata[slug] ?? {};
+  return {};
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
@@ -116,7 +98,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const sections = mapSanityProjectToSections(project, locale);
   const navigation = mapSanityNavigationToProjectNavigation(
     navigationItems ?? [],
-    slug
+    slug,
+    locale
   );
 
   return (
