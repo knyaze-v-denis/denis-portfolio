@@ -73,8 +73,8 @@ export default async function HomePage() {
         ))}
 
         <ContactsSection
-          title={homepage?.contacts.title}
-          buttons={homepage?.contacts.buttons}
+          title={siteSettings?.contacts.title}
+          buttons={siteSettings?.contacts.buttons}
         />
       </PageLayout>
 

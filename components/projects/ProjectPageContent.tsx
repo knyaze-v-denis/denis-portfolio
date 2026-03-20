@@ -6,12 +6,15 @@ import ContactsSection from "@/components/sections/ContactsSection";
 import type { ProjectContentSection } from "@/lib/projects/types";
 import type { ProjectHeroProps } from "@/components/projects/ProjectHero";
 import type { ProjectNavigationData } from "@/sanity/lib/mappers";
+import type { HomepageContactButton } from "@/sanity/lib/mappers";
 
 type ProjectPageContentProps = {
   slug: string;
   heroData: ProjectHeroProps;
   sections: ProjectContentSection[];
   navigation: ProjectNavigationData;
+  contactsTitle?: string;
+  contactsButtons?: HomepageContactButton[];
   locale: string;
 };
 
@@ -19,6 +22,8 @@ export default function ProjectPageContent({
   heroData,
   sections = [],
   navigation,
+  contactsTitle,
+  contactsButtons,
   locale,
 }: ProjectPageContentProps) {
   return (
@@ -39,7 +44,11 @@ export default function ProjectPageContent({
         next={navigation.next}
       />
       <SectionDivider />
-      <ContactsSection variant="internal" />
+      <ContactsSection
+        variant="internal"
+        title={contactsTitle}
+        buttons={contactsButtons}
+      />
     </>
   );
 }

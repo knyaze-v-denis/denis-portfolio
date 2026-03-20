@@ -71,6 +71,18 @@ export const siteSettingsType = defineType({
       type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "contactsTitle",
+      title: "* Contacts CTA title",
+      type: "localizedString",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "contactsButtons",
+      title: "Contacts CTA buttons",
+      type: "array",
+      of: [{ type: "homepageContactLink" }],
+    }),
 
     defineField({
       name: "showFooterAside",
@@ -98,7 +110,7 @@ export const siteSettingsType = defineType({
       hidden: ({ parent }) => parent?.showFooterAside === false,
     }),
   ],
-    preview: {
+  preview: {
     select: {
       title: "title",
       personNameRu: "personName.ru",

@@ -62,6 +62,18 @@ export default function ContactsSection({
     </StaggerReveal>
   );
 
+  const content = (
+    <div className="section-content contacts-section__content">
+      <Reveal variant="title">
+        <h2 className="contacts-section__title text-large-title">
+          {resolvedTitle}
+        </h2>
+      </Reveal>
+
+      {actions}
+    </div>
+  );
+
   if (variant === "internal") {
     return (
       <InViewClass
@@ -72,15 +84,7 @@ export default function ContactsSection({
         threshold={0.2}
       >
         <div className="section-shell contacts-section__shell">
-          <div className="contacts-section__content">
-            <Reveal variant="title">
-              <h2 className="contacts-section__title text-large-title">
-                {resolvedTitle}
-              </h2>
-            </Reveal>
-
-            {actions}
-          </div>
+          {content}
         </div>
       </InViewClass>
     );
@@ -89,15 +93,7 @@ export default function ContactsSection({
   return (
     <div id="contacts">
       <ContentSection label={t.sections.contacts}>
-        <div className="contacts-section__content">
-          <Reveal variant="title">
-            <h2 className="contacts-section__title text-large-title">
-              {resolvedTitle}
-            </h2>
-          </Reveal>
-
-          {actions}
-        </div>
+        {content}
       </ContentSection>
     </div>
   );

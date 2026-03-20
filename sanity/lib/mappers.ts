@@ -114,6 +114,10 @@ export type SiteSettingsData = {
   personPhotoSrc: string;
   seoTitle: string;
   seoDescription: string;
+  contacts: {
+    title: string;
+    buttons: HomepageContactButton[];
+  };
   footer: {
     showAside: boolean;
     asideText: string;
@@ -169,8 +173,6 @@ type SanityHomepage = {
   skillGroups?: SanityHomepageSkillGroup[];
   workExperienceItems?: SanityWorkExperienceItem[];
   educationItems?: SanityEducationItem[];
-  contactsTitle?: LocalizedValue<string> | string;
-  contactsButtons?: SanityHomepageContactLink[];
   middleSectionsOrder?: string[];
   homepageProjects?: SanityHomepageProject[];
 };
@@ -181,6 +183,8 @@ type SanitySiteSettings = {
   personPhoto?: Image;
   seoTitle?: LocalizedValue<string> | string;
   seoDescription?: LocalizedValue<string> | string;
+  contactsTitle?: LocalizedValue<string> | string;
+  contactsButtons?: SanityHomepageContactLink[];
   showFooterAside?: boolean;
   footerAsideText?: LocalizedValue<string> | string;
   footerAsideLinkLabel?: LocalizedValue<string> | string;
@@ -464,13 +468,17 @@ export function mapSanityHomepageToHomepageData(
   locale: "ru" | "en"
 ): HomepageData {
   const heroContacts =
-    homepage.heroContacts?.filter(
-      (item): item is { label: LocalizedValue<string> | string; href: string } =>
-        Boolean(item?.label && item?.href)
-    ).map((item) => ({
-      label: pickLocaleValue(item.label, locale) ?? "",
-      href: item.href,
-    })) ?? [];
+    homepage.heroContacts
+      ?.filter(
+        (item): item is {
+          label: LocalizedValue<string> | string;
+          href: string;
+        } => Boolean(item?.label && item?.href)
+      )
+      .map((item) => ({
+        label: pickLocaleValue(item.label, locale) ?? "",
+        href: item.href,
+      })) ?? [];
 
   const skills = (homepage.skillGroups ?? [])
     .map((group) => ({
@@ -536,21 +544,6 @@ export function mapSanityHomepageToHomepageData(
       };
     });
 
-  const contactsButtons: HomepageContactButton[] = (
-    homepage.contactsButtons?.filter(
-      (item): item is {
-        label: LocalizedValue<string> | string;
-        href: string;
-        variant?: string;
-      } =>
-        Boolean(item?.label && item?.href)
-    ) ?? []
-  ).map((item) => ({
-    label: pickLocaleValue(item.label, locale) ?? "",
-    href: item.href,
-    variant: item.variant === "primary" ? "primary" : "secondary",
-  }));
-
   const homepageProjects = mapSanityProjectsToCards(
     homepage.homepageProjects ?? [],
     locale
@@ -565,8 +558,8 @@ export function mapSanityHomepageToHomepageData(
     workExperience,
     education,
     contacts: {
-      title: pickLocaleValue(homepage.contactsTitle, locale) ?? "",
-      buttons: contactsButtons,
+      title: "",
+      buttons: [],
     },
     middleSectionsOrder:
       homepage.middleSectionsOrder ?? [
@@ -587,6 +580,20 @@ export function mapSanitySiteSettingsToSiteSettingsData(
     ? urlForImage(settings.personPhoto).width(1200).url()
     : "/images/profile-photo.png";
 
+  const contactsButtons: HomepageContactButton[] = (
+    settings.contactsButtons?.filter(
+      (item): item is {
+        label: LocalizedValue<string> | string;
+        href: string;
+        variant?: string;
+      } => Boolean(item?.label && item?.href)
+    ) ?? []
+  ).map((item) => ({
+    label: pickLocaleValue(item.label, locale) ?? "",
+    href: item.href,
+    variant: item.variant === "primary" ? "primary" : "secondary",
+  }));
+
   return {
     personName:
       pickLocaleValue(settings.personName, locale) ?? "Denis Knyazev",
@@ -599,6 +606,10 @@ export function mapSanitySiteSettingsToSiteSettingsData(
     seoDescription:
       pickLocaleValue(settings.seoDescription, locale) ??
       "Product designer focused on UX, interfaces and scalable systems.",
+    contacts: {
+      title: pickLocaleValue(settings.contactsTitle, locale) ?? "",
+      buttons: contactsButtons,
+    },
     footer: {
       showAside: settings.showFooterAside ?? false,
       asideText: pickLocaleValue(settings.footerAsideText, locale) ?? "",

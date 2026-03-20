@@ -52,16 +52,17 @@ export const homepageType = defineType({
     }),
 
     defineField({
-      name: "heroContacts",
-      title: "Hero contacts",
-      type: "array",
-      of: [{ type: "homepageContactLink" }],
-    }),
-    defineField({
       name: "heroAbout",
       title: "* About text",
       type: "localizedText",
       validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
+      name: "heroContacts",
+      title: "Hero contacts",
+      type: "array",
+      of: [{ type: "homepageContactLink" }],
     }),
 
     defineField({
@@ -87,18 +88,6 @@ export const homepageType = defineType({
       of: [{ type: "educationItem" }],
     }),
 
-    defineField({
-      name: "contactsTitle",
-      title: "* Contacts CTA title",
-      type: "localizedString",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "contactsButtons",
-      title: "Contacts CTA buttons",
-      type: "array",
-      of: [{ type: "homepageContactLink" }],
-    }),
 
     defineField({
       name: "middleSectionsOrder",

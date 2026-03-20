@@ -86,12 +86,6 @@ export const homepageQuery = groq`
       customEducationType,
       period
     },
-    contactsTitle,
-    "contactsButtons": coalesce(contactsButtons, [])[]{
-      label,
-      href,
-      variant
-    },
     "middleSectionsOrder": coalesce(middleSectionsOrder, []),
     "homepageProjects": coalesce(homepageProjects, [])[]->{
       _id,
@@ -112,6 +106,12 @@ export const siteSettingsQuery = groq`
     personPhoto,
     seoTitle,
     seoDescription,
+    contactsTitle,
+    "contactsButtons": coalesce(contactsButtons, [])[]{
+      label,
+      href,
+      variant
+    },
     showFooterAside,
     footerAsideText,
     footerAsideLinkLabel,

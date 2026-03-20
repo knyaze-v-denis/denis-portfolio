@@ -116,6 +116,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           heroData={heroData}
           sections={sections}
           navigation={navigation}
+          contactsTitle={siteSettings?.contacts.title}
+          contactsButtons={siteSettings?.contacts.buttons}
           locale={locale}
         />
       </PageLayout>
