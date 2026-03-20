@@ -1,6 +1,7 @@
 import type { Image } from "sanity";
 import type { ProjectHeroProps } from "@/components/projects/ProjectHero";
 import type { ProjectContentSection } from "@/lib/projects/types";
+import type { ProjectCardProps } from "@/components/projects/ProjectCard";
 import { urlForImage } from "./image";
 
 type SanityProjectLink = {
@@ -33,12 +34,15 @@ type SanityProjectSection = {
 
 type SanityProject = {
   title?: string;
+  slug?: string;
   coverImage?: Image;
+  shortDescription?: string;
   heroDescription?: string;
   client?: string;
   domain?: string;
   timeline?: string;
   role?: string;
+  tags?: string[];
   links?: SanityProjectLink[];
   sections?: SanityProjectSection[];
 };
@@ -171,6 +175,31 @@ export function mapSanityProjectToSections(
       id: `section-${sectionIndex + 1}`,
       title: section.title ?? `Section ${sectionIndex + 1}`,
       blocks: mappedBlocks,
+    };
+  });
+}
+
+export function mapSanityProjectsToCards(
+  projects: SanityProject[]
+): ProjectCardProps[] {
+  return (projects ?? []).map((project) => {
+    const cover = project.coverImage
+      ? urlForImage(project.coverImage).width(1200).url()
+      : "/images/project-cover.png";
+
+    const rawTags = project.tags ?? [];
+
+    const tags: ProjectCardProps["tags"] = rawTags.map((tag, index) => ({
+      label: tag,
+      variant: index === 0 ? "primary" : "secondary",
+    }));
+
+    return {
+      title: project.title ?? "Untitled project",
+      description: project.shortDescription ?? "",
+      cover,
+      href: `/projects/${project.slug ?? ""}`,
+      tags,
     };
   });
 }

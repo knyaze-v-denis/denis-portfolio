@@ -22,6 +22,13 @@ export const projectType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "order",
+      title: "Order",
+      description: "Controls project order on the homepage",
+      type: "number",
+      validation: (Rule) => Rule.required().integer().min(0),
+    }),
+    defineField({
       name: "coverImage",
       title: "Cover image",
       type: "image",
@@ -45,6 +52,13 @@ export const projectType = defineType({
       type: "text",
       rows: 5,
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags",
+      description: "Used in the project card on the homepage",
+      type: "array",
+      of: [{ type: "string" }],
     }),
     defineField({
       name: "client",

@@ -35,3 +35,14 @@ export const projectMetadataBySlugQuery = groq`
     shortDescription
   }
 `;
+
+export const projectsQuery = groq`
+  *[_type == "project"] | order(order asc, _createdAt desc){
+    _id,
+    title,
+    "slug": slug.current,
+    shortDescription,
+    tags,
+    coverImage
+  }
+`;

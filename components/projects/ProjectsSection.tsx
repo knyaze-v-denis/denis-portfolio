@@ -2,18 +2,46 @@
 
 import Reveal from "@/components/motion/Reveal";
 import ContentSection from "@/components/sections/ContentSection";
-import ProjectCard from "@/components/projects/ProjectCard";
+import ProjectCard, {
+  type ProjectCardProps,
+} from "@/components/projects/ProjectCard";
 import { useTranslations } from "@/lib/i18n/useTranslations";
 
-export default function ProjectsSection() {
-  const { t } = useTranslations();
+type ProjectsSectionProps = {
+  projects?: ProjectCardProps[];
+};
+
+export default function ProjectsSection({
+  projects = [],
+}: ProjectsSectionProps) {
+  const { t, locale } = useTranslations();
+
+  const fallbackProjects = t.projects.items.map((project) => ({
+    title: project.title,
+    description: project.description,
+    cover: project.cover,
+    href: project.href,
+    tags: project.tags,
+  }));
+
+  const displayProjects = projects.length > 0 ? projects : fallbackProjects;
 
   return (
     <ContentSection label={t.sections.projects}>
-      <div className="flex flex-col gap-[var(--space-6)]">
-        {t.projects.items.map((project) => (
-          <Reveal key={project.title} variant="card">
-            <ProjectCard {...project} />
+      <div className="section-content">
+        {displayProjects.map((project, index) => (
+          <Reveal
+            key={`${locale}-${project.href}-${index}`}
+            variant="card"
+            delay={index * 80}
+          >
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              cover={project.cover}
+              href={project.href}
+              tags={project.tags}
+            />
           </Reveal>
         ))}
       </div>

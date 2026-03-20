@@ -8,8 +8,14 @@ import ProjectsSection from "@/components/projects/ProjectsSection";
 import WorkExperienceSection from "@/components/timeline/WorkExperienceSection";
 import EducationSection from "@/components/timeline/EducationSection";
 import ContactsSection from "@/components/sections/ContactsSection";
+import { client } from "@/sanity/lib/client";
+import { projectsQuery } from "@/sanity/lib/queries";
+import { mapSanityProjectsToCards } from "@/sanity/lib/mappers";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const projects = await client.fetch(projectsQuery);
+  const projectCards = mapSanityProjectsToCards(projects ?? []);
+
   return (
     <div className="site-root">
       <Header />
@@ -21,7 +27,7 @@ export default function HomePage() {
         <SkillsSection />
         <SectionDivider />
 
-        <ProjectsSection />
+        <ProjectsSection projects={projectCards} />
         <SectionDivider />
 
         <WorkExperienceSection />
