@@ -8,26 +8,29 @@ export const quoteBlockType = defineType({
     defineField({
       name: "title",
       title: "Title",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "text",
       title: "Text",
-      type: "text",
-      rows: 5,
+      type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
-      title: "title",
-      subtitle: "text",
+      titleEn: "title.en",
+      titleRu: "title.ru",
+      textEn: "text.en",
+      textRu: "text.ru",
     },
-    prepare({ title, subtitle }) {
+    prepare({ titleEn, titleRu, textEn, textRu }) {
+      const title = titleEn || titleRu || "Quote block";
+      const subtitle = textEn || textRu || "Quote block";
       return {
-        title: title || "Quote block",
-        subtitle: subtitle || "Quote block",
+        title,
+        subtitle,
       };
     },
   },

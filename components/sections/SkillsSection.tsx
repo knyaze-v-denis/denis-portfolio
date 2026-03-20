@@ -14,7 +14,7 @@ type SkillsSectionProps = {
 export default function SkillsSection({
   skillGroups,
 }: SkillsSectionProps) {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
 
   const fallbackGroups: HomepageSkillGroup[] = [
     {
@@ -39,11 +39,21 @@ export default function SkillsSection({
 
   const visibleGroups = groups.filter((group) => group.items.length > 0);
 
+  const groupsKey = visibleGroups
+    .map((group) => `${group.title}:${group.items.join("|")}`)
+    .join("__");
+
   return (
     <ContentSection label={t.sections.skills}>
-      <div className="section-content skills-section__content">
+      <div
+        key={`skills-${locale}-${groupsKey}`}
+        className="section-content skills-section__content"
+      >
         {visibleGroups.map((group, groupIndex) => (
-          <div key={`${group.title}-${groupIndex}`} className="skills-group">
+          <div
+            key={`${locale}-${group.title}-${group.items.join("|")}-${groupIndex}`}
+            className="skills-group"
+          >
             {group.showTitle ? (
               <Reveal variant="body" delay={groupIndex * 40}>
                 <h3 className="skills-group__title text-title-3">
@@ -53,12 +63,13 @@ export default function SkillsSection({
             ) : null}
 
             <StaggerReveal
+              key={`${locale}-${group.title}-${group.items.join("|")}`}
               className="skills-group__items"
               itemAs="div"
               step={40}
             >
               {group.items.map((item) => (
-                <SkillTag key={item} label={item} />
+                <SkillTag key={`${locale}-${group.title}-${item}`} label={item} />
               ))}
             </StaggerReveal>
           </div>

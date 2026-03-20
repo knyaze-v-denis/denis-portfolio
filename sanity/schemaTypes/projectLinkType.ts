@@ -8,7 +8,7 @@ export const projectLinkType = defineType({
     defineField({
       name: "label",
       title: "Label",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -20,8 +20,15 @@ export const projectLinkType = defineType({
   ],
   preview: {
     select: {
-      title: "label",
+      labelEn: "label.en",
+      labelRu: "label.ru",
       subtitle: "href",
+    },
+    prepare({ labelEn, labelRu, subtitle }) {
+      return {
+        title: labelEn || labelRu || "Link",
+        subtitle,
+      };
     },
   },
 });

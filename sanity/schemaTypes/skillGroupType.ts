@@ -38,7 +38,7 @@ export const skillGroupType = defineType({
       title: "Custom group title",
       description:
         'Visible only when "Custom" is selected above',
-      type: "string",
+      type: "localizedString",
       hidden: ({ parent }) => parent?.kind !== "custom",
     }),
     defineField({
@@ -50,24 +50,41 @@ export const skillGroupType = defineType({
     defineField({
       name: "items",
       title: "Skills",
-      type: "array",
-      of: [{ type: "string" }],
+      type: "object",
+      fields: [
+        {
+          name: "ru",
+          title: "RU",
+          type: "array",
+          of: [{ type: "string" }],
+        },
+        {
+          name: "en",
+          title: "EN",
+          type: "array",
+          of: [{ type: "string" }],
+        },
+      ],
     }),
   ],
   preview: {
     select: {
       kind: "kind",
-      title: "title",
+      titleEn: "title.en",
+      titleRu: "title.ru",
       showTitle: "showTitle",
-      items: "items",
+      itemsEn: "items.en",
+      itemsRu: "items.ru",
     },
-    prepare({ kind, title, showTitle, items }) {
-      const resolvedTitle = getKindLabel(kind, title);
+    prepare({ kind, titleEn, titleRu, showTitle, itemsEn, itemsRu }) {
+      const customTitle = titleEn || titleRu;
+      const resolvedTitle = getKindLabel(kind, customTitle);
+      const items = itemsEn || itemsRu || [];
 
       return {
         title: resolvedTitle || "Untitled skill group",
         subtitle: `${showTitle ? "Title visible" : "Title hidden"} · ${
-          items?.length || 0
+          items.length || 0
         } skill(s)`,
       };
     },

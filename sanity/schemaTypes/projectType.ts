@@ -8,7 +8,7 @@ export const projectType = defineType({
     defineField({
       name: "title",
       title: "Title",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -16,7 +16,7 @@ export const projectType = defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: "title",
+        source: "title.en",
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
@@ -34,44 +34,55 @@ export const projectType = defineType({
       name: "shortDescription",
       title: "Short description",
       description: "Used in the project card on the homepage",
-      type: "text",
-      rows: 3,
+      type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "heroDescription",
       title: "Hero description",
       description: "Used in the hero section on the project page",
-      type: "text",
-      rows: 5,
+      type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "tags",
       title: "Tags",
       description: "Used in the project card on the homepage",
-      type: "array",
-      of: [{ type: "string" }],
+      type: "object",
+      fields: [
+        {
+          name: "ru",
+          title: "RU",
+          type: "array",
+          of: [{ type: "string" }],
+        },
+        {
+          name: "en",
+          title: "EN",
+          type: "array",
+          of: [{ type: "string" }],
+        },
+      ],
     }),
     defineField({
       name: "client",
       title: "Client",
-      type: "string",
+      type: "localizedString",
     }),
     defineField({
       name: "domain",
       title: "Domain",
-      type: "string",
+      type: "localizedString",
     }),
     defineField({
       name: "timeline",
       title: "Timeline",
-      type: "string",
+      type: "localizedString",
     }),
     defineField({
       name: "role",
       title: "Role",
-      type: "string",
+      type: "localizedString",
     }),
     defineField({
       name: "links",
@@ -88,9 +99,17 @@ export const projectType = defineType({
   ],
   preview: {
     select: {
-      title: "title",
+      titleEn: "title.en",
+      titleRu: "title.ru",
       subtitle: "slug.current",
       media: "coverImage",
+    },
+    prepare({ titleEn, titleRu, subtitle, media }) {
+      return {
+        title: titleEn || titleRu || "Untitled project",
+        subtitle,
+        media,
+      };
     },
   },
 });

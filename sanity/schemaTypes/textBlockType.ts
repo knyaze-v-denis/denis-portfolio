@@ -8,18 +8,18 @@ export const textBlockType = defineType({
     defineField({
       name: "text",
       title: "Text",
-      type: "text",
-      rows: 6,
+      type: "localizedText",
       validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
-      title: "text",
+      titleEn: "text.en",
+      titleRu: "text.ru",
     },
-    prepare({ title }) {
+    prepare({ titleEn, titleRu }) {
       return {
-        title: title || "Untitled text block",
+        title: titleEn || titleRu || "Untitled text block",
         subtitle: "Text block",
       };
     },

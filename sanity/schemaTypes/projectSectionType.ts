@@ -8,7 +8,7 @@ export const projectSectionType = defineType({
     defineField({
       name: "title",
       title: "Section title",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -27,12 +27,13 @@ export const projectSectionType = defineType({
   ],
   preview: {
     select: {
-      title: "title",
+      titleEn: "title.en",
+      titleRu: "title.ru",
       blocks: "blocks",
     },
-    prepare({ title, blocks }) {
+    prepare({ titleEn, titleRu, blocks }) {
       return {
-        title: title || "Untitled section",
+        title: titleEn || titleRu || "Untitled section",
         subtitle: `Section · ${blocks?.length || 0} block(s)`,
       };
     },

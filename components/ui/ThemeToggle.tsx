@@ -1,7 +1,7 @@
 "use client";
 
 import { SunMoon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 
 type ThemeMode = "light" | "dark";
 
@@ -19,7 +19,19 @@ function getCurrentTheme(): ThemeMode {
 }
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeMode>(getCurrentTheme);
+  const isInitializedRef = useRef(false);
+
+  useEffect(() => {
+    const savedTheme = sessionStorage.getItem("theme") as ThemeMode | null;
+    const initialTheme = savedTheme || getCurrentTheme();
+
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
+
+    isInitializedRef.current = true;
+  }, []);
 
   function applyTheme(nextTheme: ThemeMode) {
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
@@ -27,7 +39,10 @@ export default function ThemeToggle() {
   }
 
   function toggleTheme(event: React.MouseEvent<HTMLButtonElement>) {
-    const nextTheme: ThemeMode = theme === "dark" ? "light" : "dark";
+    if (!isInitializedRef.current) return;
+
+    const currentTheme = getCurrentTheme();
+    const nextTheme: ThemeMode = currentTheme === "dark" ? "light" : "dark";
 
     const supportsTransition =
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
@@ -36,7 +51,6 @@ export default function ThemeToggle() {
 
     if (!supportsTransition) {
       applyTheme(nextTheme);
-      setTheme(nextTheme);
       return;
     }
 
@@ -62,13 +76,11 @@ export default function ThemeToggle() {
     const transition = (document as DocumentWithTransition).startViewTransition!(
       () => {
         applyTheme(nextTheme);
-        setTheme(nextTheme);
       }
     );
 
     transition.ready.catch(() => {
       applyTheme(nextTheme);
-      setTheme(nextTheme);
     });
   }
 

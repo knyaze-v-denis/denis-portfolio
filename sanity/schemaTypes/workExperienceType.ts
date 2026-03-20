@@ -8,32 +8,46 @@ export const workExperienceType = defineType({
     defineField({
       name: "company",
       title: "* Company",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "position",
       title: "* Position",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "period",
       title: "* Period",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
-      title: "company",
-      subtitle: "position",
-      period: "period",
+      companyEn: "company.en",
+      companyRu: "company.ru",
+      positionEn: "position.en",
+      positionRu: "position.ru",
+      periodEn: "period.en",
+      periodRu: "period.ru",
     },
-    prepare({ title, subtitle, period }) {
+    prepare({
+      companyEn,
+      companyRu,
+      positionEn,
+      positionRu,
+      periodEn,
+      periodRu,
+    }) {
+      const company = companyEn || companyRu;
+      const position = positionEn || positionRu;
+      const period = periodEn || periodRu;
+
       return {
-        title: title || "Untitled company",
-        subtitle: [subtitle, period].filter(Boolean).join(" · "),
+        title: company || "Untitled company",
+        subtitle: [position, period].filter(Boolean).join(" · "),
       };
     },
   },

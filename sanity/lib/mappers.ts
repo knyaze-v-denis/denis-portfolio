@@ -49,7 +49,7 @@ type SanityProject = {
   domain?: LocalizedValue<string> | string;
   timeline?: LocalizedValue<string> | string;
   role?: LocalizedValue<string> | string;
-  tags?: string[];
+  tags?: LocalizedValue<string[]> | string[];
   links?: SanityProjectLink[];
   sections?: SanityProjectSection[];
 };
@@ -138,7 +138,7 @@ type SanityHomepageSkillGroup = {
   kind?: string;
   title?: LocalizedValue<string> | string;
   showTitle?: boolean;
-  items?: string[];
+  items?: LocalizedValue<string[]> | string[];
 };
 
 type SanityWorkExperienceItem = {
@@ -159,7 +159,7 @@ type SanityHomepageProject = {
   title?: LocalizedValue<string> | string;
   slug?: string;
   shortDescription?: LocalizedValue<string> | string;
-  tags?: string[];
+  tags?: LocalizedValue<string[]> | string[];
   coverImage?: Image;
 };
 
@@ -394,7 +394,7 @@ export function mapSanityProjectsToCards(
       ? urlForImage(project.coverImage).width(1200).url()
       : "/images/project-cover.png";
 
-    const rawTags = project.tags ?? [];
+    const rawTags = pickLocaleValue(project.tags, locale) ?? [];
 
     const tags: ProjectCardProps["tags"] = rawTags.map((tag, index) => ({
       label: tag,
@@ -479,7 +479,7 @@ export function mapSanityHomepageToHomepageData(
         pickLocaleValue(group.title, locale)
       ),
       showTitle: group.showTitle ?? true,
-      items: group.items ?? [],
+      items: pickLocaleValue(group.items, locale) ?? [],
     }))
     .filter((group) => group.items.length > 0);
 

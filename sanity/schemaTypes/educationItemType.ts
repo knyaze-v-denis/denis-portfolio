@@ -30,13 +30,13 @@ export const educationItemType = defineType({
     defineField({
       name: "institution",
       title: "* Institution",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "program",
       title: "* Program",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -52,37 +52,50 @@ export const educationItemType = defineType({
       title: "Custom education type",
       description:
         'Visible only when "Custom" is selected above',
-      type: "string",
+      type: "localizedString",
       hidden: ({ parent }) => parent?.educationType !== "custom",
     }),
     defineField({
       name: "period",
       title: "Period",
-      type: "string",
+      type: "localizedString",
     }),
   ],
   preview: {
     select: {
-      title: "institution",
-      program: "program",
+      institutionEn: "institution.en",
+      institutionRu: "institution.ru",
+      programEn: "program.en",
+      programRu: "program.ru",
       educationType: "educationType",
-      customEducationType: "customEducationType",
-      period: "period",
+      customTypeEn: "customEducationType.en",
+      customTypeRu: "customEducationType.ru",
+      periodEn: "period.en",
+      periodRu: "period.ru",
     },
     prepare({
-      title,
-      program,
+      institutionEn,
+      institutionRu,
+      programEn,
+      programRu,
       educationType,
-      customEducationType,
-      period,
+      customTypeEn,
+      customTypeRu,
+      periodEn,
+      periodRu,
     }) {
+      const institution = institutionEn || institutionRu;
+      const program = programEn || programRu;
+      const period = periodEn || periodRu;
+      const customType = customTypeEn || customTypeRu;
+
       const typeLabel = getEducationTypeLabel(
         educationType,
-        customEducationType
+        customType
       );
 
       return {
-        title: title || "Untitled institution",
+        title: institution || "Untitled institution",
         subtitle: [program, typeLabel, period]
           .filter(Boolean)
           .join(" · "),

@@ -17,23 +17,24 @@ export const imageBlockType = defineType({
     defineField({
       name: "alt",
       title: "Alt text",
-      type: "string",
+      type: "localizedString",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "caption",
       title: "Caption",
-      type: "string",
+      type: "localizedString",
     }),
   ],
   preview: {
     select: {
-      title: "caption",
+      captionEn: "caption.en",
+      captionRu: "caption.ru",
       media: "image",
     },
-    prepare({ title, media }) {
+    prepare({ captionEn, captionRu, media }) {
       return {
-        title: title || "Image block",
+        title: captionEn || captionRu || "Image block",
         subtitle: "Image block",
         media,
       };

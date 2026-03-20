@@ -13,19 +13,23 @@ type WorkExperienceSectionProps = {
 export default function WorkExperienceSection({
   items,
 }: WorkExperienceSectionProps) {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
 
   const fallbackItems: HomepageTimelineItem[] = t.workExperience.items;
 
   const displayItems =
     items && items.length > 0 ? items : fallbackItems;
 
+  const itemsKey = displayItems
+    .map((item) => `${item.title}:${item.lines.join("|")}`)
+    .join("__");
+
   return (
     <ContentSection label={t.sections.workExperience}>
-      <div className="section-content">
+      <div key={`work-${locale}-${itemsKey}`} className="section-content">
         {displayItems.map((item, index) => (
           <Reveal
-            key={`${item.title}-${index}`}
+            key={`${locale}-${item.title}-${item.lines.join("|")}-${index}`}
             variant="body"
             delay={index * 60}
           >

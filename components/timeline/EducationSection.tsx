@@ -13,19 +13,23 @@ type EducationSectionProps = {
 export default function EducationSection({
   items,
 }: EducationSectionProps) {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
 
   const fallbackItems: HomepageTimelineItem[] = t.education.items;
 
   const displayItems =
     items && items.length > 0 ? items : fallbackItems;
 
+  const itemsKey = displayItems
+    .map((item) => `${item.title}:${item.lines.join("|")}`)
+    .join("__");
+
   return (
     <ContentSection label={t.sections.education}>
-      <div className="section-content">
+      <div key={`education-${locale}-${itemsKey}`} className="section-content">
         {displayItems.map((item, index) => (
           <Reveal
-            key={`${item.title}-${index}`}
+            key={`${locale}-${item.title}-${item.lines.join("|")}-${index}`}
             variant="body"
             delay={index * 60}
           >
