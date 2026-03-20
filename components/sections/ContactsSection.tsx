@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import InViewClass from "@/components/motion/InViewClass";
 import Reveal from "@/components/motion/Reveal";
 import StaggerReveal from "@/components/motion/StaggerReveal";
@@ -15,7 +14,12 @@ type ContactsSectionProps = {
 };
 
 function isExternalHref(href: string) {
-  return href.startsWith("http://") || href.startsWith("https://");
+  return (
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:")
+  );
 }
 
 export default function ContactsSection({
@@ -32,7 +36,7 @@ export default function ContactsSection({
   const actions = (
     <StaggerReveal className="contacts-section__actions" step={60} itemAs="div">
       {resolvedButtons.map((contact) => (
-        <Link
+        <a
           key={contact.label}
           href={contact.href}
           className={[
@@ -41,11 +45,19 @@ export default function ContactsSection({
             "ui-button--m",
             "ui-button--default",
           ].join(" ")}
-          target={isExternalHref(contact.href) ? "_blank" : undefined}
-          rel={isExternalHref(contact.href) ? "noreferrer noopener" : undefined}
+          target={
+            contact.href.startsWith("http://") || contact.href.startsWith("https://")
+              ? "_blank"
+              : undefined
+          }
+          rel={
+            contact.href.startsWith("http://") || contact.href.startsWith("https://")
+              ? "noreferrer noopener"
+              : undefined
+          }
         >
           {contact.label}
-        </Link>
+        </a>
       ))}
     </StaggerReveal>
   );
