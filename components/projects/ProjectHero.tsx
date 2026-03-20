@@ -75,7 +75,7 @@ export default function ProjectHero({
 
           <div className="project-hero__info-content">
             <div className="project-hero__fields">
-              {fields.map((field, index) => (
+              {(fields ?? []).map((field, index) => (
                 <Reveal
                   key={`${locale}-${field.key}`}
                   variant="body"

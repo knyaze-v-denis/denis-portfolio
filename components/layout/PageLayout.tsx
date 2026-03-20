@@ -3,5 +3,5 @@ type PageLayoutProps = {
 };
 
 export default function PageLayout({ children }: PageLayoutProps) {
-  return <main>{children}</main>;
+  return <main className="site-main">{children}</main>;
 }

@@ -152,3 +152,24 @@
 .section-divider.is-in-view .section-divider-right {
   opacity: 1;
 }
+
+/* ============================= */
+/* Sticky footer layout */
+/* ============================= */
+
+.site-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-footer {
+  flex-shrink: 0;
+}
