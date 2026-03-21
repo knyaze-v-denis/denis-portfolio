@@ -1,5 +1,6 @@
 "use client";
 
+import type { PointerEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SendHorizontal } from "lucide-react";
@@ -13,6 +14,29 @@ type HeaderProps = {
   personRole?: string;
   personPhotoSrc?: string;
 };
+
+function handleButtonRipple(event: PointerEvent<HTMLAnchorElement>) {
+  const button = event.currentTarget;
+  const rect = button.getBoundingClientRect();
+
+  const ripple = document.createElement("span");
+  ripple.className = "ui-button__ripple";
+
+  const size = Math.max(rect.width, rect.height) * 1.2;
+  const x = event.clientX - rect.left - size / 2;
+  const y = event.clientY - rect.top - size / 2;
+
+  ripple.style.width = `${size}px`;
+  ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+
+  button.appendChild(ripple);
+
+  window.setTimeout(() => {
+    ripple.remove();
+  }, 500);
+}
 
 export default function Header({
   personName,
@@ -74,6 +98,7 @@ export default function Header({
             <Link
               href="/#contacts"
               onClick={handleContactsClick}
+              onPointerDown={handleButtonRipple}
               aria-label={t.header.cta}
               className="ui-button ui-button--primary ui-button--s ui-button--only-icon ui-button--default !inline-flex md:!hidden"
             >
@@ -83,6 +108,7 @@ export default function Header({
             <Link
               href="/#contacts"
               onClick={handleContactsClick}
+              onPointerDown={handleButtonRipple}
               aria-label={t.header.cta}
               className="ui-button ui-button--primary ui-button--s ui-button--default !hidden md:!inline-flex"
             >
@@ -90,7 +116,7 @@ export default function Header({
             </Link>
 
             <div className="hidden md:flex md:items-center md:gap-1">
-              <button type="button" onClick={() => setLocale("ru")}>
+              <button type="button" onClick={() => setLocale("ru")} className="cursor-pointer">
                 <InternalLink state={locale === "ru" ? "active" : "inactive"}>
                   {t.header.localeRu}
                 </InternalLink>
@@ -100,7 +126,7 @@ export default function Header({
                 /
               </span>
 
-              <button type="button" onClick={() => setLocale("en")}>
+              <button type="button" onClick={() => setLocale("en")} className="cursor-pointer">
                 <InternalLink state={locale === "en" ? "active" : "inactive"}>
                   {t.header.localeEn}
                 </InternalLink>

@@ -85,13 +85,13 @@
   border-radius: 999px;
   pointer-events: none;
   background: color-mix(in srgb, currentColor 20%, transparent);
-  transform: translate(-50%, -50%) scale(0);
+  transform: scale(0);
   animation: button-ripple 500ms ease-out forwards;
 }
 
 @keyframes button-ripple {
   to {
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
     opacity: 0;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "m" | "s";
@@ -25,6 +25,7 @@ export default function Button({
   ariaLabel,
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [isPressed, setIsPressed] = useState(false);
 
   function handlePointerDown(event: React.PointerEvent<HTMLButtonElement>) {
     const button = buttonRef.current;
@@ -57,8 +58,17 @@ export default function Button({
       type="button"
       aria-label={ariaLabel}
       onPointerDown={handlePointerDown}
+      onPointerDownCapture={() => setIsPressed(true)}
+      onPointerUp={() => setIsPressed(false)}
+      onPointerLeave={() => setIsPressed(false)}
+      onPointerCancel={() => setIsPressed(false)}
+      style={{
+        transform: isPressed ? "scale(0.96)" : "scale(1)",
+        transition: "transform 120ms ease",
+      }}
       className={cn(
-        "ui-button",
+        "cursor-pointer",
+        `ui-button`,
         `ui-button--${variant}`,
         `ui-button--${size}`,
         `ui-button--${buttonStyle}`,
