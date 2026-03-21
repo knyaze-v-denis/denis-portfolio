@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import LocalizedStringInput from "../components/LocalizedStringInput";
 
 export const localizedStringType = defineType({
   name: "localizedString",
@@ -16,6 +17,9 @@ export const localizedStringType = defineType({
       type: "string",
     }),
   ],
+  components: {
+    input: LocalizedStringInput,
+  },
   preview: {
     select: {
       ru: "ru",

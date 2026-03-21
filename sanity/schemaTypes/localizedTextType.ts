@@ -1,9 +1,13 @@
+import LocalizedTextInput from "../components/LocalizedTextInput";
 import { defineField, defineType } from "sanity";
 
 export const localizedTextType = defineType({
   name: "localizedText",
   title: "Localized text",
   type: "object",
+  components: {
+    input: LocalizedTextInput,
+  },
   fields: [
     defineField({
       name: "ru",

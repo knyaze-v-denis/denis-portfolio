@@ -28,6 +28,13 @@ export const siteSettingsType = defineType({
   name: "siteSettings",
   title: "Site settings",
   type: "document",
+  fieldsets: [
+    { name: "general", title: "General", options: { collapsible: false } },
+    { name: "identity", title: "Identity", options: { collapsible: false } },
+    { name: "seo", title: "SEO", options: { collapsible: false } },
+    { name: "contacts", title: "Contacts CTA", options: { collapsible: false } },
+    { name: "footer", title: "Footer", options: { collapsible: false } },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -35,6 +42,7 @@ export const siteSettingsType = defineType({
       type: "string",
       initialValue: "Site settings",
       validation: (Rule) => Rule.required(),
+      fieldset: "general",
     }),
 
     defineField({
@@ -42,12 +50,14 @@ export const siteSettingsType = defineType({
       title: "* Person name",
       type: "localizedString",
       validation: (Rule) => Rule.required(),
+      fieldset: "identity",
     }),
     defineField({
       name: "personRole",
       title: "* Person role",
       type: "localizedString",
       validation: (Rule) => Rule.required(),
+      fieldset: "identity",
     }),
     defineField({
       name: "personPhoto",
@@ -57,6 +67,7 @@ export const siteSettingsType = defineType({
         hotspot: true,
       },
       validation: (Rule) => Rule.required(),
+      fieldset: "identity",
     }),
 
     defineField({
@@ -64,24 +75,28 @@ export const siteSettingsType = defineType({
       title: "* Default SEO title",
       type: "localizedString",
       validation: (Rule) => Rule.required(),
+      fieldset: "seo",
     }),
     defineField({
       name: "seoDescription",
       title: "* Default SEO description",
       type: "localizedText",
       validation: (Rule) => Rule.required(),
+      fieldset: "seo",
     }),
     defineField({
       name: "contactsTitle",
       title: "* Contacts CTA title",
       type: "localizedString",
       validation: (Rule) => Rule.required(),
+      fieldset: "contacts",
     }),
     defineField({
       name: "contactsButtons",
       title: "Contacts CTA buttons",
       type: "array",
       of: [{ type: "homepageContactLink" }],
+      fieldset: "contacts",
     }),
 
     defineField({
@@ -89,18 +104,21 @@ export const siteSettingsType = defineType({
       title: "Show footer right block",
       type: "boolean",
       initialValue: true,
+      fieldset: "footer",
     }),
     defineField({
       name: "footerAsideText",
       title: "Footer right text",
       type: "localizedString",
       hidden: ({ parent }) => parent?.showFooterAside === false,
+      fieldset: "footer",
     }),
     defineField({
       name: "footerAsideLinkLabel",
       title: "Footer right link label",
       type: "localizedString",
       hidden: ({ parent }) => parent?.showFooterAside === false,
+      fieldset: "footer",
     }),
     defineField({
       name: "footerAsideLinkHref",
@@ -108,6 +126,7 @@ export const siteSettingsType = defineType({
       type: "string",
       validation: (Rule) => Rule.custom(validateHref),
       hidden: ({ parent }) => parent?.showFooterAside === false,
+      fieldset: "footer",
     }),
   ],
   preview: {

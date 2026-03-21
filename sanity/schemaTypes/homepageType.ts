@@ -42,6 +42,48 @@ export const homepageType = defineType({
   name: "homepage",
   title: "Homepage",
   type: "document",
+  fieldsets: [
+    {
+      name: "general",
+      title: "General",
+      options: { collapsible: false },
+    },
+    {
+      name: "hero",
+      title: "Hero section",
+      options: { collapsible: false },
+    },
+    {
+      name: "seo",
+      title: "SEO",
+      options: { collapsible: false },
+    },
+    {
+      name: "skills",
+      title: "Skills section",
+      options: { collapsible: false },
+    },
+    {
+      name: "workExperience",
+      title: "Work Experience section",
+      options: { collapsible: false },
+    },
+    {
+      name: "education",
+      title: "Education section",
+      options: { collapsible: false },
+    },
+    {
+      name: "projects",
+      title: "Projects section",
+      options: { collapsible: false },
+    },
+    {
+      name: "layout",
+      title: "Layout and order",
+      options: { collapsible: false },
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -49,6 +91,7 @@ export const homepageType = defineType({
       type: "string",
       initialValue: "Homepage",
       validation: (Rule) => Rule.required(),
+      fieldset: "general",
     }),
 
     defineField({
@@ -56,6 +99,7 @@ export const homepageType = defineType({
       title: "* About text",
       type: "localizedText",
       validation: (Rule) => Rule.required(),
+      fieldset: "hero",
     }),
 
     defineField({
@@ -63,6 +107,7 @@ export const homepageType = defineType({
       title: "Hero contacts",
       type: "array",
       of: [{ type: "homepageContactLink" }],
+      fieldset: "hero",
     }),
 
     defineField({
@@ -71,6 +116,7 @@ export const homepageType = defineType({
       description: "Used for the homepage title tag and social preview title.",
       type: "localizedString",
       validation: (Rule) => Rule.required(),
+      fieldset: "seo",
     }),
 
     defineField({
@@ -80,6 +126,7 @@ export const homepageType = defineType({
         "Used for the homepage meta description and social preview description.",
       type: "localizedText",
       validation: (Rule) => Rule.required(),
+      fieldset: "seo",
     }),
 
     defineField({
@@ -89,6 +136,7 @@ export const homepageType = defineType({
         "Groups with empty skill lists will not be rendered on the website.",
       type: "array",
       of: [{ type: "skillGroup" }],
+      fieldset: "skills",
     }),
 
     defineField({
@@ -96,6 +144,7 @@ export const homepageType = defineType({
       title: "Work experience items",
       type: "array",
       of: [{ type: "workExperience" }],
+      fieldset: "workExperience",
     }),
 
     defineField({
@@ -103,6 +152,7 @@ export const homepageType = defineType({
       title: "Education items",
       type: "array",
       of: [{ type: "educationItem" }],
+      fieldset: "education",
     }),
 
 
@@ -127,6 +177,7 @@ export const homepageType = defineType({
         "workExperience",
         "education",
       ],
+      fieldset: "layout",
     }),
 
     defineField({
@@ -141,6 +192,7 @@ export const homepageType = defineType({
           to: [{ type: "project" }],
         }),
       ],
+      fieldset: "projects",
     }),
   ],
   preview: {
