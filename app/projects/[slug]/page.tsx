@@ -26,28 +26,61 @@ type ProjectPageProps = {
 };
 
 type SanityProjectMetadata = {
-  title?: string;
-  shortDescription?: string;
+  seoTitle?: { ru?: string; en?: string } | string;
+  seoDescription?: { ru?: string; en?: string } | string;
 };
+
+type SanitySiteSettingsMetadata = {
+  seoTitle?: { ru?: string; en?: string } | string;
+  seoDescription?: { ru?: string; en?: string } | string;
+};
+
+function pickLocaleValue(
+  field: { ru?: string; en?: string } | string | undefined,
+  locale: Locale
+) {
+  if (!field) return undefined;
+  if (typeof field === "string") return field;
+  return field[locale] ?? field.ru ?? field.en;
+}
 
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
+  const locale: Locale = localeCookie === "en" ? "en" : "ru";
 
-  const project = await client.fetch<SanityProjectMetadata | null>(
-    projectMetadataBySlugQuery,
-    { slug }
-  );
+  const [project, siteSettingsDocument] = await Promise.all([
+    client.fetch<SanityProjectMetadata | null>(projectMetadataBySlugQuery, {
+      slug,
+    }),
+    client.fetch<SanitySiteSettingsMetadata | null>(siteSettingsQuery),
+  ]);
 
-  if (project?.title) {
-    return {
-      title: project.title,
-      description: project.shortDescription ?? "",
-    };
-  }
+  const title =
+    pickLocaleValue(project?.seoTitle, locale) ??
+    pickLocaleValue(siteSettingsDocument?.seoTitle, locale) ??
+    "Denis Knyazev — Product Designer";
 
-  return {};
+  const description =
+    pickLocaleValue(project?.seoDescription, locale) ??
+    pickLocaleValue(siteSettingsDocument?.seoDescription, locale) ??
+    "Product designer focused on UX, interfaces and scalable systems.";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {

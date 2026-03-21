@@ -66,6 +66,23 @@ export const homepageType = defineType({
     }),
 
     defineField({
+      name: "seoTitle",
+      title: "* SEO title",
+      description: "Used for the homepage title tag and social preview title.",
+      type: "localizedString",
+      validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
+      name: "seoDescription",
+      title: "* SEO description",
+      description:
+        "Used for the homepage meta description and social preview description.",
+      type: "localizedText",
+      validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
       name: "skillGroups",
       title: "Skill groups",
       description:

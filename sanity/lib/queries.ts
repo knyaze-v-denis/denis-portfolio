@@ -7,6 +7,8 @@ export const projectBySlugQuery = groq`
     "slug": slug.current,
     coverImage,
     shortDescription,
+    seoTitle,
+    seoDescription,
     heroDescription,
     client,
     domain,
@@ -32,6 +34,8 @@ export const projectBySlugQuery = groq`
 
 export const projectMetadataBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0]{
+    seoTitle,
+    seoDescription,
     title,
     shortDescription
   }
@@ -62,6 +66,8 @@ export const projectsQuery = groq`
 export const homepageQuery = groq`
   *[_type == "homepage"][0]{
     title,
+    seoTitle,
+    seoDescription,
     "heroContacts": coalesce(heroContacts, [])[]{
       label,
       href,

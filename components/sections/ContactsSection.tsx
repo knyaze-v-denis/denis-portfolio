@@ -15,15 +15,6 @@ type ContactsSectionProps = {
   buttons?: HomepageContactButton[];
 };
 
-function isExternalHref(href: string) {
-  return (
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("mailto:") ||
-    href.startsWith("tel:")
-  );
-}
-
 function handleButtonRipple(event: PointerEvent<HTMLAnchorElement>) {
   const button = event.currentTarget;
   const rect = button.getBoundingClientRect();

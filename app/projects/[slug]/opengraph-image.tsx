@@ -1,7 +1,29 @@
 import { ImageResponse } from "next/og";
-import { getProjectOgData } from "@/lib/projects/og-data";
+import { cookies } from "next/headers";
+import { client } from "@/sanity/lib/client";
+import { projectBySlugQuery, siteSettingsQuery } from "@/sanity/lib/queries";
+import { mapSanitySiteSettingsToSiteSettingsData } from "@/sanity/lib/mappers";
+import { urlForImage } from "@/sanity/lib/image";
+import type { Locale } from "@/lib/i18n/types";
+import type { Image } from "sanity";
 
-const SITE_URL = "https://denis-portfolio-eight.vercel.app";
+type LocalizedString = {
+  ru?: string;
+  en?: string;
+};
+
+type SanityProjectOg = {
+  title?: LocalizedString | string;
+  coverImage?: Image;
+};
+
+const BACKGROUND_COLOR = "#f1f3f6";
+const FOREGROUND_PRIMARY = "#0b0c0e";
+const FOREGROUND_SECONDARY = "#8a8d93";
+const FOREGROUND_INVERSE = "#f1f3f6";
+const TAG_SURFACE_PRIMARY = "#0b0c0e";
+const PATTERN_COLOR = "rgba(11,12,14,0.08)";
+const SITE_URL = "https://www.knyaze-v-denis.ru";
 
 export const size = {
   width: 1200,
@@ -10,13 +32,55 @@ export const size = {
 
 export const contentType = "image/png";
 
+function getLocaleFromCookie(localeCookie: string | undefined): Locale {
+  return localeCookie === "en" ? "en" : "ru";
+}
+
+function getEyebrow(locale: Locale) {
+  return locale === "en" ? "PROJECT" : "ПРОЕКТ";
+}
+
+function pickLocaleValue(
+  field: LocalizedString | string | undefined,
+  locale: Locale
+) {
+  if (!field) return undefined;
+  if (typeof field === "string") return field;
+  return field[locale] ?? field.ru ?? field.en;
+}
+
 export default async function Image({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const data = getProjectOgData(slug);
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookie(cookieStore.get("locale")?.value);
+
+  const [projectDocument, siteSettingsDocument] = await Promise.all([
+    client.fetch<SanityProjectOg | null>(projectBySlugQuery, { slug }),
+    client.fetch(siteSettingsQuery),
+  ]);
+
+  const siteSettings = siteSettingsDocument
+    ? mapSanitySiteSettingsToSiteSettingsData(siteSettingsDocument, locale)
+    : null;
+
+  const projectTitle = (
+    pickLocaleValue(projectDocument?.title, locale) ??
+    (locale === "en" ? "Project" : "Проект")
+  ).toUpperCase();
+
+  const projectImageSrc = projectDocument?.coverImage
+    ? urlForImage(projectDocument.coverImage).width(1200).height(1200).url()
+    : `${SITE_URL}/images/project-cover.png`;
+
+  const personName = (siteSettings?.personName ?? "Denis Knyazev").toUpperCase();
+  const personRole = (
+    siteSettings?.personRole ??
+    (locale === "en" ? "Product Designer" : "Продуктовый дизайнер")
+  ).toUpperCase();
 
   return new ImageResponse(
     (
@@ -25,66 +89,82 @@ export default async function Image({
           width: "100%",
           height: "100%",
           display: "flex",
-          background: "linear-gradient(180deg, #f3f6fa 0%, #e9eef5 100%)",
-          color: "#0b0c0e",
-          padding: "56px",
-          position: "relative",
+          background: BACKGROUND_COLOR,
+          color: FOREGROUND_PRIMARY,
+          padding: "52px 75px",
           fontFamily: "sans-serif",
         }}
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            backgroundImage:
-              "repeating-linear-gradient(-45deg, rgba(11,12,14,0.035) 0, rgba(11,12,14,0.035) 1px, transparent 1px, transparent 28px)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
             display: "flex",
             flexDirection: "column",
             width: "100%",
             height: "100%",
-            padding: "32px 40px",
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              height: "38px",
-              padding: "0 16px",
-              borderRadius: "12px",
-              background: "#0b0c0e",
-              color: "#f3f6fa",
-              fontSize: 22,
-              alignSelf: "flex-start",
+              width: "100%",
             }}
           >
-            {data.eyebrow}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "12px 16px",
+                borderRadius: "16px",
+                background: TAG_SURFACE_PRIMARY,
+                color: FOREGROUND_INVERSE,
+                fontSize: 28,
+                lineHeight: 1,
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                flexShrink: 0,
+              }}
+            >
+              {getEyebrow(locale)}
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                flex: 1,
+                height: "48px",
+                marginLeft: "173px",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: `repeating-linear-gradient(-45deg, ${PATTERN_COLOR} 0px, ${PATTERN_COLOR} 3px, transparent 3px, transparent 24px)`,
+                }}
+              />
+            </div>
           </div>
 
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "32px",
-              marginTop: "44px",
+              width: "100%",
+              marginTop: "52px",
             }}
           >
             <img
-              src={`${SITE_URL}${data.image}`}
-              alt={data.title}
-              width={180}
-              height={180}
+              src={projectImageSrc}
+              alt={projectTitle}
+              width={263}
+              height={263}
               style={{
-                borderRadius: "24px",
+                width: "263px",
+                height: "263px",
+                borderRadius: "12px",
                 objectFit: "cover",
                 flexShrink: 0,
               }}
@@ -92,45 +172,61 @@ export default async function Image({
 
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "18px",
-                maxWidth: "760px",
+                position: "relative",
+                flex: 1,
+                height: "263px",
+                marginLeft: "40px",
+                overflow: "hidden",
               }}
             >
               <div
                 style={{
-                  fontSize: 64,
-                  lineHeight: 1.02,
-                  fontWeight: 700,
-                  maxWidth: "760px",
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: `repeating-linear-gradient(-45deg, ${PATTERN_COLOR} 0px, ${PATTERN_COLOR} 3px, transparent 3px, transparent 24px)`,
                 }}
-              >
-                {data.title}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 28,
-                  lineHeight: 1.3,
-                  color: "rgba(11,12,14,0.6)",
-                  maxWidth: "760px",
-                }}
-              >
-                {data.subtitle}
-              </div>
+              />
             </div>
           </div>
 
           <div
             style={{
-              marginTop: "auto",
-              paddingTop: "56px",
-              fontSize: 22,
-              color: "rgba(11,12,14,0.45)",
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "54px",
+              width: "100%",
             }}
           >
-            Denis Knyazev — Product Designer
+            <div
+              style={{
+                fontSize: 40,
+                lineHeight: "48px",
+                color: FOREGROUND_PRIMARY,
+                textTransform: "uppercase",
+                fontWeight: 600,
+                letterSpacing: "0.01em",
+              }}
+            >
+              {projectTitle}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "16px",
+                marginTop: "32px",
+                fontSize: 28,
+                lineHeight: 1,
+                color: FOREGROUND_SECONDARY,
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+              }}
+            >
+              <div>{personName}</div>
+              <div>•</div>
+              <div>{personRole}</div>
+            </div>
           </div>
         </div>
       </div>

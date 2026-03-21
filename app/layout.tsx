@@ -16,13 +16,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://denis-portfolio-eight.vercel.app";
+const SITE_URL = "https://www.knyaze-v-denis.ru";
+
+function getOpenGraphLocale(locale: Locale) {
+  return locale === "ru" ? "ru_RU" : "en_US";
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const settingsDoc = await client.fetch(siteSettingsQuery);
   const cookieStore = await cookies();
 
   const locale = getInitialLocaleFromCookie(cookieStore);
+  const openGraphLocale = getOpenGraphLocale(locale);
 
   const settings = settingsDoc
     ? mapSanitySiteSettingsToSiteSettingsData(settingsDoc, locale)
@@ -43,9 +48,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
     description,
 
+    alternates: {
+      canonical: SITE_URL,
+    },
+
     openGraph: {
       type: "website",
-      locale: "en_US",
+      locale: openGraphLocale,
       url: SITE_URL,
       title,
       description,

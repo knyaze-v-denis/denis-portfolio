@@ -45,6 +45,22 @@ export const projectType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "seoTitle",
+      title: "* SEO title",
+      description:
+        "Used for the project page title tag and social preview title.",
+      type: "localizedString",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "* SEO description",
+      description:
+        "Used for the project page meta description and social preview description.",
+      type: "localizedText",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "tags",
       title: "Tags",
       description: "Used in the project card on the homepage",
