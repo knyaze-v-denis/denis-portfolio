@@ -18,6 +18,8 @@ import {
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/i18n/types";
 
+const SITE_URL = "https://www.knyaze-v-denis.ru";
+
 type SanityHomepageMetadata = {
   seoTitle?: { ru?: string; en?: string } | string;
   seoDescription?: { ru?: string; en?: string } | string;
@@ -57,16 +59,28 @@ export async function generateMetadata(): Promise<Metadata> {
     pickLocaleValue(siteSettingsDocument?.seoDescription, locale) ??
     "Product designer focused on UX, interfaces and scalable systems.";
 
+  const ogImageUrl = `${SITE_URL}/opengraph-image`;
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
+      card: "summary_large_image",
       title,
       description,
+      images: [ogImageUrl],
     },
   };
 }
