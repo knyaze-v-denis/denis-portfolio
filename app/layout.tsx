@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import LanguageProvider from "@/components/i18n/LanguageProvider";
@@ -21,12 +21,8 @@ const SITE_URL = "https://denis-portfolio-eight.vercel.app";
 export async function generateMetadata(): Promise<Metadata> {
   const settingsDoc = await client.fetch(siteSettingsQuery);
   const cookieStore = await cookies();
-  const headersStore = await headers();
 
-  const localeFromCookie = getInitialLocaleFromCookie(cookieStore);
-  const locale = cookieStore.get("locale")?.value
-    ? localeFromCookie
-    : getInitialLocaleFromHeaders(headersStore);
+  const locale = getInitialLocaleFromCookie(cookieStore);
 
   const settings = settingsDoc
     ? mapSanitySiteSettingsToSiteSettingsData(settingsDoc, locale)
@@ -80,22 +76,6 @@ const themeInitScript = `
 })();
 `;
 
-function getInitialLocaleFromHeaders(
-  headersStore: Awaited<ReturnType<typeof headers>>
-): Locale {
-  const acceptLanguage = headersStore.get("accept-language")?.toLowerCase() || "";
-
-  if (acceptLanguage.includes("ru")) {
-    return "ru";
-  }
-
-  if (acceptLanguage.includes("en")) {
-    return "en";
-  }
-
-  return "ru";
-}
-
 function getInitialLocaleFromCookie(
   cookieStore: Awaited<ReturnType<typeof cookies>>
 ): Locale {
@@ -114,12 +94,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const headersStore = await headers();
 
-  const localeFromCookie = getInitialLocaleFromCookie(cookieStore);
-  const initialLocale = cookieStore.get("locale")?.value
-    ? localeFromCookie
-    : getInitialLocaleFromHeaders(headersStore);
+  const initialLocale = getInitialLocaleFromCookie(cookieStore);
 
   return (
     <html

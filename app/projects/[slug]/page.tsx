@@ -55,7 +55,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const cookieStore = await cookies();
   const localeCookie = cookieStore.get("locale")?.value;
-  const locale: Locale = localeCookie === "ru" ? "ru" : "en";
+  const locale: Locale = localeCookie === "en" ? "en" : "ru";
 
   const [project, navigationItems, siteSettingsDocument] = await Promise.all([
     client.fetch(projectBySlugQuery, { slug }),

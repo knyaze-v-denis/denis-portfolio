@@ -20,7 +20,7 @@ import type { Locale } from "@/lib/i18n/types";
 export default async function HomePage() {
   const cookieStore = await cookies();
   const localeCookie = cookieStore.get("locale")?.value;
-  const locale: Locale = localeCookie === "ru" ? "ru" : "en";
+  const locale: Locale = localeCookie === "en" ? "en" : "ru";
 
   const [homepageDocument, siteSettingsDocument] = await Promise.all([
     client.fetch(homepageQuery),

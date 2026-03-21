@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -32,6 +33,11 @@ export default function LanguageProvider({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const router = useRouter();
 
+  useEffect(() => {
+    setLocaleState(initialLocale);
+    document.documentElement.setAttribute("lang", initialLocale);
+  }, [initialLocale]);
+
   const setLocale = useCallback(
     (nextLocale: Locale) => {
       if (nextLocale === locale) {
@@ -39,16 +45,12 @@ export default function LanguageProvider({
       }
 
       setLocaleState(nextLocale);
+      document.documentElement.setAttribute("lang", nextLocale);
+      document.cookie = `locale=${nextLocale}; path=/; max-age=31536000`;
 
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("locale", nextLocale);
-        document.documentElement.setAttribute("lang", nextLocale);
-        document.cookie = `locale=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
-
-        window.setTimeout(() => {
-          router.refresh();
-        }, 0);
-      }
+      window.setTimeout(() => {
+        router.refresh();
+      }, 0);
     },
     [locale, router]
   );
