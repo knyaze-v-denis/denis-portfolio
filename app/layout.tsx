@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import LanguageProvider from "@/components/i18n/LanguageProvider";
@@ -21,7 +21,12 @@ const SITE_URL = "https://denis-portfolio-eight.vercel.app";
 export async function generateMetadata(): Promise<Metadata> {
   const settingsDoc = await client.fetch(siteSettingsQuery);
   const cookieStore = await cookies();
-  const locale = getInitialLocaleFromCookie(cookieStore);
+  const headersStore = await headers();
+
+  const localeFromCookie = getInitialLocaleFromCookie(cookieStore);
+  const locale = cookieStore.get("locale")?.value
+    ? localeFromCookie
+    : getInitialLocaleFromHeaders(headersStore);
 
   const settings = settingsDoc
     ? mapSanitySiteSettingsToSiteSettingsData(settingsDoc, locale)
@@ -75,6 +80,22 @@ const themeInitScript = `
 })();
 `;
 
+function getInitialLocaleFromHeaders(
+  headersStore: Awaited<ReturnType<typeof headers>>
+): Locale {
+  const acceptLanguage = headersStore.get("accept-language")?.toLowerCase() || "";
+
+  if (acceptLanguage.includes("ru")) {
+    return "ru";
+  }
+
+  if (acceptLanguage.includes("en")) {
+    return "en";
+  }
+
+  return "ru";
+}
+
 function getInitialLocaleFromCookie(
   cookieStore: Awaited<ReturnType<typeof cookies>>
 ): Locale {
@@ -84,7 +105,7 @@ function getInitialLocaleFromCookie(
     return locale;
   }
 
-  return "en";
+  return "ru";
 }
 
 export default async function RootLayout({
@@ -93,7 +114,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const initialLocale = getInitialLocaleFromCookie(cookieStore);
+  const headersStore = await headers();
+
+  const localeFromCookie = getInitialLocaleFromCookie(cookieStore);
+  const initialLocale = cookieStore.get("locale")?.value
+    ? localeFromCookie
+    : getInitialLocaleFromHeaders(headersStore);
 
   return (
     <html
