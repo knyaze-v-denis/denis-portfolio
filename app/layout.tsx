@@ -16,9 +16,12 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://www.knyaze-v-denis.ru";
+export const SITE_URL = "https://www.knyaze-v-denis.ru";
 
-function getOpenGraphLocale(locale: Locale) {
+export const SUPPORTED_LOCALES = ["ru", "en"] as const;
+export const DEFAULT_LOCALE: Locale = "ru";
+
+export function getOpenGraphLocale(locale: Locale) {
   return locale === "ru" ? "ru_RU" : "en_US";
 }
 
@@ -85,7 +88,7 @@ const themeInitScript = `
 })();
 `;
 
-function getInitialLocaleFromCookie(
+export function getInitialLocaleFromCookie(
   cookieStore: Awaited<ReturnType<typeof cookies>>
 ): Locale {
   const locale = cookieStore.get("locale")?.value;
@@ -94,7 +97,7 @@ function getInitialLocaleFromCookie(
     return locale;
   }
 
-  return "ru";
+  return DEFAULT_LOCALE;
 }
 
 export default async function RootLayout({

@@ -1,11 +1,18 @@
 import { ImageResponse } from "next/og";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { projectBySlugQuery, siteSettingsQuery } from "@/sanity/lib/queries";
 import { mapSanitySiteSettingsToSiteSettingsData } from "@/sanity/lib/mappers";
 import { urlForImage } from "@/sanity/lib/image";
 import type { Locale } from "@/lib/i18n/types";
 import type { Image } from "sanity";
+import {
+  DEFAULT_LOCALE,
+  SUPPORTED_LOCALES,
+  getInitialLocaleFromCookie,
+  SITE_URL as BASE_SITE_URL,
+} from "../../../layout";
 
 export const runtime = "nodejs";
 
@@ -15,7 +22,6 @@ const FOREGROUND_SECONDARY = "#8a8d93";
 const FOREGROUND_INVERSE = "#f1f3f6";
 const TAG_SURFACE_PRIMARY = "#0b0c0e";
 const PATTERN_COLOR = "#e5e7eb";
-const SITE_URL = "https://www.knyaze-v-denis.ru";
 
 export const size = {
   width: 1200,
@@ -29,18 +35,24 @@ type LocalizedString = {
   en?: string;
 };
 
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
+
+function hasSupportedLocale(locale?: string) {
+  return !!locale && (SUPPORTED_LOCALES as readonly string[]).includes(locale);
+}
+
+function assertValidLocale(locale?: string) {
+  if (locale && !hasSupportedLocale(locale)) {
+    notFound();
+  }
+}
+
 type SanityProjectOg = {
   title?: LocalizedString | string;
   coverImage?: Image;
 };
-
-function getLocaleFromCookie(localeCookie: string | undefined): Locale {
-  return localeCookie === "en" ? "en" : "ru";
-}
-
-function getEyebrow(locale: Locale) {
-  return locale === "en" ? "PROJECT" : "ПРОЕКТ";
-}
 
 function pickLocaleValue(
   field: LocalizedString | string | undefined,
@@ -49,6 +61,31 @@ function pickLocaleValue(
   if (!field) return undefined;
   if (typeof field === "string") return field;
   return field[locale] ?? field.ru ?? field.en;
+}
+
+function getLocaleFromParams(locale?: string): Locale | null {
+  if (!locale) {
+    return null;
+  }
+
+  return (SUPPORTED_LOCALES as readonly string[]).includes(locale)
+    ? (locale as Locale)
+    : null;
+}
+
+async function resolveLocale(localeFromRoute?: string): Promise<Locale> {
+  const localeFromParams = getLocaleFromParams(localeFromRoute);
+
+  if (localeFromParams) {
+    return localeFromParams;
+  }
+
+  const cookieStore = await cookies();
+  return getInitialLocaleFromCookie(cookieStore) ?? DEFAULT_LOCALE;
+}
+
+function getEyebrow(locale: Locale) {
+  return locale === "en" ? "PROJECT" : "ПРОЕКТ";
 }
 
 function PatternBlock({ width, height }: { width: number; height: number }) {
@@ -87,14 +124,14 @@ function PatternBlock({ width, height }: { width: number; height: number }) {
 export default async function Image({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale?: string }>;
 }) {
-  const { slug } = await params;
-  const cookieStore = await cookies();
-  const locale = getLocaleFromCookie(cookieStore.get("locale")?.value);
+  const { slug, locale: localeFromRoute } = await params;
+  assertValidLocale(localeFromRoute);
+  const locale = await resolveLocale(localeFromRoute);
 
   let projectTitle = (locale === "en" ? "Project" : "Проект").toUpperCase();
-  let projectImageSrc = `${SITE_URL}/images/project-cover.png`;
+  let projectImageSrc = `${BASE_SITE_URL}/images/project-cover.png`;
 
   const [projectDocument, siteSettingsDocument] = await Promise.all([
     client.fetch<SanityProjectOg | null>(projectBySlugQuery, { slug }),

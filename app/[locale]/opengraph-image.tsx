@@ -1,8 +1,15 @@
 import { ImageResponse } from "next/og";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import type { Image } from "sanity";
+import {
+  DEFAULT_LOCALE,
+  SUPPORTED_LOCALES,
+  getInitialLocaleFromCookie,
+  SITE_URL as BASE_SITE_URL,
+} from "../layout";
 
 export const runtime = "nodejs";
 
@@ -12,7 +19,6 @@ const FOREGROUND_SECONDARY = "#8a8d93";
 const FOREGROUND_INVERSE = "#f1f3f6";
 const TAG_SURFACE_PRIMARY = "#0b0c0e";
 const PATTERN_COLOR = "#e5e7eb";
-const SITE_URL = "https://www.knyaze-v-denis.ru";
 
 export const size = {
   width: 1200,
@@ -43,13 +49,49 @@ function pickLocaleValue(
   return field[locale] ?? field.ru ?? field.en;
 }
 
+type OgParams = {
+  locale?: string;
+};
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
+
+function hasSupportedLocale(locale?: string) {
+  return !!locale && (SUPPORTED_LOCALES as readonly string[]).includes(locale);
+}
+
+function assertValidLocale(locale?: string) {
+  if (locale && !hasSupportedLocale(locale)) {
+    notFound();
+  }
+}
+
+function getLocaleFromParams(locale?: string): Locale | null {
+  if (!locale) {
+    return null;
+  }
+
+  return (SUPPORTED_LOCALES as readonly string[]).includes(locale)
+    ? (locale as Locale)
+    : null;
+}
+
+async function resolveLocale(localeFromRoute?: string): Promise<Locale> {
+  const localeFromParams = getLocaleFromParams(localeFromRoute);
+
+  if (localeFromParams) {
+    return localeFromParams;
+  }
+
+  const cookieStore = await cookies();
+  return getInitialLocaleFromCookie(cookieStore) ?? DEFAULT_LOCALE;
+}
+
 function getEyebrow(locale: Locale) {
   return locale === "en" ? "PORTFOLIO" : "ПОРТФОЛИО";
 }
 
-function getLocaleFromCookie(localeCookie: string | undefined): Locale {
-  return localeCookie === "en" ? "en" : "ru";
-}
 
 function PatternBlock({ width, height }: { width: number; height: number }) {
   const stripeCount = Math.ceil((width + height) / 24) + 2;
@@ -83,13 +125,18 @@ function PatternBlock({ width, height }: { width: number; height: number }) {
   );
 }
 
-export default async function Image() {
-  const cookieStore = await cookies();
-  const locale = getLocaleFromCookie(cookieStore.get("locale")?.value);
+export default async function Image({
+  params,
+}: {
+  params?: Promise<OgParams>;
+} = {}) {
+  const resolvedParams = params ? await params : undefined;
+  assertValidLocale(resolvedParams?.locale);
+  const locale = await resolveLocale(resolvedParams?.locale);
 
   let personName = locale === "en" ? "Denis Knyazev" : "ДЕНИС КНЯЗЕВ";
   let personRole = locale === "en" ? "PRODUCT DESIGNER" : "ПРОДУКТОВЫЙ ДИЗАЙНЕР";
-  let personPhotoSrc = `${SITE_URL}/images/profile-photo.png`;
+  let personPhotoSrc = `${BASE_SITE_URL}/images/profile-photo.png`;
 
   try {
     const siteSettingsDocument = await client.fetch<SiteSettingsOg | null>(`

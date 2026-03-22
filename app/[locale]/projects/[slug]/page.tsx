@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import PageLayout from "@/components/layout/PageLayout";
@@ -16,16 +17,19 @@ import {
   mapSanityProjectToSections,
   mapSanitySiteSettingsToSiteSettingsData,
 } from "@/sanity/lib/mappers";
-import { cookies } from "next/headers";
 import type { Locale } from "@/lib/i18n/types";
-
-const SITE_URL = "https://www.knyaze-v-denis.ru";
+import { SITE_URL, SUPPORTED_LOCALES } from "../../../layout";
 
 type ProjectPageProps = {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 };
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 type SanityProjectMetadata = {
   seoTitle?: { ru?: string; en?: string } | string;
@@ -46,13 +50,23 @@ function pickLocaleValue(
   return field[locale] ?? field.ru ?? field.en;
 }
 
+function resolveLocale(localeFromRoute: string): Locale {
+  if ((SUPPORTED_LOCALES as readonly string[]).includes(localeFromRoute)) {
+    return localeFromRoute as Locale;
+  }
+
+  notFound();
+}
+
+function getLocalePrefix(locale: Locale) {
+  return `/${locale}`;
+}
+
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const cookieStore = await cookies();
-  const localeCookie = cookieStore.get("locale")?.value;
-  const locale: Locale = localeCookie === "en" ? "en" : "ru";
+  const { slug, locale: localeFromRoute } = await params;
+  const locale = resolveLocale(localeFromRoute);
 
   const [project, siteSettingsDocument] = await Promise.all([
     client.fetch<SanityProjectMetadata | null>(projectMetadataBySlugQuery, {
@@ -71,7 +85,7 @@ export async function generateMetadata({
     pickLocaleValue(siteSettingsDocument?.seoDescription, locale) ??
     "Product designer focused on UX, interfaces and scalable systems.";
 
-  const ogImageUrl = `${SITE_URL}/projects/${slug}/opengraph-image`;
+  const ogImageUrl = `${SITE_URL}${getLocalePrefix(locale)}/projects/${slug}/opengraph-image`;
 
   return {
     title,
@@ -98,11 +112,8 @@ export async function generateMetadata({
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { slug } = await params;
-
-  const cookieStore = await cookies();
-  const localeCookie = cookieStore.get("locale")?.value;
-  const locale: Locale = localeCookie === "en" ? "en" : "ru";
+  const { slug, locale: localeFromRoute } = await params;
+  const locale = resolveLocale(localeFromRoute);
 
   const [project, navigationItems, siteSettingsDocument] = await Promise.all([
     client.fetch(projectBySlugQuery, { slug }),
@@ -115,30 +126,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     : null;
 
   if (!project) {
-    return (
-      <div className="site-root">
-        <Header
-          personName={siteSettings?.personName}
-          personRole={siteSettings?.personRole}
-          personPhotoSrc={siteSettings?.personPhotoSrc}
-        />
-
-        <PageLayout>
-          <div className="section-frame">
-            <div className="project-section__inner">
-              <h1 className="project-section__title">Project not found</h1>
-            </div>
-          </div>
-        </PageLayout>
-
-        <Footer
-          showAside={siteSettings?.footer.showAside}
-          asideText={siteSettings?.footer.asideText}
-          asideLinkLabel={siteSettings?.footer.asideLinkLabel}
-          asideLinkHref={siteSettings?.footer.asideLinkHref}
-        />
-      </div>
-    );
+    notFound();
   }
 
   const heroData = mapSanityProjectToHero(project, locale);

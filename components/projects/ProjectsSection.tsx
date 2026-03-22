@@ -7,9 +7,22 @@ import ProjectCard, {
 } from "@/components/projects/ProjectCard";
 import { useTranslations } from "@/lib/i18n/useTranslations";
 
+
 type ProjectsSectionProps = {
   projects?: ProjectCardProps[];
 };
+
+function localizeHref(href: string, locale: "ru" | "en") {
+  if (!href.startsWith("/")) {
+    return href;
+  }
+
+  if (href.startsWith("/ru/") || href.startsWith("/en/")) {
+    return href;
+  }
+
+  return `/${locale}${href}`;
+}
 
 export default function ProjectsSection({
   projects = [],
@@ -39,7 +52,7 @@ export default function ProjectsSection({
               title={project.title}
               description={project.description}
               cover={project.cover}
-              href={project.href}
+              href={localizeHref(project.href, locale)}
               tags={project.tags}
             />
           </Reveal>

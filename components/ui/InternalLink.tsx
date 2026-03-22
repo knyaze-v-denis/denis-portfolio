@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export type InternalLinkState = "active" | "inactive";
@@ -22,8 +23,26 @@ export default function InternalLink({
   );
 
   if (href) {
+    const isInternal = href.startsWith("/");
+
+    if (isInternal) {
+      return (
+        <Link
+          href={href}
+          aria-current={state === "active" ? "page" : undefined}
+          className={classes}
+        >
+          {children}
+        </Link>
+      );
+    }
+
     return (
-      <a href={href} aria-current={state === "active" ? "page" : undefined} className={classes}>
+      <a
+        href={href}
+        aria-current={state === "active" ? "page" : undefined}
+        className={classes}
+      >
         {children}
       </a>
     );

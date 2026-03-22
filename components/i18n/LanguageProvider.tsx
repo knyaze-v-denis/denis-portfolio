@@ -4,12 +4,10 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { messages } from "@/lib/i18n/messages";
 import type { Locale, Messages } from "@/lib/i18n/types";
 
@@ -26,33 +24,49 @@ type LanguageProviderProps = {
   initialLocale: Locale;
 };
 
+function replaceLocaleInPathname(pathname: string, nextLocale: Locale) {
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments[0] === "ru" || segments[0] === "en") {
+    segments[0] = nextLocale;
+    return `/${segments.join("/")}`;
+  }
+
+  return `/${nextLocale}${pathname === "/" ? "" : pathname}`;
+}
+
+function getLocaleFromPathname(pathname: string): Locale | null {
+  const segments = pathname.split("/").filter(Boolean);
+  const locale = segments[0];
+
+  if (locale === "ru" || locale === "en") {
+    return locale;
+  }
+
+  return null;
+}
+
 export default function LanguageProvider({
   children,
   initialLocale,
 }: LanguageProviderProps) {
-  const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const router = useRouter();
-
-  useEffect(() => {
-    setLocaleState(initialLocale);
-    document.documentElement.setAttribute("lang", initialLocale);
-  }, [initialLocale]);
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname) ?? initialLocale;
 
   const setLocale = useCallback(
     (nextLocale: Locale) => {
       if (nextLocale === locale) {
         return;
       }
-
-      setLocaleState(nextLocale);
       document.documentElement.setAttribute("lang", nextLocale);
-      document.cookie = `locale=${nextLocale}; path=/; max-age=31536000`;
 
-      window.setTimeout(() => {
-        router.refresh();
-      }, 0);
+      const nextPathname = replaceLocaleInPathname(pathname, nextLocale);
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+
+      router.push(`${nextPathname}${hash}`);
     },
-    [locale, router]
+    [locale, pathname, router]
   );
 
   const value = useMemo<LanguageContextValue>(

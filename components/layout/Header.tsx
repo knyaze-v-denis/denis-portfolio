@@ -7,7 +7,7 @@ import { SendHorizontal } from "lucide-react";
 import InternalLink from "@/components/ui/InternalLink";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useTranslations } from "@/lib/i18n/useTranslations";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type HeaderProps = {
   personName?: string;
@@ -38,13 +38,27 @@ function handleButtonRipple(event: PointerEvent<HTMLAnchorElement>) {
   }, 500);
 }
 
+function replaceLocaleInPathname(pathname: string, nextLocale: "ru" | "en") {
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments[0] === "ru" || segments[0] === "en") {
+    segments[0] = nextLocale;
+    return `/${segments.join("/")}`;
+  }
+
+  return `/${nextLocale}${pathname === "/" ? "" : pathname}`;
+}
+
 export default function Header({
   personName,
   personRole,
   personPhotoSrc,
 }: HeaderProps) {
-  const { locale, setLocale, t } = useTranslations();
+  const { locale, t } = useTranslations();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const localeRootHref = `/${locale}`;
 
   const handleContactsClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -57,7 +71,18 @@ export default function Header({
       return;
     }
 
-    window.location.assign("/#contacts");
+    window.location.assign(`${localeRootHref}#contacts`);
+  };
+
+  const handleLocaleChange = (nextLocale: "ru" | "en") => {
+    if (nextLocale === locale) {
+      return;
+    }
+
+    const nextPathname = replaceLocaleInPathname(pathname, nextLocale);
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+
+    router.push(`${nextPathname}${hash}`);
   };
 
   const resolvedName = personName ?? t.header.name;
@@ -69,7 +94,7 @@ export default function Header({
       <div className="site-header-inner">
         <div className="flex h-14 items-center justify-between">
           <Link
-            href="/"
+            href={localeRootHref}
             className="flex min-w-0 items-center gap-2"
             aria-label="Go to homepage"
           >
@@ -96,7 +121,7 @@ export default function Header({
 
           <div className="flex items-center gap-4 md:gap-8">
             <Link
-              href="/#contacts"
+              href={`${localeRootHref}#contacts`}
               onClick={handleContactsClick}
               onPointerDown={handleButtonRipple}
               aria-label={t.header.cta}
@@ -106,7 +131,7 @@ export default function Header({
             </Link>
 
             <Link
-              href="/#contacts"
+              href={`${localeRootHref}#contacts`}
               onClick={handleContactsClick}
               onPointerDown={handleButtonRipple}
               aria-label={t.header.cta}
@@ -116,7 +141,7 @@ export default function Header({
             </Link>
 
             <div className="hidden md:flex md:items-center md:gap-1">
-              <button type="button" onClick={() => setLocale("ru")} className="cursor-pointer">
+              <button type="button" onClick={() => handleLocaleChange("ru")} className="cursor-pointer">
                 <InternalLink state={locale === "ru" ? "active" : "inactive"}>
                   {t.header.localeRu}
                 </InternalLink>
@@ -126,7 +151,7 @@ export default function Header({
                 /
               </span>
 
-              <button type="button" onClick={() => setLocale("en")} className="cursor-pointer">
+              <button type="button" onClick={() => handleLocaleChange("en")} className="cursor-pointer">
                 <InternalLink state={locale === "en" ? "active" : "inactive"}>
                   {t.header.localeEn}
                 </InternalLink>
