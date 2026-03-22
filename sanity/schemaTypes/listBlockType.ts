@@ -2,12 +2,13 @@ import { defineField, defineType } from "sanity";
 
 export const listBlockType = defineType({
   name: "listBlock",
-  title: "List block",
+  title: "Список",
   type: "object",
   fields: [
     defineField({
       name: "items",
-      title: "Items",
+      title: "* Элементы списка",
+      description: "Список пунктов. Используется для перечислений внутри секции.",
       type: "object",
       fields: [
         {
@@ -23,7 +24,8 @@ export const listBlockType = defineType({
           of: [{ type: "string" }],
         },
       ],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().error("Добавьте хотя бы один пункт списка"),
     }),
   ],
   preview: {
@@ -34,8 +36,8 @@ export const listBlockType = defineType({
     prepare({ itemsEn, itemsRu }) {
       const items = itemsEn || itemsRu || [];
       return {
-        title: items?.[0] || "Untitled list",
-        subtitle: `List block · ${items?.length || 0} item(s)`,
+        title: items?.[0] || "Без названия",
+        subtitle: `Список · ${items?.length || 0} пунктов`,
       };
     },
   },

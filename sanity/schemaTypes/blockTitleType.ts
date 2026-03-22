@@ -2,14 +2,15 @@ import { defineField, defineType } from "sanity";
 
 export const blockTitleType = defineType({
   name: "blockTitle",
-  title: "Block title",
+  title: "Заголовок блока",
   type: "object",
   fields: [
     defineField({
       name: "text",
-      title: "Text",
+      title: "* Текст заголовка",
+      description: "Крупный заголовок секции. Используется внутри кейсов проекта.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните текст заголовка"),
     }),
   ],
   preview: {
@@ -19,8 +20,8 @@ export const blockTitleType = defineType({
     },
     prepare({ titleEn, titleRu }) {
       return {
-        title: titleEn || titleRu || "Untitled block title",
-        subtitle: "Block title",
+        title: titleEn || titleRu || "Без названия",
+        subtitle: "Заголовок блока",
       };
     },
   },

@@ -2,14 +2,15 @@ import { defineField, defineType } from "sanity";
 
 export const textBlockType = defineType({
   name: "textBlock",
-  title: "Text block",
+  title: "Текстовый блок",
   type: "object",
   fields: [
     defineField({
       name: "text",
-      title: "Text",
+      title: "* Текст",
+      description: "Основной текстовый контент секции.",
       type: "localizedText",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните текст"),
     }),
   ],
   preview: {
@@ -19,8 +20,8 @@ export const textBlockType = defineType({
     },
     prepare({ titleEn, titleRu }) {
       return {
-        title: titleEn || titleRu || "Untitled text block",
-        subtitle: "Text block",
+        title: titleEn || titleRu || "Без названия",
+        subtitle: "Текстовый блок",
       };
     },
   },

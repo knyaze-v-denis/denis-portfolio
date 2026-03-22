@@ -1,12 +1,12 @@
 import { defineField, defineType } from "sanity";
 
 const educationTypes = [
-  { title: "Incomplete higher education", value: "incomplete-higher" },
-  { title: "Higher education", value: "higher" },
-  { title: "Professional development", value: "professional-development" },
-  { title: "Course", value: "course" },
-  { title: "Secondary vocational education", value: "secondary-vocational" },
-  { title: "Custom", value: "custom" },
+  { title: "Неоконченное высшее", value: "incomplete-higher" },
+  { title: "Высшее образование", value: "higher" },
+  { title: "Повышение квалификации", value: "professional-development" },
+  { title: "Курс", value: "course" },
+  { title: "Среднее профессиональное", value: "secondary-vocational" },
+  { title: "Свой вариант", value: "custom" },
 ];
 
 function getEducationTypeLabel(
@@ -14,7 +14,7 @@ function getEducationTypeLabel(
   customTypeLabel?: string
 ) {
   if (type === "custom") {
-    return customTypeLabel || "Custom";
+    return customTypeLabel || "Свой вариант";
   }
 
   return (
@@ -24,24 +24,27 @@ function getEducationTypeLabel(
 
 export const educationItemType = defineType({
   name: "educationItem",
-  title: "Education item",
+  title: "Элемент образования",
   type: "object",
   fields: [
     defineField({
       name: "institution",
-      title: "* Institution",
+      title: "* Учебное заведение",
+      description: "Название университета или учебного заведения.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите учебное заведение"),
     }),
     defineField({
       name: "program",
-      title: "* Program",
+      title: "* Программа / направление",
+      description: "Например: UX/UI дизайн, Информатика и т.д.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите программу"),
     }),
     defineField({
       name: "educationType",
-      title: "Education type",
+      title: "Тип образования",
+      description: "Выберите тип или укажите свой вариант ниже.",
       type: "string",
       options: {
         list: educationTypes,
@@ -49,15 +52,15 @@ export const educationItemType = defineType({
     }),
     defineField({
       name: "customEducationType",
-      title: "Custom education type",
-      description:
-        'Visible only when "Custom" is selected above',
+      title: "Свой тип образования",
+      description: 'Отображается, если выбран вариант "Свой вариант" выше',
       type: "localizedString",
       hidden: ({ parent }) => parent?.educationType !== "custom",
     }),
     defineField({
       name: "period",
-      title: "Period",
+      title: "Период",
+      description: "Например: 2020 — 2024",
       type: "localizedString",
     }),
   ],
@@ -95,7 +98,7 @@ export const educationItemType = defineType({
       );
 
       return {
-        title: institution || "Untitled institution",
+        title: institution || "Без названия",
         subtitle: [program, typeLabel, period]
           .filter(Boolean)
           .join(" · "),

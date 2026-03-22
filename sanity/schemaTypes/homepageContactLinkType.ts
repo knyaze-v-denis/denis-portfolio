@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 function validateHref(value: unknown) {
   if (typeof value !== "string" || value.trim().length === 0) {
-    return "Link is required";
+    return "Ссылка обязательна";
   }
 
   const normalized = value.trim();
@@ -17,38 +17,39 @@ function validateHref(value: unknown) {
 
   return isAllowed
     ? true
-    : 'Use https://, http://, mailto:, tel:, "/" or "#"';
+    : 'Используйте https://, http://, mailto:, tel:, "/" или "#"';
 }
 
 export const homepageContactLinkType = defineType({
   name: "homepageContactLink",
-  title: "Homepage contact link",
+  title: "Ссылка контактов",
   type: "object",
   fields: [
     defineField({
       name: "label",
-      title: "* Label",
+      title: "* Подпись",
+      description: "Текст кнопки или ссылки (например: Telegram, Email, LinkedIn).",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните подпись"),
     }),
     defineField({
       name: "href",
-      title: "* Link target",
+      title: "* Ссылка",
       description:
-        'Supports https://, http://, mailto:, tel:, "/" and "#"',
+        'Можно использовать https://, http://, mailto:, tel:, "/" или "#"',
       type: "string",
-      validation: (Rule) => Rule.required().custom(validateHref),
+      validation: (Rule) => Rule.required().error("Укажите ссылку").custom(validateHref),
     }),
     defineField({
       name: "variant",
-      title: "Button variant",
+      title: "Тип кнопки",
       description:
-        "Used in the Contacts section. Hero contacts can ignore this field.",
+        "Используется в блоке контактов. В hero-блоке можно игнорировать.",
       type: "string",
       options: {
         list: [
-          { title: "Primary", value: "primary" },
-          { title: "Secondary", value: "secondary" },
+          { title: "Основная", value: "primary" },
+          { title: "Вторичная", value: "secondary" },
         ],
         layout: "radio",
       },
@@ -57,8 +58,15 @@ export const homepageContactLinkType = defineType({
   ],
   preview: {
     select: {
-      title: "label.en",
+      titleEn: "label.en",
+      titleRu: "label.ru",
       subtitle: "href",
+    },
+    prepare({ titleEn, titleRu, subtitle }) {
+      return {
+        title: titleEn || titleRu || "Ссылка",
+        subtitle,
+      };
     },
   },
 });

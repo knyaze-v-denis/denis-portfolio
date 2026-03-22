@@ -6,7 +6,7 @@ function validateHref(value: unknown) {
   }
 
   if (typeof value !== "string") {
-    return "Link must be a string";
+    return "Ссылка должна быть строкой";
   }
 
   const normalized = value.trim();
@@ -21,79 +21,89 @@ function validateHref(value: unknown) {
 
   return isAllowed
     ? true
-    : 'Use https://, http://, mailto:, tel:, "/" or "#"';
+    : 'Используйте https://, http://, mailto:, tel:, "/" или "#"';
 }
 
 export const siteSettingsType = defineType({
   name: "siteSettings",
-  title: "Site settings",
+  title: "Настройки сайта",
   type: "document",
   fieldsets: [
-    { name: "general", title: "General", options: { collapsible: false } },
-    { name: "identity", title: "Identity", options: { collapsible: false } },
+    { name: "general", title: "Общее", options: { collapsible: false } },
+    { name: "identity", title: "Идентичность", options: { collapsible: false } },
     { name: "seo", title: "SEO", options: { collapsible: false } },
-    { name: "contacts", title: "Contacts CTA", options: { collapsible: false } },
-    { name: "footer", title: "Footer", options: { collapsible: false } },
+    { name: "contacts", title: "Блок контактов", options: { collapsible: false } },
+    { name: "footer", title: "Подвал", options: { collapsible: false } },
   ],
   fields: [
     defineField({
       name: "title",
-      title: "* Internal title",
+      title: "* Внутреннее название",
+      description: "Служебное поле только для Studio. На сайте не отображается.",
       type: "string",
-      initialValue: "Site settings",
-      validation: (Rule) => Rule.required(),
+      initialValue: "Настройки сайта",
+      validation: (Rule) => Rule.required().error("Укажите внутреннее название"),
       fieldset: "general",
     }),
 
     defineField({
       name: "personName",
-      title: "* Person name",
+      title: "* Имя",
+      description: "Используется в шапке сайта, OG-изображениях и других глобальных местах.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните имя"),
       fieldset: "identity",
     }),
     defineField({
       name: "personRole",
-      title: "* Person role",
+      title: "* Должность / роль",
+      description: "Используется в шапке сайта, hero-блоке и OG-изображениях.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните роль"),
       fieldset: "identity",
     }),
     defineField({
       name: "personPhoto",
-      title: "* Person photo",
+      title: "* Фото",
+      description: "Основное фото для шапки сайта и OG-изображений.",
       type: "image",
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Добавьте фото"),
       fieldset: "identity",
     }),
 
     defineField({
       name: "seoTitle",
-      title: "* Default SEO title",
+      title: "* SEO-заголовок по умолчанию",
+      description:
+        "Фолбэк для title страницы и превью ссылки. Желательно до 60 символов.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните SEO-заголовок"),
       fieldset: "seo",
     }),
     defineField({
       name: "seoDescription",
-      title: "* Default SEO description",
+      title: "* SEO-описание по умолчанию",
+      description:
+        "Фолбэк для meta description и превью ссылки. Желательно до 150–160 символов.",
       type: "localizedText",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните SEO-описание"),
       fieldset: "seo",
     }),
     defineField({
       name: "contactsTitle",
-      title: "* Contacts CTA title",
+      title: "* Заголовок блока контактов",
+      description: "Используется в глобальном блоке контактов на сайте.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните заголовок блока контактов"),
       fieldset: "contacts",
     }),
     defineField({
       name: "contactsButtons",
-      title: "Contacts CTA buttons",
+      title: "Кнопки блока контактов",
+      description: "Глобальные кнопки для блока контактов, который используется на сайте.",
       type: "array",
       of: [{ type: "homepageContactLink" }],
       fieldset: "contacts",
@@ -101,28 +111,32 @@ export const siteSettingsType = defineType({
 
     defineField({
       name: "showFooterAside",
-      title: "Show footer right block",
+      title: "Показывать правый блок в подвале",
+      description: "Включает или скрывает дополнительный блок справа в footer.",
       type: "boolean",
       initialValue: true,
       fieldset: "footer",
     }),
     defineField({
       name: "footerAsideText",
-      title: "Footer right text",
+      title: "Текст правого блока",
+      description: "Основной текст дополнительного блока в footer.",
       type: "localizedString",
       hidden: ({ parent }) => parent?.showFooterAside === false,
       fieldset: "footer",
     }),
     defineField({
       name: "footerAsideLinkLabel",
-      title: "Footer right link label",
+      title: "Подпись ссылки правого блока",
+      description: "Текст ссылки в дополнительном блоке footer.",
       type: "localizedString",
       hidden: ({ parent }) => parent?.showFooterAside === false,
       fieldset: "footer",
     }),
     defineField({
       name: "footerAsideLinkHref",
-      title: "Footer right link target",
+      title: "Цель ссылки правого блока",
+      description: "Можно использовать внешнюю ссылку, mailto:, tel:, якорь или внутренний путь.",
       type: "string",
       validation: (Rule) => Rule.custom(validateHref),
       hidden: ({ parent }) => parent?.showFooterAside === false,
@@ -138,7 +152,7 @@ export const siteSettingsType = defineType({
     },
     prepare({ title, personNameRu, personNameEn, media }) {
       return {
-        title: title || "Site settings",
+        title: title || "Настройки сайта",
         subtitle: personNameRu || personNameEn || "",
         media,
       };

@@ -2,27 +2,30 @@ import { defineField, defineType } from "sanity";
 
 export const imageBlockType = defineType({
   name: "imageBlock",
-  title: "Image block",
+  title: "Изображение",
   type: "object",
   fields: [
     defineField({
       name: "image",
-      title: "Image",
+      title: "* Изображение",
+      description: "Основное изображение для секции.",
       type: "image",
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Добавьте изображение"),
     }),
     defineField({
       name: "alt",
-      title: "Alt text",
+      title: "* Alt-текст",
+      description: "Краткое описание изображения для доступности и SEO.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните alt-текст"),
     }),
     defineField({
       name: "caption",
-      title: "Caption",
+      title: "Подпись",
+      description: "Необязательная подпись под изображением.",
       type: "localizedString",
     }),
   ],
@@ -34,8 +37,8 @@ export const imageBlockType = defineType({
     },
     prepare({ captionEn, captionRu, media }) {
       return {
-        title: captionEn || captionRu || "Image block",
-        subtitle: "Image block",
+        title: captionEn || captionRu || "Изображение",
+        subtitle: "Блок изображения",
         media,
       };
     },

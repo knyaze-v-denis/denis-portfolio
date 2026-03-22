@@ -2,20 +2,21 @@ import { defineField, defineType } from "sanity";
 
 export const quoteBlockType = defineType({
   name: "quoteBlock",
-  title: "Quote block",
+  title: "Цитата",
   type: "object",
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Заголовок",
+      description: "Необязательный заголовок цитаты (например, источник или автор).",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "text",
-      title: "Text",
+      title: "* Текст цитаты",
+      description: "Основной текст цитаты.",
       type: "localizedText",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните текст цитаты"),
     }),
   ],
   preview: {
@@ -26,8 +27,8 @@ export const quoteBlockType = defineType({
       textRu: "text.ru",
     },
     prepare({ titleEn, titleRu, textEn, textRu }) {
-      const title = titleEn || titleRu || "Quote block";
-      const subtitle = textEn || textRu || "Quote block";
+      const title = titleEn || titleRu || "Цитата";
+      const subtitle = textEn || textRu || "Без текста";
       return {
         title,
         subtitle,

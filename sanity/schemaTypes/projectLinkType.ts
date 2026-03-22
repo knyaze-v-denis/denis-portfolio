@@ -2,20 +2,22 @@ import { defineField, defineType } from "sanity";
 
 export const projectLinkType = defineType({
   name: "projectLink",
-  title: "Project link",
+  title: "Ссылка проекта",
   type: "object",
   fields: [
     defineField({
       name: "label",
-      title: "Label",
+      title: "* Подпись",
+      description: "Текст кнопки или ссылки (например: GitHub, Live, Case study).",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Заполните подпись ссылки"),
     }),
     defineField({
       name: "href",
-      title: "URL",
+      title: "* Ссылка",
+      description: "Укажите URL (https://…) или mailto:/tel: при необходимости.",
       type: "url",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите ссылку"),
     }),
   ],
   preview: {
@@ -26,7 +28,7 @@ export const projectLinkType = defineType({
     },
     prepare({ labelEn, labelRu, subtitle }) {
       return {
-        title: labelEn || labelRu || "Link",
+        title: labelEn || labelRu || "Ссылка",
         subtitle,
       };
     },

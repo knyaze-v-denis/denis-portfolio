@@ -2,26 +2,29 @@ import { defineField, defineType } from "sanity";
 
 export const workExperienceType = defineType({
   name: "workExperience",
-  title: "Work experience",
+  title: "Опыт работы",
   type: "object",
   fields: [
     defineField({
       name: "company",
-      title: "* Company",
+      title: "* Компания",
+      description: "Название компании или организации.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите компанию"),
     }),
     defineField({
       name: "position",
-      title: "* Position",
+      title: "* Должность",
+      description: "Например: Product Designer, UX/UI Designer и т.д.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите должность"),
     }),
     defineField({
       name: "period",
-      title: "* Period",
+      title: "* Период",
+      description: "Например: 2022 — настоящее время",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error("Укажите период работы"),
     }),
   ],
   preview: {
@@ -46,7 +49,7 @@ export const workExperienceType = defineType({
       const period = periodEn || periodRu;
 
       return {
-        title: company || "Untitled company",
+        title: company || "Без названия",
         subtitle: [position, period].filter(Boolean).join(" · "),
       };
     },
