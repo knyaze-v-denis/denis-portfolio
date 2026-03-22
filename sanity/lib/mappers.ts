@@ -201,19 +201,35 @@ function pickLocaleValue<T = string>(
   return localizedField[locale] ?? localizedField.en ?? localizedField.ru;
 }
 
-function getSkillGroupLabel(kind?: string, customTitle?: string) {
+function getSkillGroupLabel(
+  kind: string | undefined,
+  customTitle: string | undefined,
+  locale: "ru" | "en"
+) {
   if (kind === "custom") {
-    return customTitle || "Custom";
+    return customTitle || (locale === "ru" ? "Своя группа" : "Custom");
   }
 
-  const dictionary: Record<string, string> = {
-    "hard-skills": "Hard Skills",
-    "soft-skills": "Soft Skills",
-    languages: "Languages",
-    "tools-stack": "Tools / Stack",
+  const dictionary: Record<"ru" | "en", Record<string, string>> = {
+    ru: {
+      "hard-skills": "Хард скиллы",
+      "soft-skills": "Софт скиллы",
+      languages: "Языки",
+      "tools-stack": "Инструменты / стек",
+    },
+    en: {
+      "hard-skills": "Hard Skills",
+      "soft-skills": "Soft Skills",
+      languages: "Languages",
+      "tools-stack": "Tools / Stack",
+    },
   };
 
-  return dictionary[kind ?? ""] || customTitle || "Custom";
+  return (
+    dictionary[locale][kind ?? ""] ||
+    customTitle ||
+    (locale === "ru" ? "Своя группа" : "Custom")
+  );
 }
 
 function getEducationTypeLabel(
@@ -231,15 +247,24 @@ function getEducationTypeLabel(
     return resolvedCustomEducationType || "";
   }
 
-  const dictionary: Record<string, string> = {
-    "incomplete-higher": "Incomplete higher education",
-    higher: "Higher education",
-    "professional-development": "Professional development",
-    course: "Course",
-    "secondary-vocational": "Secondary vocational education",
+  const dictionary: Record<"ru" | "en", Record<string, string>> = {
+    ru: {
+      "incomplete-higher": "Неоконченное высшее",
+      higher: "Высшее образование",
+      "professional-development": "Повышение квалификации",
+      course: "Курс",
+      "secondary-vocational": "Среднее профессиональное образование",
+    },
+    en: {
+      "incomplete-higher": "Incomplete higher education",
+      higher: "Higher education",
+      "professional-development": "Professional development",
+      course: "Course",
+      "secondary-vocational": "Secondary vocational education",
+    },
   };
 
-  return dictionary[resolvedEducationType ?? ""] || "";
+  return dictionary[locale][resolvedEducationType ?? ""] || "";
 }
 
 export function mapSanityProjectToHero(
@@ -484,7 +509,8 @@ export function mapSanityHomepageToHomepageData(
     .map((group) => ({
       title: getSkillGroupLabel(
         group.kind,
-        pickLocaleValue(group.title, locale)
+        pickLocaleValue(group.title, locale),
+        locale
       ),
       showTitle: group.showTitle ?? true,
       items: pickLocaleValue(group.items, locale) ?? [],
