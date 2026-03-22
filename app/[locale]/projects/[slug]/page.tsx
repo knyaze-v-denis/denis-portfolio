@@ -27,9 +27,6 @@ type ProjectPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
-}
 
 type SanityProjectMetadata = {
   seoTitle?: { ru?: string; en?: string } | string;
