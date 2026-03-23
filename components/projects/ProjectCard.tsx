@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import ProjectTag, {
   type ProjectTagVariant,
 } from "@/components/projects/ProjectTag";
@@ -31,13 +31,15 @@ export default function ProjectCard({
   const cardRef = useRef<HTMLAnchorElement | null>(null);
 
   const params = useParams<{ locale?: string }>();
-  const locale =
+  const pathname = usePathname();
+  const localeFromParams =
     params?.locale === "en" ? "en" : params?.locale === "ru" ? "ru" : null;
+  const localeFromPathname =
+    pathname?.startsWith("/en") ? "en" : pathname?.startsWith("/ru") ? "ru" : null;
+  const locale = localeFromParams ?? localeFromPathname ?? "ru";
   const isAlreadyLocalized = /^\/(ru|en)(\/|$)/.test(href);
   const localizedHref =
-    locale && href.startsWith("/") && !isAlreadyLocalized
-      ? `/${locale}${href}`
-      : href;
+    href.startsWith("/") && !isAlreadyLocalized ? `/${locale}${href}` : href;
 
   function handlePointerDown(event: React.PointerEvent<HTMLAnchorElement>) {
     const card = cardRef.current;

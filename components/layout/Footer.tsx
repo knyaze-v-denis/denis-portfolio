@@ -32,7 +32,7 @@ export default function Footer({
       className="site-footer border-t border-[var(--color-border)]"
     >
       <div className="site-footer-inner">
-        <div className="hidden min-h-16 items-center md:flex">
+        <div className="hidden min-h-14 items-center md:flex">
           <Reveal key={`${locale}-footer-copy`} variant="body">
             <p className="text-title-3 text-[var(--color-foreground-tertiary)]">
               {t.footer.copyright}
