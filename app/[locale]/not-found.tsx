@@ -149,7 +149,12 @@ export default function NotFoundPage() {
         </main>
       </PageLayout>
 
-      <Footer showAside={siteSettings?.footer.showAside ?? false} />
+      <Footer
+        showAside={siteSettings?.footer.showAside ?? false}
+        asideText={siteSettings?.footer.asideText}
+        asideLinkLabel={siteSettings?.footer.asideLinkLabel}
+        asideLinkHref={siteSettings?.footer.asideLinkHref}
+      />
     </div>
   )
 }
