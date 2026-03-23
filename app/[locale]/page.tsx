@@ -86,10 +86,19 @@ export async function generateMetadata({
     "Product designer focused on UX, interfaces and scalable systems.";
 
   const ogImageUrl = `${SITE_URL}${getLocalePrefix(locale)}/opengraph-image`;
+  const canonicalUrl = `${SITE_URL}${getLocalePrefix(locale)}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        ru: `${SITE_URL}/ru`,
+        en: `${SITE_URL}/en`,
+        "x-default": `${SITE_URL}/en`,
+      },
+    },
     openGraph: {
       title,
       description,
