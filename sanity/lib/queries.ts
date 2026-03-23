@@ -42,7 +42,7 @@ export const projectMetadataBySlugQuery = groq`
 `;
 
 export const projectNavigationItemsQuery = groq`
-  *[_type == "homepage"][0]{
+  *[_type == "homepage" && _id == "homepage"][0]{
     "items": coalesce(homepageProjects, [])[]->{
       title,
       "slug": slug.current
@@ -51,7 +51,7 @@ export const projectNavigationItemsQuery = groq`
 `;
 
 export const projectsQuery = groq`
-  *[_type == "homepage"][0]{
+  *[_type == "homepage" && _id == "homepage"][0]{
     "items": coalesce(homepageProjects, [])[]->{
       _id,
       title,
@@ -64,7 +64,7 @@ export const projectsQuery = groq`
 `;
 
 export const homepageQuery = groq`
-  *[_type == "homepage"][0]{
+  *[_type == "homepage" && _id == "homepage"][0]{
     title,
     seoTitle,
     seoDescription,
@@ -105,7 +105,7 @@ export const homepageQuery = groq`
 `;
 
 export const siteSettingsQuery = groq`
-  *[_type == "siteSettings"][0]{
+  *[_type == "siteSettings" && _id == "siteSettings"][0]{
     title,
     personName,
     personRole,

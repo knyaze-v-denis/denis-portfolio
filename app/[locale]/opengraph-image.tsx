@@ -140,7 +140,7 @@ export default async function Image({
 
   try {
     const siteSettingsDocument = await client.fetch<SiteSettingsOg | null>(`
-      *[_type == "siteSettings"][0]{
+      *[_type == "siteSettings" && _id == "siteSettings"][0]{
         personName,
         personRole,
         personPhoto
