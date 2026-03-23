@@ -285,3 +285,76 @@
   flex: 1 0 auto;
   justify-content: flex-start;
 }
+
+/* ============================= */
+/* Not Found Error     */
+/* ============================= */
+
+.error-404__shell {
+  box-sizing: border-box;
+  width: 100%;
+  gap: 0;
+  padding-block: var(--space-10);
+  padding-inline: var(--space-10);
+}
+
+.error-404__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.error-404__code {
+  margin: 0 0 var(--space-3);
+  color: var(--color-foreground-tertiary);
+}
+
+.error-404__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.error-404__title {
+  margin: 0;
+  color: var(--color-foreground-primary);
+}
+
+.error-404__description {
+  margin: var(--space-6) 0 0;
+  max-width: 36rem;
+  color: var(--color-foreground-secondary);
+}
+
+.error-404__actions {
+  margin-top: var(--space-8);
+}
+
+@media (max-width: 767px) {
+  .error-404__shell {
+    padding-inline: var(--space-4);
+  }
+}
+
+/* ============================= */
+/* Not Found Recommendations     */
+/* ============================= */
+
+.not-found-recommendations {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.not-found-recommendations__title {
+  margin: 0;
+  margin-bottom: var(--space-6);
+  color: var(--color-foreground-secondary);
+}
+
+.not-found-recommendations__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}

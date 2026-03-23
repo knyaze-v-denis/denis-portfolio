@@ -121,6 +121,13 @@ export const siteSettingsQuery = groq`
     showFooterAside,
     footerAsideText,
     footerAsideLinkLabel,
-    footerAsideLinkHref
+    footerAsideLinkHref,
+
+    // 404 page
+    notFoundTitle,
+    notFoundMessage,
+    notFoundButtonLabel,
+    notFoundProjectsTitle,
+    notFoundExperimentsTitle
   }
 `;

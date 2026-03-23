@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import ProjectTag, {
   type ProjectTagVariant,
 } from "@/components/projects/ProjectTag";
@@ -28,6 +30,15 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const cardRef = useRef<HTMLAnchorElement | null>(null);
 
+  const params = useParams<{ locale?: string }>();
+  const locale =
+    params?.locale === "en" ? "en" : params?.locale === "ru" ? "ru" : null;
+  const isAlreadyLocalized = /^\/(ru|en)(\/|$)/.test(href);
+  const localizedHref =
+    locale && href.startsWith("/") && !isAlreadyLocalized
+      ? `/${locale}${href}`
+      : href;
+
   function handlePointerDown(event: React.PointerEvent<HTMLAnchorElement>) {
     const card = cardRef.current;
     if (!card) return;
@@ -39,8 +50,8 @@ export default function ProjectCard({
     ripple.className = "ui-button__ripple";
     ripple.style.width = `${size}px`;
     ripple.style.height = `${size}px`;
-    ripple.style.left = `${event.clientX - rect.left}px`;
-    ripple.style.top = `${event.clientY - rect.top}px`;
+    ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
 
     card.appendChild(ripple);
 
@@ -54,9 +65,9 @@ export default function ProjectCard({
   }
 
   return (
-    <a
+    <Link
       ref={cardRef}
-      href={href}
+      href={localizedHref}
       onPointerDown={handlePointerDown}
       className="ui-project-card"
     >
@@ -76,7 +87,7 @@ export default function ProjectCard({
             <h3 className="ui-project-card__title">{title}</h3>
 
             <div className="ui-project-card__tags">
-              {tags.map((tag) => (
+              {tags?.map((tag) => (
                 <ProjectTag key={`${title}-${tag.label}`} variant={tag.variant}>
                   {tag.label}
                 </ProjectTag>
@@ -87,6 +98,6 @@ export default function ProjectCard({
           <p className="ui-project-card__description">{description}</p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

@@ -124,6 +124,13 @@ export type SiteSettingsData = {
     asideLinkLabel: string;
     asideLinkHref: string;
   };
+  notFound: {
+    title: string;
+    message: string;
+    buttonLabel: string;
+    projectsTitle: string;
+    experimentsTitle: string;
+  };
 };
 
 
@@ -189,6 +196,11 @@ type SanitySiteSettings = {
   footerAsideText?: LocalizedValue<string> | string;
   footerAsideLinkLabel?: LocalizedValue<string> | string;
   footerAsideLinkHref?: string;
+  notFoundTitle?: LocalizedValue<string> | string;
+  notFoundMessage?: LocalizedValue<string> | string;
+  notFoundButtonLabel?: LocalizedValue<string> | string;
+  notFoundProjectsTitle?: LocalizedValue<string> | string;
+  notFoundExperimentsTitle?: LocalizedValue<string> | string;
 };
 
 function pickLocaleValue<T = string>(
@@ -642,6 +654,26 @@ export function mapSanitySiteSettingsToSiteSettingsData(
       asideLinkLabel:
         pickLocaleValue(settings.footerAsideLinkLabel, locale) ?? "",
       asideLinkHref: settings.footerAsideLinkHref ?? "",
+    },
+    notFound: {
+      title:
+        pickLocaleValue(settings.notFoundTitle, locale) ??
+        (locale === "ru" ? "СТРАНИЦА НЕ НАЙДЕНА" : "PAGE NOT FOUND"),
+      message:
+        pickLocaleValue(settings.notFoundMessage, locale) ??
+        (locale === "ru"
+          ? "Похоже, что эта страница не существует или ссылка устарела."
+          : "It appears that this page does not exist or the link is outdated."),
+      buttonLabel:
+        pickLocaleValue(settings.notFoundButtonLabel, locale) ??
+        (locale === "ru" ? "Главная" : "Home"),
+      projectsTitle:
+        pickLocaleValue(settings.notFoundProjectsTitle, locale) ??
+        (locale === "ru"
+          ? "Посмотрите мои проекты"
+          : "Take a look at my projects"),
+      experimentsTitle:
+        pickLocaleValue(settings.notFoundExperimentsTitle, locale) ?? "",
     },
   };
 }

@@ -33,6 +33,7 @@ export const siteSettingsType = defineType({
     { name: "identity", title: "Идентичность", options: { collapsible: false } },
     { name: "seo", title: "SEO", options: { collapsible: false } },
     { name: "contacts", title: "Блок контактов", options: { collapsible: false } },
+    { name: "notFound", title: "Страница 404", options: { collapsible: false } },
     { name: "footer", title: "Подвал", options: { collapsible: false } },
   ],
   fields: [
@@ -107,6 +108,46 @@ export const siteSettingsType = defineType({
       type: "array",
       of: [{ type: "homepageContactLink" }],
       fieldset: "contacts",
+    }),
+
+    defineField({
+      name: "notFoundTitle",
+      title: "* Заголовок 404",
+      description: "Основной заголовок блока сообщения об ошибке на странице 404.",
+      type: "localizedString",
+      validation: (Rule) => Rule.required().error("Заполните заголовок 404"),
+      fieldset: "notFound",
+    }),
+    defineField({
+      name: "notFoundMessage",
+      title: "* Сообщение 404",
+      description: "Текст под заголовком в блоке сообщения об ошибке на странице 404.",
+      type: "localizedText",
+      validation: (Rule) => Rule.required().error("Заполните сообщение 404"),
+      fieldset: "notFound",
+    }),
+    defineField({
+      name: "notFoundButtonLabel",
+      title: "* Подпись кнопки 404",
+      description: "Текст кнопки возврата на главную страницу в блоке 404.",
+      type: "localizedString",
+      validation: (Rule) => Rule.required().error("Заполните подпись кнопки 404"),
+      fieldset: "notFound",
+    }),
+    defineField({
+      name: "notFoundProjectsTitle",
+      title: "* Заголовок группы проектов на 404",
+      description: "Заголовок блока рекомендаций с проектами на странице 404.",
+      type: "localizedString",
+      validation: (Rule) => Rule.required().error("Заполните заголовок группы проектов на 404"),
+      fieldset: "notFound",
+    }),
+    defineField({
+      name: "notFoundExperimentsTitle",
+      title: "Заголовок группы experiments на 404",
+      description: "Пока не используется на сайте, но подготовлен для будущего блока Experiments на странице 404.",
+      type: "localizedString",
+      fieldset: "notFound",
     }),
 
     defineField({
