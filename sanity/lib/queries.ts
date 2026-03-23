@@ -63,6 +63,15 @@ export const projectsQuery = groq`
   }.items
 `;
 
+export const sitemapProjectsQuery = groq`
+  *[_type == "homepage" && _id == "homepage"][0]{
+    "items": coalesce(homepageProjects, [])[]-> {
+      "slug": slug.current,
+      _updatedAt
+    }
+  }.items
+`;
+
 export const homepageQuery = groq`
   *[_type == "homepage" && _id == "homepage"][0]{
     title,

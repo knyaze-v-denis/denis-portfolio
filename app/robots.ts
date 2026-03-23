@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://denis-portfolio-eight.vercel.app/sitemap.xml",
+    sitemap: "https://www.knyaze-v-denis.ru/sitemap.xml",
   };
 }
