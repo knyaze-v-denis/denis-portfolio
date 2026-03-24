@@ -121,11 +121,15 @@ function ProjectContentBlockRenderer({
       );
 
     case "quote":
+      if (!block.text) return null;
+
       return (
         <Reveal key={`quote-${index}`} variant="body" delay={index * 75}>
           <div className="project-quote-block">
             <div className="project-quote-block__inner">
-              <h4 className="project-quote-block__title">{block.title}</h4>
+              {block.title ? (
+                <h4 className="project-quote-block__title">{block.title}</h4>
+              ) : null}
               <p className="project-quote-block__text">{block.text}</p>
             </div>
           </div>

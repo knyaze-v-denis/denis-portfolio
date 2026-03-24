@@ -377,7 +377,8 @@ export function mapSanityProjectToSections(
         case "quoteBlock": {
           const title = pickLocaleValue(block.title, locale);
           const text = pickLocaleValue(block.text, locale);
-          if (title && text) {
+
+          if (text) {
             mappedBlocks.push({
               type: "quote",
               title,

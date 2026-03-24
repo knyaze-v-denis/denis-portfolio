@@ -21,7 +21,7 @@ export type ProjectContentBlock =
     }
   | {
       type: "quote";
-      title: string;
+      title?: string;
       text: string;
     };
 
