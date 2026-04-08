@@ -2,7 +2,6 @@
 
 import Reveal from "@/components/motion/Reveal";
 import ExternalLink from "@/components/ui/ExternalLink";
-import InternalLink from "@/components/ui/InternalLink";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useTranslations } from "@/lib/i18n/useTranslations";
 
@@ -19,7 +18,7 @@ export default function Footer({
   asideLinkLabel,
   asideLinkHref,
 }: FooterProps) {
-  const { t, locale, setLocale } = useTranslations();
+  const { t, locale } = useTranslations();
 
   const resolvedShowAside = showAside ?? true;
   const resolvedAsideText = asideText || t.footer.designedBy;
@@ -62,24 +61,6 @@ export default function Footer({
 
         <div className="flex flex-col gap-6 py-5 md:hidden">
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <button type="button" onClick={() => setLocale("ru")}>
-                <InternalLink state={locale === "ru" ? "active" : "inactive"}>
-                  {t.header.localeRu}
-                </InternalLink>
-              </button>
-
-              <span className="text-link text-[var(--color-foreground-tertiary)]">
-                /
-              </span>
-
-              <button type="button" onClick={() => setLocale("en")}>
-                <InternalLink state={locale === "en" ? "active" : "inactive"}>
-                  {t.header.localeEn}
-                </InternalLink>
-              </button>
-            </div>
-
             <ThemeToggle />
           </div>
 

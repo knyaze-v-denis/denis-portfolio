@@ -4,7 +4,6 @@ import type { PointerEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SendHorizontal } from "lucide-react";
-import InternalLink from "@/components/ui/InternalLink";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useTranslations } from "@/lib/i18n/useTranslations";
 import { usePathname, useRouter } from "next/navigation";
@@ -74,17 +73,6 @@ export default function Header({
     window.location.assign(`${localeRootHref}#contacts`);
   };
 
-  const handleLocaleChange = (nextLocale: "ru" | "en") => {
-    if (nextLocale === locale) {
-      return;
-    }
-
-    const nextPathname = replaceLocaleInPathname(pathname, nextLocale);
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
-
-    router.push(`${nextPathname}${hash}`);
-  };
-
   const resolvedName = personName ?? t.header.name;
   const resolvedRole = personRole ?? t.header.role;
   const resolvedPhotoSrc = personPhotoSrc ?? "/images/profile-photo.png";
@@ -139,24 +127,6 @@ export default function Header({
             >
               {t.header.cta}
             </Link>
-
-            <div className="hidden md:flex md:items-center md:gap-1">
-              <button type="button" onClick={() => handleLocaleChange("ru")} className="cursor-pointer">
-                <InternalLink state={locale === "ru" ? "active" : "inactive"}>
-                  {t.header.localeRu}
-                </InternalLink>
-              </button>
-
-              <span className="text-link text-[var(--color-foreground-tertiary)]">
-                /
-              </span>
-
-              <button type="button" onClick={() => handleLocaleChange("en")} className="cursor-pointer">
-                <InternalLink state={locale === "en" ? "active" : "inactive"}>
-                  {t.header.localeEn}
-                </InternalLink>
-              </button>
-            </div>
 
             <div className="hidden h-5 items-center md:flex">
               <ThemeToggle />
