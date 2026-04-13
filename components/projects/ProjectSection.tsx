@@ -207,14 +207,15 @@ export default function ProjectSection({ section }: ProjectSectionProps) {
               <X size={24} />
             </button>
 
-            <Image
-              src={lightboxImage.src}
-              alt={lightboxImage.alt}
-              width={lightboxImage.width}
-              height={lightboxImage.height}
-              sizes="80vw"
-              className="project-image-lightbox__image"
-            />
+            <div className="project-image-lightbox__image-frame">
+              <img
+                src={lightboxImage.src}
+                alt={lightboxImage.alt}
+                width={lightboxImage.width}
+                height={lightboxImage.height}
+                className="project-image-lightbox__image"
+              />
+            </div>
 
             {lightboxImage.caption ? (
               <div className="project-image-lightbox__caption">

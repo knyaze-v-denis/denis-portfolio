@@ -228,24 +228,28 @@
   display: none;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
   animation: project-lightbox-fade-in 300ms ease-out;
 }
 
 html.dark .project-image-lightbox {
   background: rgb(0 0 0 / 75%);
+  backdrop-filter: blur(8px);
 }
 
 html:not(.dark) .project-image-lightbox {
   background: rgb(0 0 0 / 25%);
+  backdrop-filter: blur(8px);
 }
 
 .project-image-lightbox__content {
   position: relative;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
+  width: fit-content;
   max-width: 80vw;
-  max-height: 80vh;
 }
 
 .project-image-lightbox__close {
@@ -269,23 +273,49 @@ html:not(.dark) .project-image-lightbox {
   color: var(--color-foreground-primary);
 }
 
+.project-image-lightbox__image-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 80vw;
+  max-height: calc(80vh - 2.5rem);
+  line-height: 0;
+}
+
 .project-image-lightbox__image {
   display: block;
-  max-width: 80vw;
-  max-height: 80vh;
   width: auto;
   height: auto;
+  max-width: 80vw;
+  max-height: calc(80vh - 2.5rem);
+  object-fit: contain;
   border-radius: 1.25rem;
 }
 
+.project-image-lightbox__image-frame :where(img) {
+  width: auto !important;
+  height: auto !important;
+  max-width: 80vw !important;
+  max-height: calc(80vh - 2.5rem) !important;
+  object-fit: contain;
+}
+
 .project-image-lightbox__caption {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 80vw;
   margin-top: 0.375rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 400;
   color: var(--color-foreground-secondary);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 @keyframes project-lightbox-fade-in {
