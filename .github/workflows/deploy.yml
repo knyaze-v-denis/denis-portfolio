@@ -45,4 +45,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/denis-portfolio
-            pm2 restart app || pm2 start .next/standalone/server.js --name app
+            mkdir -p .next/standalone/.next
+            rm -rf .next/standalone/.next/static
+            cp -R .next/static .next/standalone/.next/
+            rm -rf .next/standalone/public
+            cp -R public .next/standalone/
+            pm2 delete app || true
+            pm2 restart denis-portfolio || pm2 start .next/standalone/server.js --name denis-portfolio
+            pm2 save
