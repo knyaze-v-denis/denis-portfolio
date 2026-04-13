@@ -34,10 +34,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: |
-            .next/standalone
-            .next/static
-            public
+          source: ".next/standalone/**,.next/static/**,public/**"
           target: ~/denis-portfolio
 
       - name: Restart app on VPS
