@@ -18,24 +18,33 @@ function getCurrentTheme(): ThemeMode {
     : "light";
 }
 
+function persistTheme(theme: ThemeMode) {
+  sessionStorage.setItem("theme", theme);
+  localStorage.setItem("theme", theme);
+  document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
+}
+
 export default function ThemeToggle() {
   const isInitializedRef = useRef(false);
 
   useEffect(() => {
-    const savedTheme = sessionStorage.getItem("theme") as ThemeMode | null;
+    const savedTheme =
+      (sessionStorage.getItem("theme") as ThemeMode | null) ||
+      (localStorage.getItem("theme") as ThemeMode | null);
     const initialTheme = savedTheme || getCurrentTheme();
 
     document.documentElement.classList.toggle(
       "dark",
       initialTheme === "dark"
     );
+    persistTheme(initialTheme);
 
     isInitializedRef.current = true;
   }, []);
 
   function applyTheme(nextTheme: ThemeMode) {
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
-    sessionStorage.setItem("theme", nextTheme);
+    persistTheme(nextTheme);
   }
 
   function toggleTheme(event: React.MouseEvent<HTMLButtonElement>) {

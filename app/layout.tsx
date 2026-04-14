@@ -1,7 +1,8 @@
+// @ts-expect-error -- Next.js supports global CSS side-effect imports in app router layouts
+import "./globals.css";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import LanguageProvider from "@/components/i18n/LanguageProvider";
 import LanguageScript from "@/components/i18n/LanguageScript";
 import type { Locale } from "@/lib/i18n/types";
@@ -84,13 +85,50 @@ export async function generateMetadata(): Promise<Metadata> {
 const themeInitScript = `
 (() => {
   try {
-    const storedTheme = sessionStorage.getItem("theme");
+    const readCookie = (name) => {
+      const cookieString = document.cookie || "";
+      const cookies = cookieString.split("; ");
+
+      for (const cookie of cookies) {
+        if (!cookie) continue;
+
+        const separatorIndex = cookie.indexOf("=");
+        const cookieName = separatorIndex === -1 ? cookie : cookie.slice(0, separatorIndex);
+        const cookieValue = separatorIndex === -1 ? "" : cookie.slice(separatorIndex + 1);
+
+        if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+        }
+      }
+
+      return null;
+    };
+
+    const storedTheme =
+      sessionStorage.getItem("theme") ||
+      localStorage.getItem("theme") ||
+      readCookie("theme");
+
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const isDark = storedTheme ? storedTheme === "dark" : systemDark;
+
     document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
   } catch {}
 })();
 `;
+
+export function getInitialThemeFromCookie(
+  cookieStore: Awaited<ReturnType<typeof cookies>>
+): "light" | "dark" | null {
+  const theme = cookieStore.get("theme")?.value;
+
+  if (theme === "light" || theme === "dark") {
+    return theme;
+  }
+
+  return null;
+}
 
 export function getInitialLocaleFromCookie(
   cookieStore: Awaited<ReturnType<typeof cookies>>
@@ -112,15 +150,19 @@ export default async function RootLayout({
   const cookieStore = await cookies();
 
   const initialLocale = getInitialLocaleFromCookie(cookieStore);
+  const initialTheme = getInitialThemeFromCookie(cookieStore);
 
   return (
     <html
       lang={initialLocale}
-      className={inter.variable}
+      className={`${inter.variable}${initialTheme === "dark" ? " dark" : ""}`}
+      style={{ colorScheme: initialTheme === "dark" ? "dark" : "light" }}
       suppressHydrationWarning
     >
-      <body>
+      <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body>
         <LanguageScript initialLocale={initialLocale} />
         <LanguageProvider initialLocale={initialLocale}>
           {children}

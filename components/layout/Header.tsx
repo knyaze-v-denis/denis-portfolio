@@ -83,6 +83,12 @@ export default function Header({
         <div className="flex h-14 items-center justify-between">
           <Link
             href={localeRootHref}
+            onClick={(e) => {
+              if (pathname === localeRootHref) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
             className="flex min-w-0 items-center gap-2"
             aria-label="Go to homepage"
           >
