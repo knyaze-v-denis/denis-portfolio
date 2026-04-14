@@ -1,4 +1,3 @@
-// @ts-expect-error -- Next.js supports global CSS side-effect imports in app router layouts
 import "./globals.css";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
