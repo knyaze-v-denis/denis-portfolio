@@ -256,6 +256,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
 }
 
 .ui-project-card__image {
